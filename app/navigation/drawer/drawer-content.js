@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { ScrollView, Image, BackHandler } from 'react-native'
 import { Navigation } from 'react-native-navigation'
 
-import { loginScreen, registerScreen, forgotPasswordScreen, changePasswordScreen, settingsScreen, entitiesScreen } from '../layouts'
+import { loginScreen, registerScreen, forgotPasswordScreen, changePasswordScreen, settingsScreen, entitiesScreen, agendaScreen, usuarioScreen } from '../layouts'
 import { connect } from 'react-redux'
 
 import styles from './drawer-content.styles'
@@ -62,6 +62,14 @@ class DrawerContent extends Component {
     this.hideSideMenu()
     this.props.logout()
   }
+  handlePressAgenda = () => {
+    this.hideSideMenu()
+    agendaScreen()
+  }
+  handlePressUsuario = () => {
+    this.hideSideMenu()
+    usuarioScreen()
+  }
 
   render () {
     return (
@@ -73,8 +81,10 @@ class DrawerContent extends Component {
 
         {this.props.loggedIn && (<DrawerButton testID='entitiesDrawerButton' text='Entities' onPress={this.handlePressEntities} />)}
         {this.props.loggedIn && (<DrawerButton testID='settingsDrawerButton' text='Settings' onPress={this.handlePressSettings} />)}
-        {this.props.loggedIn && (<DrawerButton testID='changePasswordDrawerButton' text='Change Password' onPress={this.handlePressChangePassword} />)}
+        {this.props.loggedIn && (<DrawerButton testID='agendaDrawerButton' text='Agenda' onPress={this.handlePressAgenda} />)}
+        {this.props.loggedIn && (<DrawerButton testID='changePasswordDrawerButton' text='Trocar Senha' onPress={this.handlePressChangePassword} />)}
         {this.props.loggedIn && (<DrawerButton testID='logoutDrawerButton' text='Logout' onPress={this.handlePressLogout} />)}
+        {this.props.loggedIn && (<DrawerButton testID='usuarioDrawerButton' text='Usuario' onPress={this.handlePressUsuario} />)}
       </ScrollView>
     )
   }

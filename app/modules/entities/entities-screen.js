@@ -1,6 +1,7 @@
 import React from 'react'
 import { ScrollView, Text } from 'react-native'
 import { connect } from 'react-redux'
+import { StyleSheet } from 'react-native'
 // Styles
 /*eslint-disable */
 import RoundedButton from '../../shared/components/rounded-button/rounded-button'
@@ -16,7 +17,7 @@ class EntitiesScreen extends React.Component {
     return (
       <ScrollView style={styles.container}>
         <Text style={{ textAlign: 'center' }}>JHipster Entities will appear below</Text>
-        {/* ignite-jhipster-entity-screen-needle */}
+        {/* {ignite-jhipster-entity-screen-needle} */}
       </ScrollView>
     )
   }
