@@ -19,6 +19,7 @@ import ChangePasswordScreen from '../modules/account/password/change-password-sc
 import EntitiesScreen from '../modules/entities/entities-screen'
 import AgendaScreen from '../modules/agenda/agenda-screen'
 import UsuarioScreen from '../modules/usuario/usuario-screen'
+import CupomScreen from '../modules/cupom/cupom-screen'
 
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 
@@ -34,6 +35,7 @@ export const DRAWER_CONTENT = 'nav.DrawerContent'
 export const ENTITIES_SCREEN = 'nav.EntitiesScreen'
 export const AGENDA_SCREEN = 'nav.AgendaScreen'
 export const USUARIO_SCREEN = 'nav.UsuarioScreen'
+export const CUPOM_SCREEN = 'nav.CupomScreen'
 // ignite-jhipster-navigation-declaration-needle
 
 const store = createStore()
@@ -119,6 +121,7 @@ export function registerScreensAndStartApp () {
   Navigation.registerComponentWithRedux(ENTITIES_SCREEN, () => EntitiesScreen, Provider, store)
   Navigation.registerComponentWithRedux(AGENDA_SCREEN, () => AgendaScreen, Provider, store)
   Navigation.registerComponentWithRedux(USUARIO_SCREEN, () => UsuarioScreen, Provider, store)
+  Navigation.registerComponentWithRedux(CUPOM_SCREEN, () => CupomScreen, Provider, store)
   // ignite-jhipster-navigation-registration-needle
 
   Navigation.events().registerAppLaunchedListener(() => {
@@ -260,6 +263,20 @@ export const usuarioScreen = () => Navigation.push('center', {
       topBar: {
         title: {
           text: 'Usuario',
+          color: Colors.snow
+        }
+      }
+    }
+  }
+})
+
+export const cupomScreen = () => Navigation.push('center', {
+  component: {
+    name: CUPOM_SCREEN,
+    options: {
+      topBar: {
+        title: {
+          text: 'Cupom',
           color: Colors.snow
         }
       }

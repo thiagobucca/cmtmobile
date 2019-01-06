@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { ScrollView, Image, BackHandler } from 'react-native'
 import { Navigation } from 'react-native-navigation'
 
-import { loginScreen, registerScreen, forgotPasswordScreen, changePasswordScreen, settingsScreen, entitiesScreen, agendaScreen, usuarioScreen } from '../layouts'
+import { loginScreen, registerScreen, forgotPasswordScreen, changePasswordScreen, settingsScreen, entitiesScreen, agendaScreen, usuarioScreen, cupomScreen } from '../layouts'
 import { connect } from 'react-redux'
 
 import styles from './drawer-content.styles'
@@ -71,6 +71,11 @@ class DrawerContent extends Component {
     usuarioScreen()
   }
 
+  handlePressCupom = () => {
+    this.hideSideMenu()
+    cupomScreen()
+  }
+
   render () {
     return (
       <ScrollView style={styles.container}>
@@ -85,6 +90,7 @@ class DrawerContent extends Component {
         {this.props.loggedIn && (<DrawerButton testID='changePasswordDrawerButton' text='Trocar Senha' onPress={this.handlePressChangePassword} />)}
         {this.props.loggedIn && (<DrawerButton testID='logoutDrawerButton' text='Logout' onPress={this.handlePressLogout} />)}
         {this.props.loggedIn && (<DrawerButton testID='usuarioDrawerButton' text='Usuario' onPress={this.handlePressUsuario} />)}
+        {this.props.loggedIn && (<DrawerButton testID='cupomDrawerButton' text='Cupom' onPress={this.handlePressCupom} />)}
       </ScrollView>
     )
   }
