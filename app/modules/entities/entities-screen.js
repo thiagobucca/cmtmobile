@@ -1,7 +1,7 @@
 import React from 'react'
 import { ScrollView, Text } from 'react-native'
 import { connect } from 'react-redux'
-import { StyleSheet } from 'react-native'
+
 // Styles
 /*eslint-disable */
 import RoundedButton from '../../shared/components/rounded-button/rounded-button'

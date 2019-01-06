@@ -1,12 +1,5 @@
 import React from 'react'
-//import { ScrollView, Text } from 'react-native'
-import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View,
-  Dimensions
-} from 'react-native';
+
 import { connect } from 'react-redux'
 //import { StyleSheet } from 'react-native'
 import Camera from 'react-native-camera';
@@ -18,63 +11,75 @@ import {
 } from '../../navigation/layouts'
 /*eslint-enable */
 
+
+import {
+  AppRegistry,
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native';
+import { RNCamera } from 'react-native-camera';
 //import styles from './usuario-screen.styles'
 
+Props = {};
 export default class UsuarioScreen extends React.Component {
+  takePicture = async function() {
+    if (this.camera) {
+      const options = { quality: 0.5, base64: true };
+      const data = await this.camera.takePictureAsync(options)
+      console.log(data.uri);
+    }
+  }
   render() {
     return (
       <View style={styles.container}>
-        <Camera
-          ref={(cam) => {
-            this.camera = cam;
-          }}
-          style={styles.preview}
-          aspect={Camera.constants.Aspect.fill}>
-          <Text style={styles.capture} onPress={this.takePicture.bind(this)}>[CAPTURE]</Text>
-        </Camera>
+        <RNCamera
+            ref={ref => {
+              this.camera = ref;
+            }}
+            style = {styles.preview}
+            type={RNCamera.Constants.Type.back}
+            flashMode={RNCamera.Constants.FlashMode.on}
+            permissionDialogTitle={'Permission to use camera'}
+            permissionDialogMessage={'We need your permission to use your camera phone'}
+        />
+        <View style={{flex: 0, flexDirection: 'row', justifyContent: 'center',}}>
+        <TouchableOpacity
+            onPress={this.takePicture.bind(this)}
+            style = {styles.capture}
+       >
+            <Text style={{fontSize: 14}}> Salvar Cupom </Text>
+        </TouchableOpacity>
+        </View>
       </View>
     );
-  }
-  takePicture() {
-    this.camera.capture()
-      .then((data) => console.log(data))
-      .catch(err => console.error(err));
-  }
-}
-
-const mapStateToProps = (state) => {
-  return {
-    // for developer convenience
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    // for developer convenience
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: 'black'
   },
   preview: {
     flex: 1,
     justifyContent: 'flex-end',
-    alignItems: 'center',
-    height: Dimensions.get('window').height,
-    width: Dimensions.get('window').width
+    alignItems: 'center'
   },
   capture: {
     flex: 0,
     backgroundColor: '#fff',
     borderRadius: 5,
-    color: '#000',
-    padding: 10,
-    margin: 40
+    padding: 15,
+    paddingHorizontal: 20,
+    alignSelf: 'center',
+    margin: 20
   }
 });
 
-AppRegistry.registerComponent('UsuarioScreen', () => UsuarioScreen);
+//AppRegistry.registerComponent('UsuarioScreen', () => UsuarioScreen);
 
 //export default connect(mapStateToProps, mapDispatchToProps)(UsuarioScreen)
