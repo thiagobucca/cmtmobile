@@ -12,6 +12,8 @@ import { RegisterTypes } from '../../modules/account/register/register.reducer'
 import { ForgotPasswordTypes } from '../../modules/account/password-reset/forgot-password.reducer'
 import { ChangePasswordTypes } from '../../modules/account/password/change-password.reducer'
 import { UserTypes } from '../../shared/reducers/user.reducer'
+import { EstabelecimentoComercialTypes } from '../../shared/reducers/estabelecimento-comercial.reducer'
+import { AgendaEventosTypes } from '../../shared/reducers/agenda-eventos.reducer'
 // ignite-jhipster-saga-redux-import-needle
 
 /* ------------- Sagas ------------- */
@@ -23,6 +25,8 @@ import { forgotPassword } from '../../modules/account/password-reset/forgot-pass
 import { changePassword } from '../../modules/account/password/change-password.sagas'
 import { getAccount, updateAccount } from '../../shared/sagas/account.sagas'
 import { getUser, getUsers, updateUser, deleteUser } from '../../shared/sagas/user.sagas'
+import { getEstabelecimentoComercial } from './estabelecimento-comercial.sagas'
+import { getAgendaEventos } from './agenda-eventos.sagas'
 // ignite-jhipster-saga-method-import-needle
 
 /* ------------- API ------------- */
@@ -53,6 +57,9 @@ export default function * root () {
     takeLatest(UserTypes.USER_DELETE_REQUEST, deleteUser, api),
 
     takeLatest(AccountTypes.ACCOUNT_REQUEST, getAccount, api),
-    takeLatest(AccountTypes.ACCOUNT_UPDATE_REQUEST, updateAccount, api)
+    takeLatest(AccountTypes.ACCOUNT_UPDATE_REQUEST, updateAccount, api),
+
+    takeLatest(EstabelecimentoComercialTypes.ESTABELECIMENTO_COMERCIAL_REQUEST, getEstabelecimentoComercial, api),
+    takeLatest(AgendaEventosTypes.AGENDA_EVENTOS_REQUEST, getAgendaEventos, api)
   ])
 }

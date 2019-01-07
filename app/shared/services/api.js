@@ -43,6 +43,9 @@ const create = (baseURL = AppConfig.apiUrl) => {
   const forgotPassword = (data) => api.post('api/account/reset-password/init', data, {headers: {'Content-Type': 'text/plain', 'Accept': 'application/json, text/plain, */*'}})
 
   const getAccount = () => api.get('api/account')
+  const getEstabelecimentoComercial = () =>('api/estabelecimento-comercials')
+  const getAgendaEventos = () =>('api/agenda-eventos')
+
   const updateAccount = (account) => api.post('api/account', account)
   const changePassword = (currentPassword, newPassword) => api.post('api/account/change-password', {currentPassword, newPassword}, {headers: {'Content-Type': 'application/json', 'Accept': 'application/json, text/plain, */*'}})
 
@@ -80,7 +83,9 @@ const create = (baseURL = AppConfig.apiUrl) => {
     forgotPassword,
     getAccount,
     updateAccount,
-    changePassword
+    changePassword,
+    getEstabelecimentoComercial,
+    getAgendaEventos
   }
 }
 
