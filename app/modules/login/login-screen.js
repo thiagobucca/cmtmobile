@@ -28,6 +28,8 @@ class LoginScreen extends React.Component {
     }
   }
 
+
+
   componentWillReceiveProps (newProps) {
     // Did the login attempt complete?
     if (!newProps.fetching) {

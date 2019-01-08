@@ -5,10 +5,7 @@ import Immutable from 'seamless-immutable'
 const { Types, Creators } = createActions({
   agendaEventosRequest: [],
   agendaEventosSuccess: ['agendaEventos'],
-  agendaEventosFailure: ['error'],
-  agendaEventosUpdateRequest: ['agendaEventos'],
-  agendaEventosUpdateSuccess: [],
-  agendaEventosUpdateFailure: ['error']
+  agendaEventosFailure: ['error']
 })
 
 export const AgendaEventosTypes = Types
@@ -37,24 +34,12 @@ export const success = (state, data) => {
 // we've had a problem getting the agendaEventos
 export const failure = (state, { error }) => state.merge({ fetching: false, updating: false, agendaEventos: null, error })
 
-// we're attempting to updating agendaEventos settings
-export const updateRequest = (state) => state.merge({ updating: true })
-
-// we've successfully updated the agendaEventos settings
-export const updateSuccess = (state) => state.merge({ error: null, updating: false })
-
-// we've had a problem updating the agendaEventos settings
-export const updateFailure = (state, { error }) => state.merge({ updating: false, error })
-
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.AGENDA_EVENTOS_REQUEST]: request,
   [Types.AGENDA_EVENTOS_SUCCESS]: success,
-  [Types.AGENDA_EVENTOS_FAILURE]: failure,
-  [Types.AGENDA_EVENTOS_UPDATE_REQUEST]: updateRequest,
-  [Types.AGENDA_EVENTOS_UPDATE_SUCCESS]: updateSuccess,
-  [Types.AGENDA_EVENTOS_UPDATE_FAILURE]: updateFailure
+  [Types.AGENDA_EVENTOS_FAILURE]: failure
 })
 
 /* ------------- Selectors ------------- */

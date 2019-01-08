@@ -1,8 +1,13 @@
 import { LocaleConfig,Agenda } from 'react-native-calendars';
-import { View } from 'react-native';
+import { View, Alert } from 'react-native';
 import React from 'react'
 import { ScrollView, Text } from 'react-native'
 import { connect } from 'react-redux'
+import t from 'tcomb-form-native'
+
+
+import AgendaEventoActions from '../entities/agenda-eventos/agenda-eventos.reducer'
+
 import { StyleSheet } from 'react-native'
 // Styles
 /*eslint-disable */
@@ -24,22 +29,60 @@ LocaleConfig.locales.pt = {
 LocaleConfig.defaultLocale = 'pt';
 //LocaleConfig.locales.en = LocaleConfig.locales[''];
 
-export default class AgendaScreen extends React.Component {
+class AgendaScreen extends React.Component {
 
 
   constructor(props) {
    // LocaleConfig.defaultLocale = props.languageCode;
-    super(props);
-
+    super(props)
     this.state = {
+      agendaEventosModel: t.struct({
+        titulo: t.maybe(t.String),
+        data: t.maybe(t.String),
+        local: t.String,
+        descricao: t.maybe(t.String)
+      }),
+      agendaEventosValue: this.props.agendaEventos,
       items: {}
     };
+  }
+
+  async componentDidMount() {
+     this.props.getAllAgendaEventos()
+     //console.log(props)
+
+}
+
+componentWillReceiveProps (newProps) {
+  console.log(newProps)
+  // Did the update attempt complete?
+  if (!newProps.updating) {
+    if (newProps.error) {
+      if (newProps.error === 'WRONG') {
+        Alert.alert('Error', 'Something went wrong while saving the settings', [{text: 'OK'}])
+      }
+    } else if (!this.state.success) {
+      this.setState({
+        success: true
+      })
+      Alert.alert('Success', 'Settings updated', [{text: 'OK'}])
+      this.props.getAllAgendaEventos()
+    }
+  }
+}
+
+
+  agendaEventosChange (newValue) {
+    this.setState({
+      agendaEventosValue: newValue
+    })
   }
 
   render() {
     return (
       <Agenda
         items={this.state.items}
+      //  agendaEventosModel={this.state.agendaEventosModel}
         loadItemsForMonth={this.loadItems.bind(this)}
         selected={new Date()}
         renderItem={this.renderItem.bind(this)}
@@ -69,7 +112,8 @@ export default class AgendaScreen extends React.Component {
         const strTime = this.timeToString(time);
         if (!this.state.items[strTime]) {
           this.state.items[strTime] = [];
-          const numItems = Math.floor(Math.random() * 5);
+          //const numItems = Math.floor(Math.random() * 5);
+          const numItems = 1;
           for (let j = 0; j < numItems; j++) {
             this.state.items[strTime].push({
               name: 'Evento dia ' + strTime,
@@ -109,6 +153,23 @@ export default class AgendaScreen extends React.Component {
     return date.toISOString().split('T')[0];
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    // ...redux state to props here
+    agendaEventos: state.agendaEventos.agendaEventos,
+    fetching: state.agendaEventos.fetchingAll,
+    error: state.agendaEventos.errorAll
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getAllAgendaEventos: (options) => dispatch(AgendaEventoActions.agendaEventoAllRequest(options))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AgendaScreen)
 
 const styles = StyleSheet.create({
   item: {

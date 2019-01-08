@@ -24,7 +24,7 @@ import { RNCamera } from 'react-native-camera';
 //import styles from './usuario-screen.styles'
 
 Props = {};
-export default class UsuarioScreen extends React.Component {
+export default class CameraScreen extends React.Component {
   takePicture = async function() {
     if (this.camera) {
       const options = { quality: 0.5, base64: true };
@@ -80,6 +80,6 @@ const styles = StyleSheet.create({
   }
 });
 
-//AppRegistry.registerComponent('UsuarioScreen', () => UsuarioScreen);
+//AppRegistry.registerComponent('CameraScreen', () => CameraScreen);
 
-//export default connect(mapStateToProps, mapDispatchToProps)(UsuarioScreen)
+//export default connect(mapStateToProps, mapDispatchToProps)(CameraScreen)

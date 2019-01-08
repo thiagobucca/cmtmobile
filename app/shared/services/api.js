@@ -43,8 +43,6 @@ const create = (baseURL = AppConfig.apiUrl) => {
   const forgotPassword = (data) => api.post('api/account/reset-password/init', data, {headers: {'Content-Type': 'text/plain', 'Accept': 'application/json, text/plain, */*'}})
 
   const getAccount = () => api.get('api/account')
-  const getEstabelecimentoComercial = () =>('api/estabelecimento-comercials')
-  const getAgendaEventos = () =>('api/agenda-eventos')
 
   const updateAccount = (account) => api.post('api/account', account)
   const changePassword = (currentPassword, newPassword) => api.post('api/account/change-password', {currentPassword, newPassword}, {headers: {'Content-Type': 'application/json', 'Accept': 'application/json, text/plain, */*'}})
@@ -54,6 +52,54 @@ const create = (baseURL = AppConfig.apiUrl) => {
   const createUser = (user) => api.post('api/users', user)
   const updateUser = (user) => api.put('api/users', user)
   const deleteUser = (userId) => api.delete('api/users/' + userId)
+
+  const getUsuario = (usuarioId) => api.get('api/usuarios/' + usuarioId)
+  const getUsuarios = (options) => api.get('api/usuarios', options)
+  const createUsuario = (usuario) => api.post('api/usuarios', usuario)
+  const updateUsuario = (usuario) => api.put('api/usuarios', usuario)
+  const deleteUsuario = (usuarioId) => api.delete('api/usuarios/' + usuarioId)
+
+  const getPerfilUsuario = (perfilUsuarioId) => api.get('api/perfil-usuarios/' + perfilUsuarioId)
+  const getPerfilUsuarios = (options) => api.get('api/perfil-usuarios', options)
+  const createPerfilUsuario = (perfilUsuario) => api.post('api/perfil-usuarios', perfilUsuario)
+  const updatePerfilUsuario = (perfilUsuario) => api.put('api/perfil-usuarios', perfilUsuario)
+  const deletePerfilUsuario = (perfilUsuarioId) => api.delete('api/perfil-usuarios/' + perfilUsuarioId)
+
+  const getEstabelecimentoComercial = (estabelecimentoComercialId) => api.get('api/estabelecimento-comercials/' + estabelecimentoComercialId)
+  const getEstabelecimentoComercials = (options) => api.get('api/estabelecimento-comercials', options)
+  const createEstabelecimentoComercial = (estabelecimentoComercial) => api.post('api/estabelecimento-comercials', estabelecimentoComercial)
+  const updateEstabelecimentoComercial = (estabelecimentoComercial) => api.put('api/estabelecimento-comercials', estabelecimentoComercial)
+  const deleteEstabelecimentoComercial = (estabelecimentoComercialId) => api.delete('api/estabelecimento-comercials/' + estabelecimentoComercialId)
+
+  const getAgendaEvento = (agendaEventoId) => api.get('api/agenda-eventos/' + agendaEventoId)
+  const getAgendaEventos = (options) => api.get('api/agenda-eventos', options)
+  const createAgendaEvento = (agendaEvento) => api.post('api/agenda-eventos', agendaEvento)
+  const updateAgendaEvento = (agendaEvento) => api.put('api/agenda-eventos', agendaEvento)
+  const deleteAgendaEvento = (agendaEventoId) => api.delete('api/agenda-eventos/' + agendaEventoId)
+
+  const getLojaMaconica = (lojaMaconicaId) => api.get('api/loja-maconicas/' + lojaMaconicaId)
+  const getLojaMaconicas = (options) => api.get('api/loja-maconicas', options)
+  const createLojaMaconica = (lojaMaconica) => api.post('api/loja-maconicas', lojaMaconica)
+  const updateLojaMaconica = (lojaMaconica) => api.put('api/loja-maconicas', lojaMaconica)
+  const deleteLojaMaconica = (lojaMaconicaId) => api.delete('api/loja-maconicas/' + lojaMaconicaId)
+
+  const getContatoLojaMaconica = (contatoLojaMaconicaId) => api.get('api/contato-loja-maconicas/' + contatoLojaMaconicaId)
+  const getContatoLojaMaconicas = (options) => api.get('api/contato-loja-maconicas', options)
+  const createContatoLojaMaconica = (contatoLojaMaconica) => api.post('api/contato-loja-maconicas', contatoLojaMaconica)
+  const updateContatoLojaMaconica = (contatoLojaMaconica) => api.put('api/contato-loja-maconicas', contatoLojaMaconica)
+  const deleteContatoLojaMaconica = (contatoLojaMaconicaId) => api.delete('api/contato-loja-maconicas/' + contatoLojaMaconicaId)
+
+  const getCategoriaEstabelecimento = (categoriaEstabelecimentoId) => api.get('api/categoria-estabelecimentos/' + categoriaEstabelecimentoId)
+  const getCategoriaEstabelecimentos = (options) => api.get('api/categoria-estabelecimentos', options)
+  const createCategoriaEstabelecimento = (categoriaEstabelecimento) => api.post('api/categoria-estabelecimentos', categoriaEstabelecimento)
+  const updateCategoriaEstabelecimento = (categoriaEstabelecimento) => api.put('api/categoria-estabelecimentos', categoriaEstabelecimento)
+  const deleteCategoriaEstabelecimento = (categoriaEstabelecimentoId) => api.delete('api/categoria-estabelecimentos/' + categoriaEstabelecimentoId)
+
+  const getComunicacaoPush = (comunicacaoPushId) => api.get('api/comunicacao-pushes/' + comunicacaoPushId)
+  const getComunicacaoPushes = (options) => api.get('api/comunicacao-pushes', options)
+  const createComunicacaoPush = (comunicacaoPush) => api.post('api/comunicacao-pushes', comunicacaoPush)
+  const updateComunicacaoPush = (comunicacaoPush) => api.put('api/comunicacao-pushes', comunicacaoPush)
+  const deleteComunicacaoPush = (comunicacaoPushId) => api.delete('api/comunicacao-pushes/' + comunicacaoPushId)
   // ignite-jhipster-api-method-needle
 
   // ------
@@ -75,6 +121,54 @@ const create = (baseURL = AppConfig.apiUrl) => {
     getUsers,
     getUser,
     deleteUser,
+
+    createUsuario,
+    updateUsuario,
+    getUsuarios,
+    getUsuario,
+    deleteUsuario,
+
+    createPerfilUsuario,
+    updatePerfilUsuario,
+    getPerfilUsuarios,
+    getPerfilUsuario,
+    deletePerfilUsuario,
+
+    createEstabelecimentoComercial,
+    updateEstabelecimentoComercial,
+    getEstabelecimentoComercials,
+    getEstabelecimentoComercial,
+    deleteEstabelecimentoComercial,
+
+    createAgendaEvento,
+    updateAgendaEvento,
+    getAgendaEventos,
+    getAgendaEvento,
+    deleteAgendaEvento,
+
+    createLojaMaconica,
+    updateLojaMaconica,
+    getLojaMaconicas,
+    getLojaMaconica,
+    deleteLojaMaconica,
+
+    createContatoLojaMaconica,
+    updateContatoLojaMaconica,
+    getContatoLojaMaconicas,
+    getContatoLojaMaconica,
+    deleteContatoLojaMaconica,
+
+    createCategoriaEstabelecimento,
+    updateCategoriaEstabelecimento,
+    getCategoriaEstabelecimentos,
+    getCategoriaEstabelecimento,
+    deleteCategoriaEstabelecimento,
+
+    createComunicacaoPush,
+    updateComunicacaoPush,
+    getComunicacaoPushes,
+    getComunicacaoPush,
+    deleteComunicacaoPush,
     // ignite-jhipster-api-export-needle
     setAuthToken,
     removeAuthToken,
@@ -84,7 +178,6 @@ const create = (baseURL = AppConfig.apiUrl) => {
     getAccount,
     updateAccount,
     changePassword,
-    getEstabelecimentoComercial,
     getAgendaEventos
   }
 }
