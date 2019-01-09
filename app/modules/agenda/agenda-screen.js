@@ -38,7 +38,7 @@ class AgendaScreen extends React.Component {
     this.state = {
       agendaEventosModel: t.struct({
         titulo: t.maybe(t.String),
-        data: t.maybe(t.String),
+        data: t.Date,
         local: t.String,
         descricao: t.maybe(t.String)
       }),
@@ -48,7 +48,7 @@ class AgendaScreen extends React.Component {
   }
 
   async componentDidMount() {
-     this.props.getAllAgendaEventos()
+
      //console.log(props)
 
 }
@@ -82,7 +82,7 @@ componentWillReceiveProps (newProps) {
     return (
       <Agenda
         items={this.state.items}
-      //  agendaEventosModel={this.state.agendaEventosModel}
+        //agendaEventosModel={this.state.agendaEventosModel}
         loadItemsForMonth={this.loadItems.bind(this)}
         selected={new Date()}
         renderItem={this.renderItem.bind(this)}
@@ -107,6 +107,7 @@ componentWillReceiveProps (newProps) {
 
   loadItems(day) {
     setTimeout(() => {
+
       for (let i = -15; i < 85; i++) {
         const time = day.timestamp + i * 24 * 60 * 60 * 1000;
         const strTime = this.timeToString(time);
@@ -114,9 +115,10 @@ componentWillReceiveProps (newProps) {
           this.state.items[strTime] = [];
           //const numItems = Math.floor(Math.random() * 5);
           const numItems = 1;
+          console.log(this.props.agendaEventos[0]);
           for (let j = 0; j < numItems; j++) {
             this.state.items[strTime].push({
-              name: 'Evento dia ' + strTime,
+              name: this.props.agendaEventos[0].titulo,
               height: Math.max(50, Math.floor(Math.random() * 150))
             });
           }
