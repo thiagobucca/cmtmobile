@@ -71,7 +71,7 @@ class LoginScreen extends React.Component {
         <Image source={Images.logoLogin} style={[styles.topLogo, this.state.topLogo]} />
         <View style={styles.form}>
           <View style={styles.row}>
-            <Text style={styles.rowLabel}>Username</Text>
+            <Text style={styles.rowLabel}>Usuário</Text>
             <TextInput
               ref='username'
               testID='loginScreenUsername'
@@ -85,11 +85,11 @@ class LoginScreen extends React.Component {
               onChangeText={this.handleChangeUsername}
               underlineColorAndroid='transparent'
               onSubmitEditing={() => this.refs.password.focus()}
-              placeholder='Username' />
+              placeholder='Digite seu Usuário' />
           </View>
 
           <View style={styles.row}>
-            <Text style={styles.rowLabel}>Password</Text>
+            <Text style={styles.rowLabel}>Senha</Text>
             <TextInput
               ref='password'
               testID='loginScreenPassword'
@@ -104,18 +104,18 @@ class LoginScreen extends React.Component {
               onChangeText={this.handleChangePassword}
               underlineColorAndroid='transparent'
               onSubmitEditing={this.handlePressLogin}
-              placeholder='Password' />
+              placeholder='Digite sua Senha' />
           </View>
 
           <View style={[styles.loginRow]}>
             <TouchableOpacity testID='loginScreenLoginButton' style={styles.loginButtonWrapper} onPress={this.handlePressLogin}>
               <View style={styles.loginButton}>
-                <Text style={styles.loginText}>Sign In</Text>
+                <Text style={styles.loginText}>Entrar</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity testID='loginScreenCancelButton' style={styles.loginButtonWrapper} onPress={this.handlePressCancel}>
               <View style={styles.loginButton}>
-                <Text style={styles.loginText}>Cancel</Text>
+                <Text style={styles.loginText}>Cancelar</Text>
               </View>
             </TouchableOpacity>
           </View>

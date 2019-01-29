@@ -80,16 +80,16 @@ class DrawerContent extends Component {
     return (
       <ScrollView style={styles.container}>
         <Image testID='drawerLogo' source={Images.logoJhipster} style={styles.logo} />
-        {!this.props.loggedIn && (<DrawerButton testID='loginDrawerButton' text='Login' onPress={this.handlePressLogin} />)}
-        {!this.props.loggedIn && (<DrawerButton testID='registerDrawerButton' text='Register' onPress={this.handlePressRegister} />)}
-        {!this.props.loggedIn && (<DrawerButton testID='forgotPasswordDrawerButton' text='Forgot Password' onPress={this.handlePressForgotPassword} />)}
-
+        {!this.props.loggedIn && (<DrawerButton testID='loginDrawerButton' text='Entrar' onPress={this.handlePressLogin} />)}
+        {!this.props.loggedIn && (<DrawerButton testID='registerDrawerButton' text='Cadastrar' onPress={this.handlePressRegister} />)}
+        {!this.props.loggedIn && (<DrawerButton testID='forgotPasswordDrawerButton' text='Recuperar Senha' onPress={this.handlePressForgotPassword} />)}
+{/*
         {this.props.loggedIn && (<DrawerButton testID='entitiesDrawerButton' text='Entities' onPress={this.handlePressEntities} />)}
-        {this.props.loggedIn && (<DrawerButton testID='settingsDrawerButton' text='Settings' onPress={this.handlePressSettings} />)}
+        {this.props.loggedIn && (<DrawerButton testID='settingsDrawerButton' text='Settings' onPress={this.handlePressSettings} />)} */}
         {this.props.loggedIn && (<DrawerButton testID='agendaDrawerButton' text='Agenda' onPress={this.handlePressAgenda} />)}
         {this.props.loggedIn && (<DrawerButton testID='changePasswordDrawerButton' text='Trocar Senha' onPress={this.handlePressChangePassword} />)}
-        {this.props.loggedIn && (<DrawerButton testID='logoutDrawerButton' text='Logout' onPress={this.handlePressLogout} />)}
-        {this.props.loggedIn && (<DrawerButton testID='cameraDrawerButton' text='Camera' onPress={this.handlePressCamera} />)}
+        {this.props.loggedIn && (<DrawerButton testID='logoutDrawerButton' text='Sair' onPress={this.handlePressLogout} />)}
+        {/* {this.props.loggedIn && (<DrawerButton testID='cameraDrawerButton' text='Camera' onPress={this.handlePressCamera} />)} */}
         {this.props.loggedIn && (<DrawerButton testID='cupomDrawerButton' text='Cupom' onPress={this.handlePressCupom} />)}
       </ScrollView>
     )

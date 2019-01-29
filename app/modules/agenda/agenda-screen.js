@@ -108,22 +108,50 @@ componentWillReceiveProps (newProps) {
   loadItems(day) {
     setTimeout(() => {
 
-      for (let i = -15; i < 85; i++) {
-        const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-        const strTime = this.timeToString(time);
-        if (!this.state.items[strTime]) {
+      this.props.agendaEventos.forEach(element => {
+
+         // const time = day.timestamp + new Date(element.data).getTime() * 24 * 60 * 60 * 1000;
+
+        const strTime = new Date(element.data).getUTCDay();
+
+                if (!this.state.items[strTime]) {
           this.state.items[strTime] = [];
           //const numItems = Math.floor(Math.random() * 5);
           const numItems = 1;
-          console.log(this.props.agendaEventos[0]);
-          for (let j = 0; j < numItems; j++) {
-            this.state.items[strTime].push({
-              name: this.props.agendaEventos[0].titulo,
-              height: Math.max(50, Math.floor(Math.random() * 150))
-            });
-          }
-        }
-      }
+        console.log("logando data")
+        console.log(strTime)
+                }
+        this.state.items[strTime].push({
+          name: element.titulo + new Date(element.data).getDay(),
+          // {new Intl.DateTimeFormat('en-GB', {
+          //     year: 'numeric',
+          //     month: 'long',
+          //     day: '2-digit'
+          // }).format(customer.firstSale)}
+
+          height: Math.max(50, Math.floor(Math.random() * 150))
+        });
+
+
+      });
+
+
+      // for (let i = -15; i < 85; i++) {
+      //   const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+      //   const strTime = this.timeToString(time);
+      //   if (!this.state.items[strTime]) {
+      //     this.state.items[strTime] = [];
+      //     //const numItems = Math.floor(Math.random() * 5);
+      //     const numItems = 1;
+      //   //  console.log(this.props.agendaEventos[0]);
+
+
+
+      //     // for (let j = 0; j < numItems; j++) {
+
+      //     // }
+      //   }
+      // }
       //console.log(this.state.items);
       const newItems = {};
       Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});

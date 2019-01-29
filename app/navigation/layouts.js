@@ -105,7 +105,7 @@ export const appStack = {
               options: {
                 topBar: {
                   title: {
-                    text: 'Welcome!',
+                    text: 'Bem-vindo ao CMT!',
                     color: Colors.snow
                   },
                   leftButtons: [
@@ -252,7 +252,7 @@ export const registerScreen = () => Navigation.push('center', {
     options: {
       topBar: {
         title: {
-          text: 'Sign Up',
+          text: 'Novo Cadastro',
           color: Colors.snow
         }
       }
@@ -266,7 +266,7 @@ export const forgotPasswordScreen = () => Navigation.push('center', {
     options: {
       topBar: {
         title: {
-          text: 'Forgot Password',
+          text: 'Recuperar Senha',
           color: Colors.snow
         }
       }
@@ -279,7 +279,7 @@ export const changePasswordScreen = () => Navigation.push('center', {
     options: {
       topBar: {
         title: {
-          text: 'Change Password',
+          text: 'Trocar Senha',
           color: Colors.snow
         }
       }

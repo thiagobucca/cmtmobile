@@ -27,16 +27,18 @@ class RegisterScreen extends React.Component {
       options: {
         fields: {
           login: {
-            label: 'Username',
+            label: 'Usuário',
             returnKeyType: 'next',
             onSubmitEditing: () => this.refs.form.getComponent('password').refs.input.focus()
           },
           password: {
+            label: 'Senha',
             secureTextEntry: true,
             returnKeyType: 'next',
             onSubmitEditing: () => this.refs.form.getComponent('confirmPassword').refs.input.focus()
           },
           confirmPassword: {
+            label: 'Confirmar Senha',
             secureTextEntry: true,
             returnKeyType: 'done',
             onSubmitEditing: () => this.submitUpdate()
@@ -100,7 +102,7 @@ class RegisterScreen extends React.Component {
             onChange={this.accountChange}
           />
           <TouchableHighlight style={styles.button} onPress={this.submitUpdate} underlayColor='#99d9f4'>
-            <Text style={styles.buttonText}>Register</Text>
+            <Text style={styles.buttonText}>Cadastrar</Text>
           </TouchableHighlight>
         </ScrollView>
       </KeyboardAwareScrollView>

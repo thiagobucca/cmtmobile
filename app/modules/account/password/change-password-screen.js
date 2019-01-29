@@ -22,18 +22,21 @@ class ChangePasswordScreen extends React.Component {
       formOptions: {
         fields: {
           currentPassword: {
+            label: 'Senha atual',
             secureTextEntry: true,
             testID: 'currentPasswordInput',
             returnKeyType: 'next',
             onSubmitEditing: () => this.refs.form.getComponent('newPassword').refs.input.focus()
           },
           newPassword: {
+            label: 'Nova Senha',
             secureTextEntry: true,
             testID: 'newPasswordInput',
             returnKeyType: 'next',
             onSubmitEditing: () => this.refs.form.getComponent('confirmPassword').refs.input.focus()
           },
           confirmPassword: {
+            label: 'Confirmar Nova Senha',
             secureTextEntry: true,
             testID: 'confirmPasswordInput',
             returnKeyType: 'done',
@@ -94,7 +97,7 @@ class ChangePasswordScreen extends React.Component {
             onChange={this.formChange}
           />
           <TouchableHighlight testID='changePasswordSubmitButton' style={styles.button} onPress={this.submitForm} underlayColor='#99d9f4'>
-            <Text style={styles.buttonText}>Save</Text>
+            <Text style={styles.buttonText}>Salvar</Text>
           </TouchableHighlight>
         </ScrollView>
       </KeyboardAwareScrollView>

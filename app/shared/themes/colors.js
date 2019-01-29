@@ -1,5 +1,5 @@
 const colors = {
-  background: '#353d47',
+  background: '#055028',
   jhipsterBlue: '#3E8ACC',
   clear: 'rgba(0,0,0,0)',
   facebook: '#3b5998',

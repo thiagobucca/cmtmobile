@@ -1,6 +1,6 @@
 // Simple React Native specific changes
 
 export default {
-  apiUrl: 'http://localhost:8080/',
+  apiUrl: 'http://cmtweb.ddns.net/',
   appUrlScheme: 'cmtmobile'
 }

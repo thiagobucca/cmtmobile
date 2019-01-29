@@ -77,7 +77,7 @@ class ForgotPasswordScreen extends React.Component {
             onChange={this.formChange}
           />
           <TouchableHighlight style={styles.button} onPress={this.submitForm} underlayColor='#99d9f4'>
-            <Text style={styles.buttonText}>Reset</Text>
+            <Text style={styles.buttonText}>Resetar Senha</Text>
           </TouchableHighlight>
         </ScrollView>
       </KeyboardAwareScrollView>
