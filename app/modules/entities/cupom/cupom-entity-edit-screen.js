@@ -21,7 +21,7 @@ class CupomEntityEditScreen extends React.Component {
       updating: props.data.entityId !== null && props.data.entityId !== undefined,
       formModel: t.struct({
         id: t.maybe(t.Number),
-        data: t.maybe(t.Date),
+        data: t.maybe(t.String),
         valor: t.maybe(t.Number),
         numero: t.maybe(t.String),
         foto: t.String,
@@ -54,6 +54,7 @@ class CupomEntityEditScreen extends React.Component {
           //   testID: 'fotoInput'
           // },
           foto: {
+            label: 'Foto',
             config: {
               title: 'Select image',
               options: ['Open camera', 'Select from gallery', 'Cancel']
