@@ -47,6 +47,9 @@ import CategoriaEstabelecimentoEntityEditScreen from '../modules/entities/catego
 import ComunicacaoPushEntityScreen from '../modules/entities/comunicacao-push/comunicacao-push-entity-screen'
 import ComunicacaoPushEntityDetailScreen from '../modules/entities/comunicacao-push/comunicacao-push-entity-detail-screen'
 import ComunicacaoPushEntityEditScreen from '../modules/entities/comunicacao-push/comunicacao-push-entity-edit-screen'
+import CupomEntityScreen from '../modules/entities/cupom/cupom-entity-screen'
+import CupomEntityDetailScreen from '../modules/entities/cupom/cupom-entity-detail-screen'
+import CupomEntityEditScreen from '../modules/entities/cupom/cupom-entity-edit-screen'
 // ignite-jhipster-navigation-import-needle
 
 export const LOGIN_SCREEN = 'nav.LoginScreen'
@@ -84,6 +87,9 @@ export const CATEGORIA_ESTABELECIMENTO_ENTITY_EDIT_SCREEN = 'Nav.CategoriaEstabe
 export const COMUNICACAO_PUSH_ENTITY_SCREEN = 'Nav.ComunicacaoPushEntityScreen'
 export const COMUNICACAO_PUSH_ENTITY_DETAIL_SCREEN = 'Nav.ComunicacaoPushEntityDetailScreen'
 export const COMUNICACAO_PUSH_ENTITY_EDIT_SCREEN = 'Nav.ComunicacaoPushEntityEditScreen'
+export const CUPOM_ENTITY_SCREEN = 'Nav.CupomEntityScreen'
+export const CUPOM_ENTITY_DETAIL_SCREEN = 'Nav.CupomEntityDetailScreen'
+export const CUPOM_ENTITY_EDIT_SCREEN = 'Nav.CupomEntityEditScreen'
 // ignite-jhipster-navigation-declaration-needle
 
 const store = createStore()
@@ -194,6 +200,9 @@ export function registerScreensAndStartApp () {
   Navigation.registerComponentWithRedux(COMUNICACAO_PUSH_ENTITY_SCREEN, () => ComunicacaoPushEntityScreen, Provider, store)
   Navigation.registerComponentWithRedux(COMUNICACAO_PUSH_ENTITY_DETAIL_SCREEN, () => ComunicacaoPushEntityDetailScreen, Provider, store)
   Navigation.registerComponentWithRedux(COMUNICACAO_PUSH_ENTITY_EDIT_SCREEN, () => ComunicacaoPushEntityEditScreen, Provider, store)
+  Navigation.registerComponentWithRedux(CUPOM_ENTITY_SCREEN, () => CupomEntityScreen, Provider, store)
+  Navigation.registerComponentWithRedux(CUPOM_ENTITY_DETAIL_SCREEN, () => CupomEntityDetailScreen, Provider, store)
+  Navigation.registerComponentWithRedux(CUPOM_ENTITY_EDIT_SCREEN, () => CupomEntityEditScreen, Provider, store)
   // ignite-jhipster-navigation-registration-needle
 
   Navigation.events().registerAppLaunchedListener(() => {
@@ -209,10 +218,10 @@ export function registerScreensAndStartApp () {
           testID: 'backButton',
           icon: Images.chevronLeftIcon,
           color: Colors.snow,
-          iconColor: Colors.snow
+          iconColor: Colors.backCMT
         },
         background: {
-          color: Colors.background
+          color: Colors.backCMT
         }
       },
       sideMenu: {
@@ -229,6 +238,22 @@ export function registerScreensAndStartApp () {
     Linking.addEventListener('url', handleOpenURL)
   })
 }
+
+export const launchScreen = () => Navigation.showModal({
+  stack: {
+    children: [{
+      component: {
+        name: LAUNCH_SCREEN,
+        options: {
+          topBar: {
+            visible: false,
+            drawBehind: true
+          }
+        }
+      }
+    }]
+  }
+})
 
 export const loginScreen = () => Navigation.showModal({
   stack: {
@@ -747,7 +772,7 @@ export const comunicacaoPushEntityScreen = () => Navigation.push('center', {
     options: {
       topBar: {
         title: {
-          text: 'ComunicacaoPushes',
+          text: 'Notificações',
           color: Colors.snow
         },
         rightButtons: [
@@ -789,6 +814,61 @@ export const comunicacaoPushEntityDetailScreen = (data) => Navigation.push('cent
       topBar: {
         title: {
           text: 'ComunicacaoPushes',
+          color: Colors.snow
+        }
+      }
+    }
+  }
+})
+
+export const cupomEntityScreen = () => Navigation.push('center', {
+  component: {
+    name: CUPOM_ENTITY_SCREEN,
+    options: {
+      topBar: {
+        title: {
+          text: 'Cupoms',
+          color: Colors.snow
+        },
+        rightButtons: [
+          {
+            id: 'createButton',
+            text: 'Create',
+            color: Colors.snow
+          }
+        ]
+      }
+    }
+  }
+})
+
+export const cupomEntityEditScreen = (data) => Navigation.push('center', {
+  component: {
+    name: CUPOM_ENTITY_EDIT_SCREEN,
+    passProps: {
+      data
+    },
+    options: {
+      topBar: {
+        title: {
+          text: 'Cupoms',
+          color: Colors.snow
+        }
+      }
+    }
+  }
+})
+
+export const cupomEntityDetailScreen = (data) => Navigation.push('center', {
+  component: {
+    name: CUPOM_ENTITY_DETAIL_SCREEN,
+    passProps: {
+      data
+    },
+    options: {
+      topBar: {
+        title: {
+          text: 'Cupoms',
           color: Colors.snow
         }
       }

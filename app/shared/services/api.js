@@ -54,7 +54,7 @@ const create = (baseURL = AppConfig.apiUrl) => {
   const deleteUser = (userId) => api.delete('api/users/' + userId)
 
   const getUsuario = (usuarioId) => api.get('api/usuarios/' + usuarioId)
-  const getUsuarios = (options) => api.get('api/usuarios', options)
+  const getUsuarios = (options) => api.get('api/users/tipo/Macom', options)
   const createUsuario = (usuario) => api.post('api/usuarios', usuario)
   const updateUsuario = (usuario) => api.put('api/usuarios', usuario)
   const deleteUsuario = (usuarioId) => api.delete('api/usuarios/' + usuarioId)
@@ -100,6 +100,12 @@ const create = (baseURL = AppConfig.apiUrl) => {
   const createComunicacaoPush = (comunicacaoPush) => api.post('api/comunicacao-pushes', comunicacaoPush)
   const updateComunicacaoPush = (comunicacaoPush) => api.put('api/comunicacao-pushes', comunicacaoPush)
   const deleteComunicacaoPush = (comunicacaoPushId) => api.delete('api/comunicacao-pushes/' + comunicacaoPushId)
+
+  const getCupom = (cupomId) => api.get('api/cupoms/' + cupomId)
+  const getCupoms = (options) => api.get('api/cupoms', options)
+  const createCupom = (cupom) => api.post('api/cupoms', cupom)
+  const updateCupom = (cupom) => api.put('api/cupoms', cupom)
+  const deleteCupom = (cupomId) => api.delete('api/cupoms/' + cupomId)
   // ignite-jhipster-api-method-needle
 
   // ------
@@ -169,6 +175,12 @@ const create = (baseURL = AppConfig.apiUrl) => {
     getComunicacaoPushes,
     getComunicacaoPush,
     deleteComunicacaoPush,
+
+    createCupom,
+    updateCupom,
+    getCupoms,
+    getCupom,
+    deleteCupom,
     // ignite-jhipster-api-export-needle
     setAuthToken,
     removeAuthToken,

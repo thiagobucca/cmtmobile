@@ -27,9 +27,5 @@ export default StyleSheet.create({
   },
   listContent: {
     marginTop: Metrics.baseMargin
-  },
-  header: {
-    backgroundColor: Colors.silver,
-    color: Colors.snow
   }
 })

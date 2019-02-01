@@ -4,24 +4,23 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  userRequest: ['userId'],
-  userAllRequest: ['options'],
-  userUpdateRequest: ['user'],
-  userDeleteRequest: ['userId'],
+  cupomRequest: ['cupomId'],
+  cupomAllRequest: ['options'],
+  cupomUpdateRequest: ['cupom'],
+  cupomDeleteRequest: ['cupomId'],
 
-  userSuccess: ['user'],
-  userAllSuccess: ['users'],
-  userUpdateSuccess: ['user'],
-  userDeleteSuccess: [],
+  cupomSuccess: ['cupom'],
+  cupomAllSuccess: ['cupoms'],
+  cupomUpdateSuccess: ['cupom'],
+  cupomDeleteSuccess: [],
 
-  userFailure: ['error'],
-  userAllFailure: ['error'],
-  userUpdateFailure: ['error'],
-  userDeleteFailure: ['error']
+  cupomFailure: ['error'],
+  cupomAllFailure: ['error'],
+  cupomUpdateFailure: ['error'],
+  cupomDeleteFailure: ['error']
 })
 
-
-export const UserTypes = Types
+export const CupomTypes = Types
 export default Creators
 
 /* ------------- Initial State ------------- */
@@ -31,8 +30,8 @@ export const INITIAL_STATE = Immutable({
   fetchingAll: null,
   updating: null,
   deleting: null,
-  user: null,
-  users: null,
+  cupom: null,
+  cupoms: null,
   errorOne: null,
   errorAll: null,
   errorUpdating: null,
@@ -45,14 +44,14 @@ export const INITIAL_STATE = Immutable({
 export const request = (state) =>
   state.merge({
     fetchingOne: true,
-    user: null
+    cupom: null
   })
 
 // request the data from an api
 export const allRequest = (state) =>
   state.merge({
     fetchingAll: true,
-    users: null
+    cupoms: null
   })
 
 // request to update from an api
@@ -68,29 +67,29 @@ export const deleteRequest = (state) =>
 
 // successful api lookup for single entity
 export const success = (state, action) => {
-  const { user } = action
+  const { cupom } = action
   return state.merge({
     fetchingOne: false,
     errorOne: null,
-    user
+    cupom
   })
 }
 // successful api lookup for all entities
 export const allSuccess = (state, action) => {
-  const { users } = action
+  const { cupoms } = action
   return state.merge({
     fetchingAll: false,
     errorAll: null,
-    users
+    cupoms
   })
 }
 // successful api update
 export const updateSuccess = (state, action) => {
-  const { user } = action
+  const { cupom } = action
   return state.merge({
     updating: false,
     errorUpdating: null,
-    user
+    cupom
   })
 }
 // successful api delete
@@ -98,7 +97,7 @@ export const deleteSuccess = (state) => {
   return state.merge({
     deleting: false,
     errorDeleting: null,
-    user: null
+    cupom: null
   })
 }
 
@@ -108,7 +107,7 @@ export const failure = (state, action) => {
   return state.merge({
     fetchingOne: false,
     errorOne: error,
-    user: null
+    cupom: null
   })
 }
 // Something went wrong fetching all entities.
@@ -117,7 +116,7 @@ export const allFailure = (state, action) => {
   return state.merge({
     fetchingAll: false,
     errorAll: error,
-    users: null
+    cupoms: null
   })
 }
 // Something went wrong updating.
@@ -126,7 +125,7 @@ export const updateFailure = (state, action) => {
   return state.merge({
     updating: false,
     errorUpdating: error,
-    user: state.user
+    cupom: state.cupom
   })
 }
 // Something went wrong deleting.
@@ -135,25 +134,25 @@ export const deleteFailure = (state, action) => {
   return state.merge({
     deleting: false,
     errorDeleting: error,
-    user: state.user
+    cupom: state.cupom
   })
 }
 
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.USER_REQUEST]: request,
-  [Types.USER_ALL_REQUEST]: allRequest,
-  [Types.USER_UPDATE_REQUEST]: updateRequest,
-  [Types.USER_DELETE_REQUEST]: deleteRequest,
+  [Types.CUPOM_REQUEST]: request,
+  [Types.CUPOM_ALL_REQUEST]: allRequest,
+  [Types.CUPOM_UPDATE_REQUEST]: updateRequest,
+  [Types.CUPOM_DELETE_REQUEST]: deleteRequest,
 
-  [Types.USER_SUCCESS]: success,
-  [Types.USER_ALL_SUCCESS]: allSuccess,
-  [Types.USER_UPDATE_SUCCESS]: updateSuccess,
-  [Types.USER_DELETE_SUCCESS]: deleteSuccess,
+  [Types.CUPOM_SUCCESS]: success,
+  [Types.CUPOM_ALL_SUCCESS]: allSuccess,
+  [Types.CUPOM_UPDATE_SUCCESS]: updateSuccess,
+  [Types.CUPOM_DELETE_SUCCESS]: deleteSuccess,
 
-  [Types.USER_FAILURE]: failure,
-  [Types.USER_ALL_FAILURE]: allFailure,
-  [Types.USER_UPDATE_FAILURE]: updateFailure,
-  [Types.USER_DELETE_FAILURE]: deleteFailure
+  [Types.CUPOM_FAILURE]: failure,
+  [Types.CUPOM_ALL_FAILURE]: allFailure,
+  [Types.CUPOM_UPDATE_FAILURE]: updateFailure,
+  [Types.CUPOM_DELETE_FAILURE]: deleteFailure
 })

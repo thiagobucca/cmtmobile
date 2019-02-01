@@ -7,7 +7,8 @@ const images = {
   ready: require('../images/your-app.png'),
   chevronLeftIcon: require('../images/chevron-left.png'),
   menuIcon: require('../images/bars.png'),
-  background: require('../images/bg.png')
+  background: require('../images/bg-green.png'),
+  logoCmt: require('../images/logo-cmt.png'),
 }
 
 export default images

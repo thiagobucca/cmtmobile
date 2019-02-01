@@ -1,16 +1,15 @@
 import React from 'react'
-import { FlatList, TouchableOpacity, View } from 'react-native'
-import {Container, Content, Card, CardItem, Text} from 'native-base';
+import { FlatList, Text, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
 import { Navigation } from 'react-native-navigation'
-import { comunicacaoPushEntityDetailScreen, comunicacaoPushEntityEditScreen } from '../../../navigation/layouts'
-import ComunicacaoPushActions from './comunicacao-push.reducer'
-import styles from './comunicacao-push-entity-screen-style'
+import { cupomEntityDetailScreen, cupomEntityEditScreen } from '../../../navigation/layouts'
+import CupomActions from './cupom.reducer'
+import styles from './cupom-entity-screen-style'
 import AlertMessage from '../../../shared/components/alert-message/alert-message'
 
 // More info here: https://facebook.github.io/react-native/docs/flatlist.html
 
-class ComunicacaoPushEntityScreen extends React.PureComponent {
+class CupomEntityScreen extends React.PureComponent {
   constructor (props) {
     super(props)
     Navigation.events().bindComponent(this)
@@ -31,7 +30,7 @@ class ComunicacaoPushEntityScreen extends React.PureComponent {
   }
 
   navigationButtonPressed ({ buttonId }) {
-    comunicacaoPushEntityEditScreen({ entityId: null })
+    cupomEntityEditScreen({ entityId: null })
   }
   /* ***********************************************************
   * STEP 2
@@ -43,7 +42,7 @@ class ComunicacaoPushEntityScreen extends React.PureComponent {
   *************************************************************/
   renderRow ({item}) {
     return (
-      <TouchableOpacity onPress={comunicacaoPushEntityDetailScreen.bind(this, { entityId: item.id })}>
+      <TouchableOpacity onPress={cupomEntityDetailScreen.bind(this, { entityId: item.id })}>
         <View style={styles.row}>
           <Text style={styles.boldLabel}>{item.id}</Text>
           {/* <Text style={styles.label}>{item.description}</Text> */}
@@ -67,7 +66,7 @@ class ComunicacaoPushEntityScreen extends React.PureComponent {
 
   // Show this when data is empty
   renderEmpty = () =>
-    <AlertMessage title='No ComunicacaoPushes Found' show={!this.props.fetching} />
+    <AlertMessage title='No Cupoms Found' show={!this.props.fetching} />
 
   // renderSeparator = () =>
   //  <Text style={styles.label}> - ~~~~~ - </Text>
@@ -94,8 +93,8 @@ class ComunicacaoPushEntityScreen extends React.PureComponent {
   //   {length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index}
   // )}
 
-  fetchComunicacaoPushes = () => {
-    this.props.getAllComunicacaoPushes({ page: this.state.page, sort: this.state.sort, size: this.state.size })
+  fetchCupoms = () => {
+    this.props.getAllCupoms({ page: this.state.page, sort: this.state.sort, size: this.state.size })
   }
 
   handleLoadMore = () => {
@@ -106,76 +105,39 @@ class ComunicacaoPushEntityScreen extends React.PureComponent {
       page: this.state.page + 1,
       loading: true
     })
-    this.fetchComunicacaoPushes()
+    this.fetchCupoms()
   }
 
   componentWillReceiveProps (newProps) {
-    if (newProps.comunicacaoPushes) {
+    if (newProps.cupoms) {
       this.setState({
-        done: newProps.comunicacaoPushes.length < this.state.size,
-        dataObjects: this.state.loading ? [...this.state.dataObjects, ...newProps.comunicacaoPushes] : newProps.comunicacaoPushes,
+        done: newProps.cupoms.length < this.state.size,
+        dataObjects: this.state.loading ? [...this.state.dataObjects, ...newProps.cupoms] : newProps.cupoms,
         loading: false
       })
     }
   }
 
   componentWillMount () {
-    this.fetchComunicacaoPushes()
+    this.fetchCupoms()
   }
 
   render () {
     return (
-      <View style={styles.container} testID='comunicacaoPushScreen'>
-<Container>
-                <Content>
-                    <Card>
-                        <CardItem header style={styles.header}>
-                            <Text>Mensagem de Boas Vindas</Text>
-                        </CardItem>
-
-                        <CardItem>
-                            <Text>
-                            Seja bem vindo ao CMT
-                            </Text>
-                        </CardItem>
-
-                        <CardItem header>
-                            <Text></Text>
-                        </CardItem>
-                   </Card>
-                   <Card>
-                        <CardItem header style={styles.header}>
-                            <Text>Reuniao CMT</Text>
-                        </CardItem>
-
-                        <CardItem>
-                            <Text>
-                            Nao esqueca da primeira reuniao do CMT no dia 04/02/2019 na loja LUA.
-                            </Text>
-                        </CardItem>
-
-                        <CardItem header>
-                            <Text></Text>
-                        </CardItem>
-                   </Card>
-                   <Card>
-                        <CardItem header style={styles.header}>
-                            <Text>	Bem vindo ao convenio do CMT</Text>
-                        </CardItem>
-
-                        <CardItem>
-                            <Text>
-                            Bem vindo ao convenio do CMT. Nao esqueca de registrar os cupons de suas compras nos estabelecimentos conveniados.
-                            </Text>
-                        </CardItem>
-
-                        <CardItem header>
-                            <Text></Text>
-                        </CardItem>
-                   </Card>
-                </Content>
-            </Container>
-
+      <View style={styles.container} testID='cupomScreen'>
+        <FlatList
+          contentContainerStyle={styles.listContent}
+          data={this.state.dataObjects}
+          renderItem={this.renderRow}
+          keyExtractor={this.keyExtractor}
+          initialNumToRender={this.oneScreensWorth}
+          onEndReached={this.handleLoadMore}
+          onEndThreshold={100}
+          /* ListHeaderComponent={this.renderHeader} */
+          /* ListFooterComponent={this.renderFooter} */
+          ListEmptyComponent={this.renderEmpty}
+          ItemSeparatorComponent={this.renderSeparator}
+        />
       </View>
     )
   }
@@ -184,16 +146,16 @@ class ComunicacaoPushEntityScreen extends React.PureComponent {
 const mapStateToProps = (state) => {
   return {
     // ...redux state to props here
-    comunicacaoPushes: state.comunicacaoPushes.comunicacaoPushes,
-    fetching: state.comunicacaoPushes.fetchingAll,
-    error: state.comunicacaoPushes.errorAll
+    cupoms: state.cupoms.cupoms,
+    fetching: state.cupoms.fetchingAll,
+    error: state.cupoms.errorAll
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getAllComunicacaoPushes: (options) => dispatch(ComunicacaoPushActions.comunicacaoPushAllRequest(options))
+    getAllCupoms: (options) => dispatch(CupomActions.cupomAllRequest(options))
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ComunicacaoPushEntityScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(CupomEntityScreen)

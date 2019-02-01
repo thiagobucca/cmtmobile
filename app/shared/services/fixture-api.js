@@ -194,6 +194,30 @@ export default {
       ok: true
     }
   },
+
+  updateCupom: (cupom) => {
+    return {
+      ok: true,
+      data: require('../../shared/fixtures/updateCupom.json')
+    }
+  },
+  getCupoms: () => {
+    return {
+      ok: true,
+      data: require('../../shared/fixtures/getCupoms.json')
+    }
+  },
+  getCupom: (cupomId) => {
+    return {
+      ok: true,
+      data: require('../../shared/fixtures/getCupom.json')
+    }
+  },
+  deleteCupom: (cupomId) => {
+    return {
+      ok: true
+    }
+  },
   // ignite-jhipster-api-fixture-needle
 
   // user fixtures

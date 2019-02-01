@@ -3,7 +3,7 @@ export default {
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: Colors.background
+    backgroundColor: Colors.backCMT
   },
   logo: {
     alignSelf: 'center',

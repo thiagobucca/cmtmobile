@@ -58,7 +58,7 @@ class ChangePasswordScreen extends React.Component {
     const value = this.refs.form.getValue()
     if (value) { // if validation fails, value will be null
       if (value.newPassword !== value.confirmPassword) {
-        Alert.alert('Error', 'Passwords do not match', [{text: 'OK'}])
+        Alert.alert('Error', 'Senha e Confirmar Senha devem ser iguais.', [{text: 'OK'}])
         return
       }
       this.props.changePassword(value.currentPassword, value.newPassword)
@@ -74,7 +74,7 @@ class ChangePasswordScreen extends React.Component {
         this.setState({
           success: true
         })
-        Alert.alert('Success', 'Password changed', [{text: 'OK'}])
+        Alert.alert('Sucesso', 'Senha Alterada!', [{text: 'OK'}])
       }
     }
   }

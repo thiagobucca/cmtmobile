@@ -15,8 +15,8 @@ export default StyleSheet.create({
   },
   button: {
     height: 36,
-    backgroundColor: Colors.jhipsterBlue,
-    borderColor: Colors.jhipsterBlue,
+    backgroundColor: Colors.greenCMT,
+    borderColor: Colors.greenCMT,
     borderWidth: 1,
     borderRadius: 8,
     marginBottom: 10,

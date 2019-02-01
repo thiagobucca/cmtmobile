@@ -17,6 +17,7 @@ export const reducers = combineReducers({
   contatoLojaMaconicas: require('../../modules/entities/contato-loja-maconica/contato-loja-maconica.reducer').reducer,
   categoriaEstabelecimentos: require('../../modules/entities/categoria-estabelecimento/categoria-estabelecimento.reducer').reducer,
   comunicacaoPushes: require('../../modules/entities/comunicacao-push/comunicacao-push.reducer').reducer,
+  cupoms: require('../../modules/entities/cupom/cupom.reducer').reducer,
   // ignite-jhipster-redux-store-import-needle
   account: require('./account.reducer').reducer,
   login: require('../../modules/login/login.reducer').reducer,

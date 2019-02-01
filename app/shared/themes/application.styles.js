@@ -16,7 +16,8 @@ const ApplicationStyles = {
       top: 0,
       left: 0,
       bottom: 0,
-      right: 0
+      right: 0,
+      backgroundColor: Colors.backCMT
     },
     container: {
       flex: 1,
@@ -30,7 +31,7 @@ const ApplicationStyles = {
     sectionText: {
       ...Fonts.style.normal,
       paddingVertical: Metrics.doubleBaseMargin,
-      color: Colors.snow,
+      color: Colors.darkLabel,
       marginVertical: Metrics.smallMargin,
       textAlign: 'center'
     },

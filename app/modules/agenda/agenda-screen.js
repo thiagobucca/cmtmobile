@@ -43,31 +43,41 @@ class AgendaScreen extends React.Component {
         descricao: t.maybe(t.String)
       }),
       agendaEventosValue: this.props.agendaEventos,
-      items: {}
+      items: {['2019-01-31']: []},
+      diaAtual: new Date().toLocaleString("sv-SE", {timeZone: "America/Sao_Paulo"}).toString().substring(0,10)
     };
   }
 
-  async componentDidMount() {
+  componentDidMount() {
 
-     //console.log(props)
+     console.log("LOGANDO DIA ATUAL",this.state.diaAtual)
 
 }
 
+fetchAgendaEventos = () => {
+  this.props.getAllAgendaEventos({ page: this.state.page, sort: this.state.sort, size: this.state.size })
+}
+
+handleLoadMore = () => {
+  if (this.state.done || this.props.fetching) {
+    return
+  }
+  this.setState({
+    page: this.state.page + 1,
+    loading: true
+  })
+  this.fetchAgendaEventos()
+}
+
 componentWillReceiveProps (newProps) {
-  console.log(newProps)
-  // Did the update attempt complete?
-  if (!newProps.updating) {
-    if (newProps.error) {
-      if (newProps.error === 'WRONG') {
-        Alert.alert('Error', 'Something went wrong while saving the settings', [{text: 'OK'}])
-      }
-    } else if (!this.state.success) {
-      this.setState({
-        success: true
-      })
-      Alert.alert('Success', 'Settings updated', [{text: 'OK'}])
-      this.props.getAllAgendaEventos()
-    }
+  if (newProps.agendaEventos) {
+    console.log("logando agenda",newProps.agendaEventos)
+    console.log("logando states", this.state)
+    this.setState({
+      done: newProps.agendaEventos.length < this.state.size,
+      dataObjects: this.state.loading ? [...this.state.dataObjects, ...newProps.agendaEventos] : newProps.agendaEventos,
+      loading: false
+    })
   }
 }
 
@@ -78,81 +88,82 @@ componentWillReceiveProps (newProps) {
     })
   }
 
+  componentWillMount () {
+    this.fetchAgendaEventos()
+  }
+
   render() {
     return (
       <Agenda
-        items={this.state.items}
-        //agendaEventosModel={this.state.agendaEventosModel}
-        loadItemsForMonth={this.loadItems.bind(this)}
-        selected={new Date()}
-        renderItem={this.renderItem.bind(this)}
-        renderEmptyDate={this.renderEmptyDate.bind(this)}
-        rowHasChanged={this.rowHasChanged.bind(this)}
-        // markingType={'period'}
-        // markedDates={{
-        //    '2017-05-08': {textColor: '#666'},
-        //    '2017-05-09': {textColor: '#666'},
-        //    '2017-05-14': {startingDay: true, endingDay: true, color: 'blue'},
-        //    '2017-05-21': {startingDay: true, color: 'blue'},
-        //    '2017-05-22': {endingDay: true, color: 'gray'},
-        //    '2017-05-24': {startingDay: true, color: 'gray'},
-        //    '2017-05-25': {color: 'gray'},
-        //    '2017-05-26': {endingDay: true, color: 'gray'}}}
-         // monthFormat={'yyyy'}
-         //theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
-        //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
-      />
+      items={this.state.items}
+      loadItemsForMonth={this.loadItems.bind(this)}
+      selected={this.state.diaAtual}
+      renderItem={this.renderItem.bind(this)}
+      renderEmptyDate={this.renderEmptyDate.bind(this)}
+      rowHasChanged={this.rowHasChanged.bind(this)}
+      markingType={'interactive'}
+      markedDates={{
+        '2017-05-08': [{textColor: '#666'}],
+        '2017-05-09': [{textColor: '#666'}],
+        '2017-05-14': [{startingDay: true, color: 'blue'}, {endingDay: true, color: 'blue'}],
+        '2017-05-21': [{startingDay: true, color: 'blue'}],
+        '2017-05-22': [{endingDay: true, color: 'gray'}],
+        '2017-05-24': [{startingDay: true, color: 'gray'}],
+        '2017-05-25': [{color: 'gray'}],
+        '2017-05-26': [{endingDay: true, color: 'gray'}]}}
+       monthFormat={'yyyy'}
+      // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
+      //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
+/>
     );
   }
 
+
   loadItems(day) {
     setTimeout(() => {
-
-      this.props.agendaEventos.forEach(element => {
-
-         // const time = day.timestamp + new Date(element.data).getTime() * 24 * 60 * 60 * 1000;
-
-        const strTime = new Date(element.data).getUTCDay();
-
-                if (!this.state.items[strTime]) {
-          this.state.items[strTime] = [];
-          //const numItems = Math.floor(Math.random() * 5);
-          const numItems = 1;
-        console.log("logando data")
-        console.log(strTime)
-                }
-        this.state.items[strTime].push({
-          name: element.titulo + new Date(element.data).getDay(),
-          // {new Intl.DateTimeFormat('en-GB', {
-          //     year: 'numeric',
-          //     month: 'long',
-          //     day: '2-digit'
-          // }).format(customer.firstSale)}
-
-          height: Math.max(50, Math.floor(Math.random() * 150))
-        });
-
-
-      });
-
-
       // for (let i = -15; i < 85; i++) {
       //   const time = day.timestamp + i * 24 * 60 * 60 * 1000;
       //   const strTime = this.timeToString(time);
       //   if (!this.state.items[strTime]) {
       //     this.state.items[strTime] = [];
-      //     //const numItems = Math.floor(Math.random() * 5);
-      //     const numItems = 1;
-      //   //  console.log(this.props.agendaEventos[0]);
-
-
-
+      //     const numItems = Math.floor(Math.random() * 5);
       //     // for (let j = 0; j < numItems; j++) {
 
+      //     //   this.state.items[strTime].push({
+      //     //     name: 'Item for ' + strTime,
+      //     //     height: Math.max(50, Math.floor(Math.random() * 150))
+      //     //   });
       //     // }
       //   }
       // }
-      //console.log(this.state.items);
+
+      if(this.props.agendaEventos.length > 0)
+      {
+         console.log("caiu if", this.state.diaAtual)
+        this.state.items[this.props.agendaEventos[0].data.toString().substring(0,10)]
+        this.state.diaAtual = this.props.agendaEventos[0].data.toString().substring(0,10)
+
+        console.log("depois", this.state.diaAtual)
+      }else
+      {
+        this.state.items[this.state.diaAtual] = [];
+      }
+
+      this.props.agendaEventos.forEach(agendaEvento => {
+
+
+        this.state.items[agendaEvento.data.toString().substring(0,10)] = [];
+        this.state.items[agendaEvento.data.toString().substring(0,10)].push({
+          name: agendaEvento.titulo,
+          height: Math.max(50, Math.floor(Math.random() * 150))
+        });
+       // console.log("logando agendas")
+       // console.log(agendaEvento.data.toString().substring(0,10))
+
+
+      })
+
+      console.log("logando state items",this.state.items);
       const newItems = {};
       Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
       this.setState({
@@ -163,6 +174,8 @@ componentWillReceiveProps (newProps) {
   }
 
   renderItem(item) {
+
+    console.log("logando item",item)
     return (
       <View style={[styles.item, {height: item.height}]}><Text>{item.name}</Text></View>
     );
@@ -170,7 +183,7 @@ componentWillReceiveProps (newProps) {
 
   renderEmptyDate() {
     return (
-      <View style={styles.emptyDate}><Text>Data disponível</Text></View>
+      <View style={styles.emptyDate}><Text></Text></View>
     );
   }
 
@@ -182,6 +195,8 @@ componentWillReceiveProps (newProps) {
     const date = new Date(time);
     return date.toISOString().split('T')[0];
   }
+
+
 }
 
 const mapStateToProps = (state) => {
@@ -196,6 +211,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getAllAgendaEventos: (options) => dispatch(AgendaEventoActions.agendaEventoAllRequest(options))
+
   }
 }
 

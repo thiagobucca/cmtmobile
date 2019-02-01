@@ -14,6 +14,7 @@ import {
   contatoLojaMaconicaEntityScreen,
   categoriaEstabelecimentoEntityScreen,
   comunicacaoPushEntityScreen,
+  cupomEntityScreen,
   // ignite-jhipster-entity-screen-import-needle
 } from '../../navigation/layouts'
 /*eslint-enable */
@@ -33,6 +34,7 @@ class EntitiesScreen extends React.Component {
         <RoundedButton text='ContatoLojaMaconica' onPress={contatoLojaMaconicaEntityScreen} testID='contatoLojaMaconicaEntityScreenButton' />
         <RoundedButton text='CategoriaEstabelecimento' onPress={categoriaEstabelecimentoEntityScreen} testID='categoriaEstabelecimentoEntityScreenButton' />
         <RoundedButton text='ComunicacaoPush' onPress={comunicacaoPushEntityScreen} testID='comunicacaoPushEntityScreenButton' />
+        <RoundedButton text='Cupom' onPress={cupomEntityScreen} testID='cupomEntityScreenButton' />
         {/* {ignite-jhipster-entity-screen-needle} */}
       </ScrollView>
     )

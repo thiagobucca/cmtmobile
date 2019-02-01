@@ -81,6 +81,8 @@ class AgendaEventoEntityEditScreen extends React.Component {
   }
 
   componentWillReceiveProps (newProps) {
+    console.log("logando props")
+    console.log(newProps)
     if (newProps.agendaEvento && !newProps.updating && !this.state.requesting && this.state.updating) {
       this.setState({
         formValue: this.entityToFormValue(newProps.agendaEvento)

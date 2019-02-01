@@ -21,6 +21,7 @@ import { LojaMaconicaTypes } from '../../modules/entities/loja-maconica/loja-mac
 import { ContatoLojaMaconicaTypes } from '../../modules/entities/contato-loja-maconica/contato-loja-maconica.reducer'
 import { CategoriaEstabelecimentoTypes } from '../../modules/entities/categoria-estabelecimento/categoria-estabelecimento.reducer'
 import { ComunicacaoPushTypes } from '../../modules/entities/comunicacao-push/comunicacao-push.reducer'
+import { CupomTypes } from '../../modules/entities/cupom/cupom.reducer'
 // ignite-jhipster-saga-redux-import-needle
 
 /* ------------- Sagas ------------- */
@@ -40,6 +41,7 @@ import { getLojaMaconica, getLojaMaconicas, updateLojaMaconica, deleteLojaMaconi
 import { getContatoLojaMaconica, getContatoLojaMaconicas, updateContatoLojaMaconica, deleteContatoLojaMaconica } from '../../modules/entities/contato-loja-maconica/contato-loja-maconica.sagas'
 import { getCategoriaEstabelecimento, getCategoriaEstabelecimentos, updateCategoriaEstabelecimento, deleteCategoriaEstabelecimento } from '../../modules/entities/categoria-estabelecimento/categoria-estabelecimento.sagas'
 import { getComunicacaoPush, getComunicacaoPushes, updateComunicacaoPush, deleteComunicacaoPush } from '../../modules/entities/comunicacao-push/comunicacao-push.sagas'
+import { getCupom, getCupoms, updateCupom, deleteCupom } from '../../modules/entities/cupom/cupom.sagas'
 // ignite-jhipster-saga-method-import-needle
 
 /* ------------- API ------------- */
@@ -102,6 +104,11 @@ export default function * root () {
     takeLatest(ComunicacaoPushTypes.COMUNICACAO_PUSH_ALL_REQUEST, getComunicacaoPushes, api),
     takeLatest(ComunicacaoPushTypes.COMUNICACAO_PUSH_UPDATE_REQUEST, updateComunicacaoPush, api),
     takeLatest(ComunicacaoPushTypes.COMUNICACAO_PUSH_DELETE_REQUEST, deleteComunicacaoPush, api),
+
+    takeLatest(CupomTypes.CUPOM_REQUEST, getCupom, api),
+    takeLatest(CupomTypes.CUPOM_ALL_REQUEST, getCupoms, api),
+    takeLatest(CupomTypes.CUPOM_UPDATE_REQUEST, updateCupom, api),
+    takeLatest(CupomTypes.CUPOM_DELETE_REQUEST, deleteCupom, api),
     // ignite-jhipster-saga-redux-connect-needle
 
     takeLatest(UserTypes.USER_REQUEST, getUser, api),
