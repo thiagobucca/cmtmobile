@@ -29,14 +29,13 @@ class RegisterScreen extends React.Component {
         confirmPassword: t.String,
         telefone: t.String,
         email: t.String,
+        isMacon: t.Boolean,
         tipoPessoa: t.String,
-        // lojaMaconicaId: this.getLojaMaconicas(),
-        // usuarioId: this.getUsuarios(),
-        lojaMaconicaId: t.Number,
-        usuarioId: t.maybe(t.Number),
+        lojaMaconicaId: this.getLojaMaconicas(),
+        usuarioId: this.getUsuarios(),
         langKey: t.String
       }),
-      formValue: { login: null, password: null, confirmPassword: null, email: null, langKey: 'pt', firstName: null, dataNascimento: null, telefone: null, tipoPessoa: 'Macom', lojaMaconicaId: 1, usuarioId: null },
+      formValue: { login: null, password: null, confirmPassword: null, email: null, langKey: 'pt-br', firstName: null, dataNascimento: null, telefone: null, lojaMaconicaId: null, usuarioId: null, tipoPessoa: 'Macom' },
       formOptions: {
         fields: {
           firstName: {
@@ -76,11 +75,6 @@ class RegisterScreen extends React.Component {
             returnKeyType: 'done',
             onSubmitEditing: () => this.refs.form.getComponent('tipoPessoa').refs.input.focus()
           },
-          tipoPessoa: {
-            label: 'Maçom?',
-            returnKeyType: 'done',
-            checked: true
-          },
           lojaMaconicaId: {
             testID: 'lojaMaconicaIdInput',
             label: 'Loja Maconica',
@@ -96,7 +90,10 @@ class RegisterScreen extends React.Component {
             hidden: true
           },
           usuarioId: {
-            hidden: false
+            hidden: true
+          },
+          tipoPessoa: {
+            hidden: true
           }
         }
       },
@@ -111,30 +108,35 @@ class RegisterScreen extends React.Component {
   onChange (value)
   {
     console.log("printando value",value)
-// // tcomb immutability helpers
-//     // https://github.com/gcanti/tcomb/blob/master/docs/API.md#updating-immutable-instances
-//       console.log("logando options",this.state.formOptions)
+// tcomb immutability helpers
+    // https://github.com/gcanti/tcomb/blob/master/docs/API.md#updating-immutable-instances
+      console.log("logando options",this.state.formOptions)
 
-//     var formOptions = t.update(this.state.formOptions, {
-//       fields: {
-//         lojaMaconicaId: {
-//           hidden: {'$set': !value.tipoPessoa}
-//         },
-//         usuarioId: {
-//           hidden: {'$set': value.tipoPessoa}
-//         }
-//       }
-//     });
-//     this.setState({formOptions: formOptions, formValue: value});
+    var formOptions = t.update(this.state.formOptions, {
+
+      fields: {
+        lojaMaconicaId: {
+          hidden: {'$set': !value.isMacon}
+        },
+        usuarioId: {
+          hidden: {'$set': value.isMacon}
+        }
+      }
+    });
+
+    value.tipoPessoa = value.isMacon ? 'Macom' : 'Dependente'
+    this.setState({formOptions: formOptions, formValue: value});
   }
 
   submitUpdate () {
-    console.log("caiu update")
+   // console.log("caiu update")
     this.setState({
       success: false
     })
     // call getValue() to get the values of the form
     const value = this.refs.form.getValue()
+
+    //console.log("logando value",value)
     if (value) { // if validation fails, value will be null
       if (value.password !== value.confirmPassword) {
         Alert.alert('Error', 'Passwords do not match', [{text: 'OK'}])
@@ -178,18 +180,21 @@ class RegisterScreen extends React.Component {
     this.props.lojaMaconicas.forEach(lojaMaconica => {
      // console.log("logando lojas")
      // console.log(lojaMaconica)
-      lojaMaconicas[lojaMaconica.nome] = lojaMaconica.nome ? lojaMaconica.nome.toString() : lojaMaconica.nome.toString()
+      lojaMaconicas[lojaMaconica.id] = lojaMaconica.nome ? lojaMaconica.nome.toString() : lojaMaconica.nome.toString()
     })
+
+      console.log("logando enums",lojaMaconicas)
+
     return t.maybe(t.enums(lojaMaconicas))
   }
 
   getUsuarios = () => {
     const usuarios = {}
-    console.log("logando antes for each", this.props)
+    // console.log("logando antes for each", this.props)
     this.props.usuarios.forEach(usuario => {
-      console.log("logando users")
-      console.log(usuario)
-      usuarios[usuario.firstName] = usuario.firstName ? usuario.firstName.toString() : usuario.login
+    //  console.log("logando users")
+    //  console.log(usuario)
+      usuarios[usuario.id] = usuario.firstName ? usuario.firstName.toString() : usuario.login
     })
     return t.maybe(t.enums(usuarios))
   }
@@ -217,7 +222,7 @@ class RegisterScreen extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log("logando states",state)
+ // console.log("logando states",state)
   return {
     lojaMaconicas: state.lojaMaconicas.lojaMaconicas || [],
     // users: state.users.users || [],
@@ -228,7 +233,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  console.log(LojaMaconicaActions,UsuarioActions)
+ // console.log(LojaMaconicaActions,UsuarioActions)
   return {
     getAllLojaMaconicas: (options) => dispatch(LojaMaconicaActions.lojaMaconicaAllRequest(options)),
     register: (account) => dispatch(RegisterActions.registerRequest(account)),

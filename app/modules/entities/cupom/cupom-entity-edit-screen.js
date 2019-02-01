@@ -7,6 +7,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { cupomEntityDetailScreen } from '../../../navigation/layouts'
 
 import t from 'tcomb-form-native'
+import ImageFactory from 'react-native-image-picker-form'
 
 import styles from './cupom-entity-edit-screen-style'
 
@@ -23,7 +24,7 @@ class CupomEntityEditScreen extends React.Component {
         data: t.maybe(t.Date),
         valor: t.maybe(t.Number),
         numero: t.maybe(t.String),
-        foto: t.maybe(t.String),
+        foto: t.String,
         estabelecimentoComercialId: t.maybe(t.Number)
       }),
       formValue: { id: null },
@@ -47,10 +48,19 @@ class CupomEntityEditScreen extends React.Component {
             onSubmitEditing: () => this.refs.form.getComponent('foto').refs.input.focus(),
             testID: 'numeroInput'
           },
+          // foto: {
+          //   returnKeyType: 'next',
+          //   onSubmitEditing: () => this.refs.form.getComponent('estabelecimentoComercialId').refs.input.focus(),
+          //   testID: 'fotoInput'
+          // },
           foto: {
-            returnKeyType: 'next',
-            onSubmitEditing: () => this.refs.form.getComponent('estabelecimentoComercialId').refs.input.focus(),
-            testID: 'fotoInput'
+            config: {
+              title: 'Select image',
+              options: ['Open camera', 'Select from gallery', 'Cancel']
+              // Used on Android to style BottomSheet
+            },
+            error: 'No image provided',
+            factory: ImageFactory
           },
           estabelecimentoComercialId: {
             returnKeyType: 'done',

@@ -43,7 +43,7 @@ class AgendaScreen extends React.Component {
         descricao: t.maybe(t.String)
       }),
       agendaEventosValue: this.props.agendaEventos,
-      items: {['2019-01-31']: []},
+      items: {[new Date().toLocaleString("sv-SE", {timeZone: "America/Sao_Paulo"}).toString().substring(0,10)]: []},
       diaAtual: new Date().toLocaleString("sv-SE", {timeZone: "America/Sao_Paulo"}).toString().substring(0,10)
     };
   }
