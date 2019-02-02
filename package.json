@@ -30,6 +30,7 @@
     "format-json": "1.0.3",
     "identity-obj-proxy": "3.0.0",
     "lodash": "4.17.10",
+    "moment": "^2.24.0",
     "native-base": "^2.11.0",
     "prop-types": "15.6.2",
     "querystringify": "2.0.0",
@@ -40,6 +41,7 @@
     "react-native-calendars": "^1.21.0",
     "react-native-camera": "^1.6.4",
     "react-native-camera-kit": "^6.7.1",
+    "react-native-fontawesome": "^6.0.1",
     "react-native-image-crop-picker": "^0.22.0",
     "react-native-image-picker-form": "^0.2.5",
     "react-native-keyboard-aware-scroll-view": "0.7.2",
@@ -158,5 +160,10 @@
     },
     "test-runner": "mocha"
   },
-  "config": {}
+  "config": {},
+  "rnpm": {
+    "assets": [
+      "./assets/fonts/"
+    ]
+  }
 }

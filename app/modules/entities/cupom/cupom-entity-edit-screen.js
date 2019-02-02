@@ -20,12 +20,12 @@ class CupomEntityEditScreen extends React.Component {
     this.state = {
       updating: props.data.entityId !== null && props.data.entityId !== undefined,
       formModel: t.struct({
-        id: t.maybe(t.Number),
-        data: t.maybe(t.String),
-        valor: t.maybe(t.Number),
-        numero: t.maybe(t.String),
+        id: t.Number,
+        data: t.String,
+        valor: t.Number,
+        numero: t.String,
         foto: t.String,
-        estabelecimentoComercialId: t.maybe(t.Number)
+        estabelecimentoComercialId: t.Number
       }),
       formValue: { id: null },
       formOptions: {
@@ -56,11 +56,11 @@ class CupomEntityEditScreen extends React.Component {
           foto: {
             label: 'Foto',
             config: {
-              title: 'Select image',
-              options: ['Open camera', 'Select from gallery', 'Cancel']
+              title: 'Selecione o Cupom',
+              options: ['Abrir camera', 'Selecione da galeria', 'Cancelar']
               // Used on Android to style BottomSheet
             },
-            error: 'No image provided',
+            error: 'Sem imagem',
             factory: ImageFactory
           },
           estabelecimentoComercialId: {
@@ -154,10 +154,12 @@ class CupomEntityEditScreen extends React.Component {
       requesting: true
     })
     // call getValue() to get the values of the form
-    const cupom = this.refs.form.getValue()
-    if (cupom) { // if validation fails, value will be null
-      this.props.updateCupom(this.formValueToEntity(cupom))
-    }
+    // const cupom = this.refs.form.getValue()
+    // if (cupom) { // if validation fails, value will be null
+    //   this.props.updateCupom(this.formValueToEntity(cupom))
+    // }
+    Navigation.pop(this.props.componentId)
+    Alert.alert('Sucesso', 'Cupom enviado.')
   }
 
   formChange (newValue) {
@@ -178,7 +180,7 @@ class CupomEntityEditScreen extends React.Component {
             onChange={this.formChange}
           />
           <TouchableHighlight style={styles.button} onPress={this.submitForm} underlayColor='#99d9f4' testID='submitButton'>
-            <Text style={styles.buttonText}>Save</Text>
+            <Text style={styles.buttonText}>Salvar</Text>
           </TouchableHighlight>
         </ScrollView>
       </KeyboardAwareScrollView>

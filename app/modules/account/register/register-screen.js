@@ -7,6 +7,7 @@ import { Navigation } from 'react-native-navigation'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { UserActions } from '../../../shared/reducers/user.reducer'
 import UsuarioActions from './../../entities/usuario/usuario.reducer'
+import moment from 'moment'
 
 
 
@@ -23,7 +24,7 @@ class RegisterScreen extends React.Component {
     this.state = {
       formModel: t.struct({
         firstName: t.String,
-        dataNascimento: t.Date,
+        dataNascimentoo: t.String,
         login: t.String,
         password: t.String,
         confirmPassword: t.String,
@@ -43,7 +44,7 @@ class RegisterScreen extends React.Component {
             returnKeyType: 'next',
             onSubmitEditing: () => this.refs.form.getComponent('dataNascimento').refs.input.focus()
           },
-          dataNascimento: {
+          dataNascimentoo: {
             label: 'Data de Nascimento',
             returnKeyType: 'next',
             onSubmitEditing: () => this.refs.form.getComponent('login').refs.input.focus()
@@ -74,6 +75,11 @@ class RegisterScreen extends React.Component {
             label: 'Email',
             returnKeyType: 'done',
             onSubmitEditing: () => this.refs.form.getComponent('tipoPessoa').refs.input.focus()
+          },
+          isMacon: {
+            testID: 'Macom',
+            label: 'Macom?',
+            returnKeyType: 'done'
           },
           lojaMaconicaId: {
             testID: 'lojaMaconicaIdInput',
@@ -125,6 +131,7 @@ class RegisterScreen extends React.Component {
     });
 
     value.tipoPessoa = value.isMacon ? 'Macom' : 'Dependente'
+
     this.setState({formOptions: formOptions, formValue: value});
   }
 
@@ -135,19 +142,26 @@ class RegisterScreen extends React.Component {
     })
     // call getValue() to get the values of the form
     const value = this.refs.form.getValue()
-
+    value.dataNascimento = '1980-02-02T00:01:00Z'
     //console.log("logando value",value)
     if (value) { // if validation fails, value will be null
       if (value.password !== value.confirmPassword) {
         Alert.alert('Error', 'Passwords do not match', [{text: 'OK'}])
         return
       }
+      this.setState({formValue: value});
+      console.log("logando value",value)
       this.props.register(value)
+      Alert.alert('Cadastro realizado com Sucesso!', 'Verifique seu e-mail.', [{text: 'OK'}])
+      Navigation.popToRoot(this.props.componentId)
+
     }
   }
 
   componentWillReceiveProps (newProps) {
 
+
+  //   console.log(newProps)
   //  if (!newProps.fetching) {
   //     if (newProps.error) {
   //       Alert.alert('Erro', newProps.error, [{text: 'OK'}])
@@ -156,10 +170,11 @@ class RegisterScreen extends React.Component {
   //       this.setState({
   //         success: true
   //       })
-  //      Alert.alert('Cadastro realizado com Sucesso!', 'Verifique seu e-mail.', [{text: 'OK'}])
-  //      Navigation.popToRoot(this.props.componentId)
+  //       Alert.alert('Cadastro realizado com Sucesso!', 'Verifique seu e-mail.', [{text: 'OK'}])
+  //     //  Navigation.popToRoot(this.props.componentId)
+
   //     }
-  //  }
+   //}
   }
 
   componentWillMount () {
@@ -228,6 +243,7 @@ const mapStateToProps = (state) => {
     // users: state.users.users || [],
     usuarios: state.usuarios.usuarios || [],
     fetching: state.register.fetching,
+    updating: state.register.updating,
     error: state.register.error
   }
 }

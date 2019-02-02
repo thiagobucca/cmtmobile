@@ -3,10 +3,12 @@ import PropTypes from 'prop-types'
 import { Alert, ScrollView, Text, TextInput, Image, View, TouchableOpacity, BackHandler } from 'react-native'
 import { Navigation } from 'react-native-navigation'
 
+import FontAwesome, { Icons } from 'react-native-fontawesome';
 import { Images, Metrics } from '../../shared/themes'
 import styles from './launch-screen.styles'
 import { connect } from 'react-redux'
 import LoginActions from '../login/login.reducer'
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 class LaunchScreen extends React.Component {
   static propTypes = {

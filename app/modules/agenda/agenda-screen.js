@@ -50,7 +50,7 @@ class AgendaScreen extends React.Component {
 
   componentDidMount() {
 
-     console.log("LOGANDO DIA ATUAL",this.state.diaAtual)
+    // console.log("LOGANDO DIA ATUAL",this.state.diaAtual)
 
 }
 
@@ -71,8 +71,8 @@ handleLoadMore = () => {
 
 componentWillReceiveProps (newProps) {
   if (newProps.agendaEventos) {
-    console.log("logando agenda",newProps.agendaEventos)
-    console.log("logando states", this.state)
+   // console.log("logando agenda",newProps.agendaEventos)
+   // console.log("logando states", this.state)
     this.setState({
       done: newProps.agendaEventos.length < this.state.size,
       dataObjects: this.state.loading ? [...this.state.dataObjects, ...newProps.agendaEventos] : newProps.agendaEventos,
@@ -95,26 +95,26 @@ componentWillReceiveProps (newProps) {
   render() {
     return (
       <Agenda
-      items={this.state.items}
-      loadItemsForMonth={this.loadItems.bind(this)}
-      selected={this.state.diaAtual}
-      renderItem={this.renderItem.bind(this)}
-      renderEmptyDate={this.renderEmptyDate.bind(this)}
-      rowHasChanged={this.rowHasChanged.bind(this)}
-      markingType={'interactive'}
-      markedDates={{
-        '2017-05-08': [{textColor: '#666'}],
-        '2017-05-09': [{textColor: '#666'}],
-        '2017-05-14': [{startingDay: true, color: 'blue'}, {endingDay: true, color: 'blue'}],
-        '2017-05-21': [{startingDay: true, color: 'blue'}],
-        '2017-05-22': [{endingDay: true, color: 'gray'}],
-        '2017-05-24': [{startingDay: true, color: 'gray'}],
-        '2017-05-25': [{color: 'gray'}],
-        '2017-05-26': [{endingDay: true, color: 'gray'}]}}
-       monthFormat={'yyyy'}
-      // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
-      //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
-/>
+        items={this.state.items}
+        loadItemsForMonth={this.loadItems.bind(this)}
+        selected={'2019-02-02'}
+        renderItem={this.renderItem.bind(this)}
+        renderEmptyDate={this.renderEmptyDate.bind(this)}
+        rowHasChanged={this.rowHasChanged.bind(this)}
+        // markingType={'period'}
+        // markedDates={{
+        //    '2017-05-08': {textColor: '#666'},
+        //    '2017-05-09': {textColor: '#666'},
+        //    '2017-05-14': {startingDay: true, endingDay: true, color: 'blue'},
+        //    '2017-05-21': {startingDay: true, color: 'blue'},
+        //    '2017-05-22': {endingDay: true, color: 'gray'},
+        //    '2017-05-24': {startingDay: true, color: 'gray'},
+        //    '2017-05-25': {color: 'gray'},
+        //    '2017-05-26': {endingDay: true, color: 'gray'}}}
+         // monthFormat={'yyyy'}
+         // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
+        //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
+      />
     );
   }
 
@@ -127,13 +127,12 @@ componentWillReceiveProps (newProps) {
       //   if (!this.state.items[strTime]) {
       //     this.state.items[strTime] = [];
       //     const numItems = Math.floor(Math.random() * 5);
-      //     // for (let j = 0; j < numItems; j++) {
-
-      //     //   this.state.items[strTime].push({
-      //     //     name: 'Item for ' + strTime,
-      //     //     height: Math.max(50, Math.floor(Math.random() * 150))
-      //     //   });
-      //     // }
+      //     for (let j = 0; j < numItems; j++) {
+      //       this.state.items[strTime].push({
+      //         name: 'Item for ' + strTime,
+      //         height: Math.max(50, Math.floor(Math.random() * 150))
+      //       });
+      //     }
       //   }
       // }
 
@@ -163,7 +162,10 @@ componentWillReceiveProps (newProps) {
 
       })
 
-      console.log("logando state items",this.state.items);
+
+
+
+      //console.log(this.state.items);
       const newItems = {};
       Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
       this.setState({
@@ -173,9 +175,10 @@ componentWillReceiveProps (newProps) {
     // console.log(`Load Items for ${day.year}-${day.month}`);
   }
 
+
   renderItem(item) {
 
-    console.log("logando item",item)
+   // console.log("logando item",item)
     return (
       <View style={[styles.item, {height: item.height}]}><Text>{item.name}</Text></View>
     );

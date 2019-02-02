@@ -2,7 +2,10 @@ import { AppState, Linking } from 'react-native'
 import { Navigation } from 'react-native-navigation'
 import { Provider } from 'react-redux'
 import { Images } from '../shared/themes'
+import MenuIcon from '../shared/images/bars.png'
+import FontAwesome, { Icons } from 'react-native-fontawesome';
 // import { StorybookUIRoot } from '../../storybook'
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import createStore from '../shared/reducers'
 import Colors from '../shared/themes/colors'
@@ -50,6 +53,7 @@ import ComunicacaoPushEntityEditScreen from '../modules/entities/comunicacao-pus
 import CupomEntityScreen from '../modules/entities/cupom/cupom-entity-screen'
 import CupomEntityDetailScreen from '../modules/entities/cupom/cupom-entity-detail-screen'
 import CupomEntityEditScreen from '../modules/entities/cupom/cupom-entity-edit-screen'
+import images from '../shared/themes/images';
 // ignite-jhipster-navigation-import-needle
 
 export const LOGIN_SCREEN = 'nav.LoginScreen'
@@ -90,6 +94,7 @@ export const COMUNICACAO_PUSH_ENTITY_EDIT_SCREEN = 'Nav.ComunicacaoPushEntityEdi
 export const CUPOM_ENTITY_SCREEN = 'Nav.CupomEntityScreen'
 export const CUPOM_ENTITY_DETAIL_SCREEN = 'Nav.CupomEntityDetailScreen'
 export const CUPOM_ENTITY_EDIT_SCREEN = 'Nav.CupomEntityEditScreen'
+
 // ignite-jhipster-navigation-declaration-needle
 
 const store = createStore()
@@ -117,7 +122,9 @@ export const appStack = {
                   leftButtons: [
                     {
                       id: 'menuButton',
-                      icon: Images.menuIcon,
+                      // icon: images.menuIcon,
+                      // color: Colour.white
+                      // icon: {uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAQAAABu4E3oAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAABLAAAASwAJArFzAAAAAHdElNRQfiCgIOKhuYcejNAAAAdElEQVQ4y72TwQmEQBAEq2WFw0UN4eIWg9FExBhEFMXD82MCvY+t9xbTbM9ADgQUlnGLjpa/MWKR8fwlMFNZxi6+fCzldFNlQ0SCZfzEQG0pa1IvI43V/ioipTXkclNlw9+xQ0xE68e2pF56/yrt23dTpfEAxssX22ut3YEAAAAldEVYdGRhdGU6Y3JlYXRlADIwMTgtMTAtMDJUMjE6NDI6MjctMDc6MDBlJTsqAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE4LTEwLTAyVDIxOjQyOjI3LTA3OjAwFHiDlgAAAABJRU5ErkJggg=='},
                       testID: 'menuButton'
                     }
                   ]
@@ -216,7 +223,7 @@ export function registerScreensAndStartApp () {
         backButton: {
           showTitle: false,
           testID: 'backButton',
-          icon: Images.chevronLeftIcon,
+        //  icon: Images.chevronLeftIcon,
           color: Colors.snow,
           iconColor: Colors.backCMT
         },
@@ -804,6 +811,23 @@ export const comunicacaoPushEntityEditScreen = (data) => Navigation.push('center
   }
 })
 
+export const cupomEntityEditScreen = (data) => Navigation.push('center', {
+  component: {
+    name: CUPOM_ENTITY_EDIT_SCREEN,
+    passProps: {
+      data
+    },
+    options: {
+      topBar: {
+        title: {
+          text: 'Cupons',
+          color: Colors.snow
+        }
+      }
+    }
+  }
+})
+
 export const comunicacaoPushEntityDetailScreen = (data) => Navigation.push('center', {
   component: {
     name: COMUNICACAO_PUSH_ENTITY_DETAIL_SCREEN,
@@ -842,22 +866,6 @@ export const cupomEntityScreen = () => Navigation.push('center', {
   }
 })
 
-export const cupomEntityEditScreen = (data) => Navigation.push('center', {
-  component: {
-    name: CUPOM_ENTITY_EDIT_SCREEN,
-    passProps: {
-      data
-    },
-    options: {
-      topBar: {
-        title: {
-          text: 'Cupoms',
-          color: Colors.snow
-        }
-      }
-    }
-  }
-})
 
 export const cupomEntityDetailScreen = (data) => Navigation.push('center', {
   component: {

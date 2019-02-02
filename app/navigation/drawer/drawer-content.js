@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { ScrollView, Image, BackHandler } from 'react-native'
 import { Navigation } from 'react-native-navigation'
 
-import { loginScreen, registerScreen, forgotPasswordScreen, changePasswordScreen, settingsScreen, entitiesScreen, agendaScreen, cameraScreen, cupomScreen, launchScreen, comunicacaoPushEntityScreen } from '../layouts'
+import { loginScreen, registerScreen, forgotPasswordScreen, changePasswordScreen, settingsScreen, entitiesScreen, agendaScreen, cameraScreen, cupomScreen, launchScreen, comunicacaoPushEntityScreen, cupomEntityEditScreen } from '../layouts'
 import { connect } from 'react-redux'
 
 import styles from './drawer-content.styles'
@@ -73,7 +73,7 @@ class DrawerContent extends Component {
 
   handlePressCupom = () => {
     this.hideSideMenu()
-    cupomScreen()
+    cupomEntityEditScreen({entityId: null})
   }
 
   handlePressPush = () => {
@@ -88,16 +88,17 @@ class DrawerContent extends Component {
         {/* {!this.props.loggedIn && (<DrawerButton testID='loginDrawerButton' text='Entrar' onPress={this.handlePressLogin} />)} */}
         {!this.props.loggedIn && (<DrawerButton testID='registerDrawerButton' text='Cadastre-se' onPress={this.handlePressRegister} />)}
         {!this.props.loggedIn && (<DrawerButton testID='forgotPasswordDrawerButton' text='Recuperar Senha' onPress={this.handlePressForgotPassword} />)}
-        {this.props.loggedIn && (<DrawerButton testID='entitiesDrawerButton' text='Entities' onPress={this.handlePressEntities} />)}
+        {/* {this.props.loggedIn && (<DrawerButton testID='entitiesDrawerButton' text='Entities' onPress={this.handlePressEntities} />)} */}
 {/*
         {this.props.loggedIn && (<DrawerButton testID='entitiesDrawerButton' text='Entities' onPress={this.handlePressEntities} />)}
         {this.props.loggedIn && (<DrawerButton testID='settingsDrawerButton' text='Settings' onPress={this.handlePressSettings} />)} */}
         {this.props.loggedIn && (<DrawerButton testID='agendaDrawerButton' text='Agenda' onPress={this.handlePressAgenda} />)}
+        {this.props.loggedIn && (<DrawerButton testID='cupomDrawerButton' text='Cupons' onPress={this.handlePressCupom} />)}
         {this.props.loggedIn && (<DrawerButton testID='pushDrawerButton' text='Notificações' onPress={this.handlePressPush} />)}
         {this.props.loggedIn && (<DrawerButton testID='changePasswordDrawerButton' text='Trocar Senha' onPress={this.handlePressChangePassword} />)}
         {this.props.loggedIn && (<DrawerButton testID='logoutDrawerButton' text='Sair' onPress={this.handlePressLogout} />)}
         {/* {this.props.loggedIn && (<DrawerButton testID='cameraDrawerButton' text='Camera' onPress={this.handlePressCamera} />)} */}
-        {this.props.loggedIn && (<DrawerButton testID='cupomDrawerButton' text='Cupom' onPress={this.handlePressCupom} />)}
+        {/* {this.props.loggedIn && (<DrawerButton testID='cupomDrawerButton' text='Cupom' onPress={this.handlePressCupom} />)} */}
       </ScrollView>
     )
   }
