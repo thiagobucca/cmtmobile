@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { ScrollView, Image, BackHandler } from 'react-native'
 import { Navigation } from 'react-native-navigation'
 
-import { loginScreen, registerScreen, forgotPasswordScreen, changePasswordScreen, settingsScreen, entitiesScreen, agendaScreen, cameraScreen, cupomScreen, launchScreen, comunicacaoPushEntityScreen, cupomEntityEditScreen } from '../layouts'
+import { loginScreen, registerScreen, forgotPasswordScreen, changePasswordScreen, settingsScreen, entitiesScreen, agendaScreen, cameraScreen, cupomScreen, launchScreen, comunicacaoPushEntityScreen, cupomEntityScreen, estabelecimentoComercialEntityScreen } from '../layouts'
 import { connect } from 'react-redux'
 
 import styles from './drawer-content.styles'
@@ -73,12 +73,18 @@ class DrawerContent extends Component {
 
   handlePressCupom = () => {
     this.hideSideMenu()
-    cupomEntityEditScreen({entityId: null})
+    // cupomEntityEditScreen({entityId: null})
+    cupomEntityScreen()
   }
 
   handlePressPush = () => {
     this.hideSideMenu()
     comunicacaoPushEntityScreen()
+  }
+
+  handlePressEstabelecimento = () => {
+    this.hideSideMenu()
+    estabelecimentoComercialEntityScreen()
   }
 
   render () {
@@ -94,6 +100,7 @@ class DrawerContent extends Component {
         {this.props.loggedIn && (<DrawerButton testID='settingsDrawerButton' text='Settings' onPress={this.handlePressSettings} />)} */}
         {this.props.loggedIn && (<DrawerButton testID='agendaDrawerButton' text='Agenda' onPress={this.handlePressAgenda} />)}
         {this.props.loggedIn && (<DrawerButton testID='cupomDrawerButton' text='Cupons' onPress={this.handlePressCupom} />)}
+        {this.props.loggedIn && (<DrawerButton testID='estabelecimentoDrawerButton' text='Estabelecimentos' onPress={this.handlePressEstabelecimento} />)}
         {this.props.loggedIn && (<DrawerButton testID='pushDrawerButton' text='Notificações' onPress={this.handlePressPush} />)}
         {this.props.loggedIn && (<DrawerButton testID='changePasswordDrawerButton' text='Trocar Senha' onPress={this.handlePressChangePassword} />)}
         {this.props.loggedIn && (<DrawerButton testID='logoutDrawerButton' text='Sair' onPress={this.handlePressLogout} />)}

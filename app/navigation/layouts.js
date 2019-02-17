@@ -400,7 +400,7 @@ export const usuarioEntityScreen = () => Navigation.push('center', {
         rightButtons: [
           {
             id: 'createButton',
-            text: 'Create',
+            text: 'Novo',
             color: Colors.snow
           }
         ]
@@ -455,7 +455,7 @@ export const perfilUsuarioEntityScreen = () => Navigation.push('center', {
         rightButtons: [
           {
             id: 'createButton',
-            text: 'Create',
+            text: 'Novo',
             color: Colors.snow
           }
         ]
@@ -504,13 +504,13 @@ export const estabelecimentoComercialEntityScreen = () => Navigation.push('cente
     options: {
       topBar: {
         title: {
-          text: 'EstabelecimentoComercials',
+          text: 'Estabelecimentos',
           color: Colors.snow
         },
         rightButtons: [
           {
             id: 'createButton',
-            text: 'Create',
+            text: 'Novo',
             color: Colors.snow
           }
         ]
@@ -565,7 +565,7 @@ export const agendaEventoEntityScreen = () => Navigation.push('center', {
         rightButtons: [
           {
             id: 'createButton',
-            text: 'Create',
+            text: 'Novo',
             color: Colors.snow
           }
         ]
@@ -620,7 +620,7 @@ export const lojaMaconicaEntityScreen = () => Navigation.push('center', {
         rightButtons: [
           {
             id: 'createButton',
-            text: 'Create',
+            text: 'Novo',
             color: Colors.snow
           }
         ]
@@ -675,7 +675,7 @@ export const contatoLojaMaconicaEntityScreen = () => Navigation.push('center', {
         rightButtons: [
           {
             id: 'createButton',
-            text: 'Create',
+            text: 'Novo',
             color: Colors.snow
           }
         ]
@@ -730,7 +730,7 @@ export const categoriaEstabelecimentoEntityScreen = () => Navigation.push('cente
         rightButtons: [
           {
             id: 'createButton',
-            text: 'Create',
+            text: 'Novo',
             color: Colors.snow
           }
         ]
@@ -785,7 +785,7 @@ export const comunicacaoPushEntityScreen = () => Navigation.push('center', {
         rightButtons: [
           {
             id: 'createButton',
-            text: 'Create',
+            text: 'Novo',
             color: Colors.snow
           }
         ]
@@ -851,13 +851,13 @@ export const cupomEntityScreen = () => Navigation.push('center', {
     options: {
       topBar: {
         title: {
-          text: 'Cupoms',
+          text: 'Meus Cupons',
           color: Colors.snow
         },
         rightButtons: [
           {
             id: 'createButton',
-            text: 'Create',
+            text: 'Novo',
             color: Colors.snow
           }
         ]
@@ -876,7 +876,7 @@ export const cupomEntityDetailScreen = (data) => Navigation.push('center', {
     options: {
       topBar: {
         title: {
-          text: 'Cupoms',
+          text: 'Meus Cupons',
           color: Colors.snow
         }
       }

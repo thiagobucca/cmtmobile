@@ -123,6 +123,19 @@ class ComunicacaoPushEntityScreen extends React.PureComponent {
     this.fetchComunicacaoPushes()
   }
 
+
+  renderHeader = () => {
+    return (
+      <SearchBar
+        placeholder="Type Here..."
+        lightTheme
+        round
+        onChangeText={text => this.searchFilterFunction(text)}
+        autoCorrect={false}
+      />
+    );
+  };
+
   render () {
     return (
       <View style={styles.container} testID='comunicacaoPushScreen'>

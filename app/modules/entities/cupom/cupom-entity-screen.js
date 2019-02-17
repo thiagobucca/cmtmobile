@@ -1,5 +1,6 @@
 import React from 'react'
 import { FlatList, Text, TouchableOpacity, View } from 'react-native'
+import { List, ListItem, SearchBar, Icon } from 'react-native-elements';
 import { connect } from 'react-redux'
 import { Navigation } from 'react-native-navigation'
 import { cupomEntityDetailScreen, cupomEntityEditScreen } from '../../../navigation/layouts'
@@ -97,6 +98,19 @@ class CupomEntityScreen extends React.PureComponent {
     this.props.getAllCupoms({ page: this.state.page, sort: this.state.sort, size: this.state.size })
   }
 
+  renderSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: '86%',
+          backgroundColor: '#CED0CE',
+          marginLeft: '14%',
+        }}
+      />
+    );
+  };
+
   handleLoadMore = () => {
     if (this.state.done || this.props.fetching) {
       return
@@ -120,22 +134,37 @@ class CupomEntityScreen extends React.PureComponent {
 
   componentWillMount () {
     this.fetchCupoms()
+    console.log("logando props",this.props)
   }
 
   render () {
     return (
       <View style={styles.container} testID='cupomScreen'>
         <FlatList
-          contentContainerStyle={styles.listContent}
           data={this.state.dataObjects}
-          renderItem={this.renderRow}
-          keyExtractor={this.keyExtractor}
-          initialNumToRender={this.oneScreensWorth}
+          renderItem={({ item }) => (
+            <ListItem
+              roundAvatar
+              onPress={cupomEntityDetailScreen.bind(this, { entityId: item.id })}
+              title={`Data: ${item.data}`}
+              subtitle={
+                <View style={styles.subtitleView}>
+                  <Text style={styles.ratingText}>Valor: {item.valor}</Text>
+                  <Text style={styles.ratingText}>Número: {item.numero}</Text>
+                </View>
+              }
+              leftAvatar={{ source: { uri: item.fotoContentType } }}
+              // avatar={{ uri: item.telefone }}
+              containerStyle={{ borderBottomWidth: 0 }}
+              chevronColor="gray"
+              chevron
+            />
+          )}
           onEndReached={this.handleLoadMore}
           onEndThreshold={100}
-          /* ListHeaderComponent={this.renderHeader} */
-          /* ListFooterComponent={this.renderFooter} */
-          ListEmptyComponent={this.renderEmpty}
+          keyExtractor={this.keyExtractor}
+          ItemSeparatorComponent={this.renderSeparator}
+          ListHeaderComponent={this.renderHeader}
           ItemSeparatorComponent={this.renderSeparator}
         />
       </View>

@@ -1,5 +1,6 @@
-import React from 'react'
-import { FlatList, Text, TouchableOpacity, View } from 'react-native'
+import React, { Component } from 'react';
+import { View, Text, FlatList, ActivityIndicator, TouchableOpacity, Platform } from 'react-native';
+import { List, ListItem, SearchBar, Icon } from 'react-native-elements';
 import { connect } from 'react-redux'
 import { Navigation } from 'react-native-navigation'
 import { estabelecimentoComercialEntityDetailScreen, estabelecimentoComercialEntityEditScreen } from '../../../navigation/layouts'
@@ -9,11 +10,10 @@ import AlertMessage from '../../../shared/components/alert-message/alert-message
 
 // More info here: https://facebook.github.io/react-native/docs/flatlist.html
 
-class EstabelecimentoComercialEntityScreen extends React.PureComponent {
+class EstabelecimentoComercialEntityScreen extends React.Component {
   constructor (props) {
     super(props)
     Navigation.events().bindComponent(this)
-
     /* ***********************************************************
     * STEP 1
     * This is an array of objects with the properties you desire
@@ -23,11 +23,103 @@ class EstabelecimentoComercialEntityScreen extends React.PureComponent {
       page: 0,
       sort: 'id,asc',
       size: 20,
-      loading: true,
       done: false,
-      dataObjects: []
+      dataObjects: [],
+      loading: false,
+      data: [],
+      error: null,
+      search: '',
     }
+    lastTimeout = setTimeout;
+    this.arrayholder = [];
   }
+
+
+  componentDidMount() {
+    this.arrayholder = this.props.estabelecimentoComercials
+  }
+
+  makeRemoteRequest = () => {
+    const url = `https://randomuser.me/api/?&results=20`;
+    this.setState({ loading: true });
+
+    fetch(url)
+      .then(res => res.json())
+      .then(res => {
+        this.setState({
+          data: res.results,
+          error: res.error || null,
+          loading: false,
+        });
+
+      })
+      .catch(error => {
+        this.setState({ error, loading: false });
+      });
+  };
+
+  renderSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: '86%',
+          backgroundColor: '#CED0CE',
+          marginLeft: '14%',
+        }}
+      />
+    );
+  };
+
+  searchFilterFunction = text => {
+    const newData = this.arrayholder.filter(item => {
+      const itemData = `${item.nome.toUpperCase()}`;
+      const textData = text.toUpperCase();
+      return itemData.indexOf(textData) > -1;
+    });
+    this.setState({
+      dataObjects: newData,
+    });
+  };
+
+
+  // renderHeader = () => {
+  //   return (
+  //     <View style={styles.searchContainer}>
+  //           <SearchBar
+  //       placeholder="Pesquisar Estabelecimento"
+  //       platform={Platform.OS}
+  //       cancelButtonTitle='Cancelar'
+  //       // clearIcon={true}
+  //       lightTheme
+  //       round
+  //       //   onChangeText={ (text) => {
+  //       //     clearTimeout(this.lastTimeout);
+  //       //     this.lastTimeout = setTimeout(() => {this.searchFilterFunction(text)} ,1000)
+  //       // } }
+  //       // autoCorrect={false}
+  //     />
+  //     </View>
+  //   );
+  // };
+
+  // renderHeader = () => {
+  //   const { search } = this.state;
+  //   return (
+  //     <SearchBar
+  //     placeholder="Type Here..."
+  //     onChangeText={this.updateSearch}
+  //     value={search}
+  //   />
+  //   );
+  // };
+
+  updateSearch = search => {
+
+    this.setState({ search });
+    this.searchFilterFunction(search);
+  };
+
 
   navigationButtonPressed ({ buttonId }) {
     estabelecimentoComercialEntityEditScreen({ entityId: null })
@@ -45,7 +137,8 @@ class EstabelecimentoComercialEntityScreen extends React.PureComponent {
       <TouchableOpacity onPress={estabelecimentoComercialEntityDetailScreen.bind(this, { entityId: item.id })}>
         <View style={styles.row}>
           <Text style={styles.boldLabel}>{item.id}</Text>
-          {/* <Text style={styles.label}>{item.description}</Text> */}
+          <Text style={styles.label}>{item.nome}</Text>
+          <Text style={styles.label}>{item.endereco}</Text>
         </View>
       </TouchableOpacity>
     )
@@ -66,7 +159,7 @@ class EstabelecimentoComercialEntityScreen extends React.PureComponent {
 
   // Show this when data is empty
   renderEmpty = () =>
-    <AlertMessage title='No EstabelecimentoComercials Found' show={!this.props.fetching} />
+    <AlertMessage title='Não foram encontrados Estabelecimentos.' show={!this.props.fetching} />
 
   // renderSeparator = () =>
   //  <Text style={styles.label}> - ~~~~~ - </Text>
@@ -108,6 +201,12 @@ class EstabelecimentoComercialEntityScreen extends React.PureComponent {
     this.fetchEstabelecimentoComercials()
   }
 
+  handleQueryChange = query =>
+        this.setState(state => ({ ...state, query: query || "" }));
+
+        handleSearchCancel = () => this.handleQueryChange("");
+        handleSearchClear = () => this.handleQueryChange(""); // maybe differentiate between cancel and clear
+
   componentWillReceiveProps (newProps) {
     if (newProps.estabelecimentoComercials) {
       this.setState({
@@ -123,24 +222,77 @@ class EstabelecimentoComercialEntityScreen extends React.PureComponent {
   }
 
   render () {
+    const { search } = this.state;
+    if (this.state.loading) {
+      return (
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <ActivityIndicator />
+        </View>
+      );
+    }
     return (
       <View style={styles.container} testID='estabelecimentoComercialScreen'>
+       <SearchBar
+      placeholder="Pesquisar Estabelecimento"
+      onChangeText={this.updateSearch}
+        //         onChangeText={ (text) => {
+        //     clearTimeout(this.lastTimeout);
+        //     this.lastTimeout = setTimeout(() => {this.searchFilterFunction(search)} ,1000)
+        // } }
+      value={search}
+      lightTheme
+      cancelButtonTitle='Cancelar'
+      round
+    />
         <FlatList
-          contentContainerStyle={styles.listContent}
           data={this.state.dataObjects}
-          renderItem={this.renderRow}
-          keyExtractor={this.keyExtractor}
-          initialNumToRender={this.oneScreensWorth}
+          renderItem={({ item }) => (
+            <ListItem
+              roundAvatar
+              onPress={estabelecimentoComercialEntityDetailScreen.bind(this, { entityId: item.id })}
+              title={`${item.nome}`}
+              subtitle={
+                <View style={styles.subtitleView}>
+                  <Text style={styles.ratingText}>{item.endereco}</Text>
+                  <Text style={styles.ratingText}>{item.telefone}</Text>
+                </View>
+              }
+              leftAvatar={{ source: { uri: "http://www.siapec.agricultura.rj.gov.br/siapecest2/images/menu_acesso_externo_estabelecimento.jpg" } }}
+              // avatar={{ uri: item.telefone }}
+              containerStyle={{ borderBottomWidth: 0 }}
+              chevronColor="gray"
+              chevron
+            />
+          )}
           onEndReached={this.handleLoadMore}
           onEndThreshold={100}
-          /* ListHeaderComponent={this.renderHeader} */
-          /* ListFooterComponent={this.renderFooter} */
-          ListEmptyComponent={this.renderEmpty}
+          keyExtractor={this.keyExtractor}
           ItemSeparatorComponent={this.renderSeparator}
+          ListHeaderComponent={this.renderHeader}
         />
       </View>
     )
   }
+
+  // render () {
+  //   return (
+  //     <View style={styles.container} testID='estabelecimentoComercialScreen'>
+  //       <FlatList
+  //         contentContainerStyle={styles.listContent}
+  //         data={this.state.dataObjects}
+  //         renderItem={this.renderRow}
+  //         keyExtractor={this.keyExtractor}
+  //         initialNumToRender={this.oneScreensWorth}
+  //         onEndReached={this.handleLoadMore}
+  //         onEndThreshold={100}
+  //         /* ListHeaderComponent={this.renderHeader} */
+  //         /* ListFooterComponent={this.renderFooter} */
+  //         ListEmptyComponent={this.renderEmpty}
+  //         ItemSeparatorComponent={this.renderSeparator}
+  //       />
+  //     </View>
+  //   )
+  // }
 }
 
 const mapStateToProps = (state) => {
@@ -151,6 +303,7 @@ const mapStateToProps = (state) => {
     error: state.estabelecimentoComercials.errorAll
   }
 }
+
 
 const mapDispatchToProps = (dispatch) => {
   return {

@@ -27,5 +27,13 @@ export default StyleSheet.create({
   },
   listContent: {
     marginTop: Metrics.baseMargin
+  },
+  ratingImage: {
+    height: 19.21,
+    width: 100
+  },
+  ratingText: {
+    // paddingLeft: 10,
+    color: 'grey'
   }
 })

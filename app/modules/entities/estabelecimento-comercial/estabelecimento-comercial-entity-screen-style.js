@@ -27,5 +27,25 @@ export default StyleSheet.create({
   },
   listContent: {
     marginTop: Metrics.baseMargin
-  }
+  },
+  subtitleView: {
+    // flexDirection: 'row',
+    // paddingLeft: 10,
+    // paddingTop: 5
+  },
+  ratingImage: {
+    height: 19.21,
+    width: 100
+  },
+  ratingText: {
+    // paddingLeft: 10,
+    color: 'grey'
+  },
+  searchContainer: {
+    // position: 'absolute',
+    // top: 0,
+    // paddingTop: 20,
+    borderBottomColor: '#bbb',
+    backgroundColor: 'white',
+  },
 })

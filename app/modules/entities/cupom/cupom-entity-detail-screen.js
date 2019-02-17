@@ -1,5 +1,14 @@
+const users = [
+  {
+     name: 'brynn',
+     avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+  },
+ ]
+
 import React from 'react'
-import { Alert, ScrollView, Text } from 'react-native'
+import { Alert, ScrollView, Text, View, Image } from 'react-native'
+import { Card, ListItem, Button, Icon } from 'react-native-elements'
+
 import { connect } from 'react-redux'
 import { Navigation } from 'react-native-navigation'
 import { cupomEntityEditScreen } from '../../../navigation/layouts'
@@ -61,21 +70,43 @@ class CupomEntityDetailScreen extends React.Component {
     )
   }
 
-  render () {
-    return (
-      <ScrollView style={styles.container}>
-        <Text>ID: {this.state.cupom.id}</Text>
-        <Text testID='data'>Data: {this.state.cupom.data}</Text>
-        <Text testID='valor'>Valor: {this.state.cupom.valor}</Text>
-        <Text testID='numero'>Numero: {this.state.cupom.numero}</Text>
-        <Text testID='foto'>Foto: {this.state.cupom.foto}</Text>
-        <Text testID='estabelecimentoComercialId'>EstabelecimentoComercialId: {this.state.cupom.estabelecimentoComercialId}</Text>
-        <RoundedButton text='Edit' onPress={cupomEntityEditScreen.bind(this, { entityId: this.state.cupom.id })} />
-        <RoundedButton text='Delete' onPress={this.confirmDelete} />
-      </ScrollView>
-    )
-  }
+//   render () {
+//     return (
+//       <ScrollView style={styles.container}>
+//         {/* <Text>ID: {this.state.cupom.id}</Text>
+//         <Text testID='data'>Data: {this.state.cupom.data}</Text>
+//         <Text testID='valor'>Valor: {this.state.cupom.valor}</Text>
+//         <Text testID='numero'>Numero: {this.state.cupom.numero}</Text>
+//         <Text testID='foto'>Foto: {this.state.cupom.foto}</Text>
+//         <Text testID='estabelecimentoComercialId'>EstabelecimentoComercialId: {this.state.cupom.estabelecimentoComercialId}</Text>
+//         <RoundedButton text='Edit' onPress={cupomEntityEditScreen.bind(this, { entityId: this.state.cupom.id })} />
+//         <RoundedButton text='Delete' onPress={this.confirmDelete} /> */}
+//               <Card title="Local Modules">
+//         {/*react-native-elements Card*/}
+//           <Text style={styles.paragraph}>
+//             This is a card from the react-native-elements
+//           </Text>
+//         </Card>
+//       </ScrollView>
+//     )
+//   }
+// }
+
+render () {
+  return (
+// implemented with Text and Button as children
+<Card
+  title='Detalhe Cupom'
+  image={{uri: this.state.cupom.fotoContentType ? this.state.cupom.fotoContentType : this.state.cupom.fotoContentType}}
+  imageStyle={{height:300, width:300}}>
+  <Text style={{marginBottom: 10}}>
+  Valor: {this.state.cupom.valor}
+  </Text>
+</Card>
+  )
 }
+}
+
 
 const mapStateToProps = (state) => {
   return {
