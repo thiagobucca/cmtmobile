@@ -8,6 +8,7 @@ import { cupomEntityDetailScreen } from '../../../navigation/layouts'
 
 import t from 'tcomb-form-native'
 import ImageFactory from 'react-native-image-picker-form'
+import ImgToBase64 from 'react-native-image-base64';
 
 import styles from './cupom-entity-edit-screen-style'
 
@@ -149,17 +150,34 @@ class CupomEntityEditScreen extends React.Component {
   }
 
   submitForm () {
+
+
+   // call getValue() to get the values of the form
+    const cupom = this.state.formValue
+    let foto = ImgToBase64.getBase64String('file://' + cupom.foto)
+  .then(base64String => {
+    foto = base64String
+    cupom.foto = foto.replace("/9/", "")
+    cupom.fotoContentType = "image/png"
+    console.log("logando foto", foto)
+    console.log("logando cupom", cupom)
+console.log("logando state antes", this.state)
     this.setState({
       success: false,
-      requesting: true
+      requesting: true,
+      cupom
     })
-    // call getValue() to get the values of the form
-    // const cupom = this.refs.form.getValue()
-    // if (cupom) { // if validation fails, value will be null
-    //   this.props.updateCupom(this.formValueToEntity(cupom))
-    // }
+    console.log("logando state depois", this.state)
+    if (cupom) { // if validation fails, value will be null
+
+      console.log("caiu if", cupom)
+      this.props.updateCupom(this.formValueToEntity(cupom))
+    }
     Navigation.pop(this.props.componentId)
-    Alert.alert('Sucesso', 'Cupom enviado.')
+   // Alert.alert('Sucesso', 'Cupom enviado.')
+  })
+  .catch(err => console.log(err));
+
   }
 
   formChange (newValue) {

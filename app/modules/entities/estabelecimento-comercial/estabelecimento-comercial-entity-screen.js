@@ -7,6 +7,8 @@ import { estabelecimentoComercialEntityDetailScreen, estabelecimentoComercialEnt
 import EstabelecimentoComercialActions from './estabelecimento-comercial.reducer'
 import styles from './estabelecimento-comercial-entity-screen-style'
 import AlertMessage from '../../../shared/components/alert-message/alert-message'
+import { Colors } from '../../../shared/themes';
+import { reducer } from '../../../shared/reducers/user.reducer';
 
 // More info here: https://facebook.github.io/react-native/docs/flatlist.html
 
@@ -62,10 +64,10 @@ class EstabelecimentoComercialEntityScreen extends React.Component {
     return (
       <View
         style={{
-          height: 1,
-          width: '86%',
-          backgroundColor: '#CED0CE',
-          marginLeft: '14%',
+          height: 15,
+          borderColor: Colors.gray,
+          borderWidth: 1,
+          backgroundColor: Colors.silver
         }}
       />
     );
@@ -232,7 +234,8 @@ class EstabelecimentoComercialEntityScreen extends React.Component {
     }
     return (
       <View style={styles.container} testID='estabelecimentoComercialScreen'>
-       <SearchBar
+       <SearchBar inputStyle={{backgroundColor: 'white'}} inputContainerStyle={{backgroundColor: 'white'}}
+    containerStyle={{backgroundColor: 'white'}} leftIconContainerStyle={{backgroundColor: 'white'}}
       placeholder="Pesquisar Estabelecimento"
       onChangeText={this.updateSearch}
         //         onChangeText={ (text) => {
@@ -249,19 +252,19 @@ class EstabelecimentoComercialEntityScreen extends React.Component {
           renderItem={({ item }) => (
             <ListItem
               roundAvatar
-              onPress={estabelecimentoComercialEntityDetailScreen.bind(this, { entityId: item.id })}
+              // onPress={estabelecimentoComercialEntityDetailScreen.bind(this, { entityId: item.id })}
               title={`${item.nome}`}
               subtitle={
                 <View style={styles.subtitleView}>
                   <Text style={styles.ratingText}>{item.endereco}</Text>
-                  <Text style={styles.ratingText}>{item.telefone}</Text>
+                  <Text style={styles.ratingText}>Tel: {item.telefone}</Text>
                 </View>
               }
-              leftAvatar={{ source: { uri: "http://www.siapec.agricultura.rj.gov.br/siapecest2/images/menu_acesso_externo_estabelecimento.jpg" } }}
+              leftAvatar={{ source: { uri: item.logo ? item.logo : "http://cmtweb.ddns.net/resources/store.png" } }}
               // avatar={{ uri: item.telefone }}
               containerStyle={{ borderBottomWidth: 0 }}
-              chevronColor="gray"
-              chevron
+              // chevronColor="gray"
+              // chevron
             />
           )}
           onEndReached={this.handleLoadMore}

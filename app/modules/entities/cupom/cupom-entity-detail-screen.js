@@ -7,11 +7,11 @@ const users = [
 
 import React from 'react'
 import { Alert, ScrollView, Text, View, Image } from 'react-native'
-import { Card, ListItem, Button, Icon } from 'react-native-elements'
+import { Card, ListItem, Button, Icon, Divider} from 'react-native-elements'
 
 import { connect } from 'react-redux'
 import { Navigation } from 'react-native-navigation'
-import { cupomEntityEditScreen } from '../../../navigation/layouts'
+import { cupomEntityEditScreen} from '../../../navigation/layouts'
 
 import CupomActions from './cupom.reducer'
 import RoundedButton from '../../../shared/components/rounded-button/rounded-button'
@@ -96,11 +96,20 @@ render () {
   return (
 // implemented with Text and Button as children
 <Card
-  title='Detalhe Cupom'
-  image={{uri: this.state.cupom.fotoContentType ? this.state.cupom.fotoContentType : this.state.cupom.fotoContentType}}
+  title='Detalhamento'
+  image={{uri: this.state.cupom.foto}}
   imageStyle={{height:300, width:300}}>
   <Text style={{marginBottom: 10}}>
+  Estabelecimento: {this.state.cupom.estabelecimento}
+  </Text>
+  <Text style={{marginBottom: 10}}>
   Valor: {this.state.cupom.valor}
+  </Text>
+  <Text style={{marginBottom: 10}}>
+  Numero: {this.state.cupom.numero > 0 ? this.state.cupom.numero : "Não Informado"}
+  </Text>
+  <Text style={{marginBottom: 10}}>
+  Data: {this.state.cupom.data}
   </Text>
 </Card>
   )

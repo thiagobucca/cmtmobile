@@ -201,6 +201,7 @@ class EstabelecimentoComercialEntityEditScreen extends React.Component {
     })
     // call getValue() to get the values of the form
     const estabelecimentoComercial = this.refs.form.getValue()
+    debugger;
     if (estabelecimentoComercial) { // if validation fails, value will be null
       this.props.updateEstabelecimentoComercial(this.formValueToEntity(estabelecimentoComercial))
     }

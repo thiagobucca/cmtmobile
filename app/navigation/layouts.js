@@ -506,14 +506,14 @@ export const estabelecimentoComercialEntityScreen = () => Navigation.push('cente
         title: {
           text: 'Estabelecimentos',
           color: Colors.snow
-        },
-        rightButtons: [
-          {
-            id: 'createButton',
-            text: 'Novo',
-            color: Colors.snow
-          }
-        ]
+        }
+        // rightButtons: [
+        //   {
+        //     id: 'createButton',
+        //     text: 'Novo',
+        //     color: Colors.snow
+        //   }
+        // ]
       }
     }
   }

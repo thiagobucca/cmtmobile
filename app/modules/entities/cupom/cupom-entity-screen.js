@@ -153,7 +153,7 @@ class CupomEntityScreen extends React.PureComponent {
                   <Text style={styles.ratingText}>Número: {item.numero}</Text>
                 </View>
               }
-              leftAvatar={{ source: { uri: item.fotoContentType } }}
+              leftAvatar={{ source: { uri: item.foto } }}
               // avatar={{ uri: item.telefone }}
               containerStyle={{ borderBottomWidth: 0 }}
               chevronColor="gray"

@@ -7,6 +7,7 @@ import { estabelecimentoComercialEntityEditScreen } from '../../../navigation/la
 import EstabelecimentoComercialActions from './estabelecimento-comercial.reducer'
 import RoundedButton from '../../../shared/components/rounded-button/rounded-button'
 import styles from './estabelecimento-comercial-entity-detail-screen-style'
+// import OneSignal from 'react-native-onesignal';
 
 class EstabelecimentoComercialEntityDetailScreen extends React.Component {
   constructor (props) {
@@ -17,10 +18,36 @@ class EstabelecimentoComercialEntityDetailScreen extends React.Component {
       estabelecimentoComercial: {},
       deleting: false
     }
+    // OneSignal.init("7585cd39-1585-4551-b020-c53000678f4b");
+
+    // OneSignal.addEventListener('received', this.onReceived);
+    // OneSignal.addEventListener('opened', this.onOpened);
+    // OneSignal.addEventListener('ids', this.onIds);
   }
 
   componentWillMount () {
     this.props.getEstabelecimentoComercial(this.props.data.entityId)
+  }
+
+  componentWillUnmount() {
+    // OneSignal.removeEventListener('received', this.onReceived);
+    // OneSignal.removeEventListener('opened', this.onOpened);
+    // OneSignal.removeEventListener('ids', this.onIds);
+  }
+
+  onReceived(notification) {
+    console.log("Notification received: ", notification);
+  }
+
+  onOpened(openResult) {
+    console.log('Message: ', openResult.notification.payload.body);
+    console.log('Data: ', openResult.notification.payload.additionalData);
+    console.log('isActive: ', openResult.notification.isAppInFocus);
+    console.log('openResult: ', openResult);
+  }
+
+  onIds(device) {
+    console.log('Device info: ', device);
   }
 
   componentWillReceiveProps (newProps) {
@@ -64,6 +91,7 @@ class EstabelecimentoComercialEntityDetailScreen extends React.Component {
   render () {
     return (
       <ScrollView style={styles.container}>
+
         <Text>ID: {this.state.estabelecimentoComercial.id}</Text>
         <Text testID='bolMatriz'>BolMatriz: {this.state.estabelecimentoComercial.bolMatriz}</Text>
         <Text testID='codCnpj'>CodCnpj: {this.state.estabelecimentoComercial.codCnpj}</Text>
