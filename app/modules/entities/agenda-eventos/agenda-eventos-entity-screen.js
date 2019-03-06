@@ -1,5 +1,5 @@
 import React from 'react'
-import { FlatList, Text, TouchableOpacity, View, ScrollView } from 'react-native'
+import { Alert, FlatList, Text, TouchableOpacity, View, ScrollView, ActivityIndicator, Animated } from 'react-native'
 import { connect } from 'react-redux'
 import { Navigation } from 'react-native-navigation'
 import { agendaEventoEntityDetailScreen, agendaEventoEntityEditScreen } from '../../../navigation/layouts'
@@ -39,111 +39,108 @@ class AgendaEventoEntityScreen extends React.PureComponent {
         descricao: t.maybe(t.String)
       }),
       agendaEventosValue: this.props.agendaEventos,
-      items: {[new Date().toLocaleString("sv-SE", {timeZone: "America/Sao_Paulo"}).toString().substring(0,10)]: []}
+      items: {}
     //  diaAtual: new Date().toLocaleString("sv-SE", {timeZone: "America/Sao_Paulo"}).toString().substring(0,10)
     };
   }
 
-  componentDidMount() {
-
-    // console.log("LOGANDO DIA ATUAL",this.state.diaAtual)
-
-}
-
-  fetchAgendaEventos = () => {
-    this.props.getAllAgendaEventos({ page: this.state.page, sort: this.state.sort, size: this.state.size })
+  componentDidMount()
+  {
+    //console.log("calendar",this.calendar.calendar)
+    // this.toggleCalendar()
+    //this.expandCalendar()
+   //this.agenda.chooseDay('2019-01-07')
   }
 
-  handleLoadMore = () => {
-    if (this.state.done || this.props.fetching) {
-      return
+
+  disableUnmarkedDays(day) {
+    if(!this.state.items[day.dateString])
+    {
+           this.state.items[day.dateString] = [];
     }
-    this.setState({
-      page: this.state.page + 1,
-      loading: true
-    })
-    this.fetchAgendaEventos()
-  }
 
-componentWillReceiveProps (newProps) {
-  if (newProps.agendaEventos) {
-   // console.log("logando agenda",newProps.agendaEventos)
-   // console.log("logando states", this.state)
-    this.setState({
-      done: newProps.agendaEventos.length < this.state.size,
-      dataObjects: this.state.loading ? [...this.state.dataObjects, ...newProps.agendaEventos] : newProps.agendaEventos,
-      loading: false
-    })
-  }
+      const newItems = {};
+      Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
+      this.setState({
+        items: newItems
+      });
+
 }
 
+onDayPress = (date) => {
+  this.setState({
+    date: new Date(date.year, date.month-1, date.day),
+  });
+};
 
-  agendaEventosChange (newValue) {
-    this.setState({
-      agendaEventosValue: newValue
-    })
-  }
-
-  componentWillMount () {
-    this.fetchAgendaEventos()
-  }
+onDayChange = (date) => {
+  this.setState({
+    date: new Date(date.year, date.month-1, date.day),
+  });
+};
 
   render() {
-    console.log(this.state.items,"os itens")
+
     return (
       <Agenda
         items={this.state.items}
+        ref={(c) => this.agenda = c}
         loadItemsForMonth={this.loadItems.bind(this)}
-        // selected={'2019-02-02'}
         renderItem={this.renderItem.bind(this)}
         renderEmptyDate={this.renderEmptyDate.bind(this)}
         rowHasChanged={this.rowHasChanged.bind(this)}
-        // markingType={'period'}
-        // markedDates={{
-        //    '2017-05-08': {textColor: '#666'},
-        //    '2017-05-09': {textColor: '#666'},
-        //    '2017-05-14': {startingDay: true, endingDay: true, color: 'blue'},
-        //    '2017-05-21': {startingDay: true, color: 'blue'},
-        //    '2017-05-22': {endingDay: true, color: 'gray'},
-        //    '2017-05-24': {startingDay: true, color: 'gray'},
-        //    '2017-05-25': {color: 'gray'},
-        //    '2017-05-26': {endingDay: true, color: 'gray'}}}
-         // monthFormat={'yyyy'}
-         // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
-        //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
+        isDefaultViewCalendar={true}
+        onDayPress={(day)=>this.disableUnmarkedDays(day)}
+        onDayChange={(day)=>this.disableUnmarkedDays(day)}
       />
     );
+
+  }
+
+  // render() {
+
+  //   if (this.state.loading) {
+  //     return (
+  //       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+  //         <ActivityIndicator />
+  //       </View>
+  //     );
+  //   }else
+  //   {
+  //     return (
+  //       <Agenda
+  //         items={this.state.items}
+  //         ref={(c) => this.agenda = c}
+  //         loadItemsForMonth={this.loadItems.bind(this)}
+  //         renderItem={this.renderItem.bind(this)}
+  //         renderEmptyDate={this.renderEmptyDate.bind(this)}
+  //         rowHasChanged={this.rowHasChanged.bind(this)}
+  //         hideKnob={false}
+  //       />
+  //     );
+  //   }
+
+  // }
+
+  setEmptyKey(dayString) {
+    if (!this.state.items.hasOwnProperty(dayString)) {
+      this.state.items[dayString] = [];
+      // The purpose of this is to remove empty array without affecting the ui
+      new Promise((resolve, reject) => {
+        setTimeout(() => {
+          delete this.state.items[dayString];
+          resolve();
+        }, 1000);
+      }).catch(error => {
+        // log if needed.
+        console.log(error);
+      });
+    }
   }
 
 
   loadItems(day) {
     setTimeout(() => {
-      // for (let i = -15; i < 85; i++) {
-      //   const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-      //   const strTime = this.timeToString(time);
-      //   if (!this.state.items[strTime]) {
-      //     this.state.items[strTime] = [];
-      //     const numItems = Math.floor(Math.random() * 5);
-      //     for (let j = 0; j < numItems; j++) {
-      //       this.state.items[strTime].push({
-      //         name: 'Item for ' + strTime,
-      //         height: Math.max(50, Math.floor(Math.random() * 150))
-      //       });
-      //     }
-      //   }
-      // }
-
-      if(this.props.agendaEventos.length > 0)
-      {
-       //  console.log("caiu if", this.state.diaAtual)
-        this.state.items[this.props.agendaEventos[0].data.toString().substring(0,10)]
-       // this.state.diaAtual = this.props.agendaEventos[0].data.toString().substring(0,10)
-
-       // console.log("depois", this.state.diaAtual)
-      }else
-      {
-       // this.state.items[this.state.diaAtual] = [];
-      }
 
       this.props.agendaEventos.forEach(agendaEvento => {
 
@@ -159,9 +156,20 @@ componentWillReceiveProps (newProps) {
 
       })
 
-
-
-
+      // for (let i = -15; i < 85; i++) {
+      //   const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+      //   const strTime = this.timeToString(time);
+      //   if (!this.state.items[strTime]) {
+      //     this.state.items[strTime] = [];
+      //     const numItems = Math.floor(Math.random() * 5);
+      //     for (let j = 0; j < numItems; j++) {
+      //       this.state.items[strTime].push({
+      //         name: 'Item for ' + strTime,
+      //         height: Math.max(50, Math.floor(Math.random() * 150))
+      //       });
+      //     }
+      //   }
+      // }
       //console.log(this.state.items);
       const newItems = {};
       Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
@@ -174,8 +182,6 @@ componentWillReceiveProps (newProps) {
 
 
   renderItem(item) {
-
-   // console.log("logando item",item)
     return (
       <View style={[styles.item, {height: item.height}]}><Text>{item.name}</Text></View>
     );
@@ -183,7 +189,9 @@ componentWillReceiveProps (newProps) {
 
   renderEmptyDate() {
     return (
-      <View style={styles.emptyDate}><Text></Text></View>
+      <View style={styles.emptyDate}>
+      {/* <Text>This is empty date!</Text> */}
+      </View>
     );
   }
 
@@ -196,8 +204,11 @@ componentWillReceiveProps (newProps) {
     return date.toISOString().split('T')[0];
   }
 
-
+  fetchAgendaEventos = () => {
+    this.props.getAllAgendaEventos({ page: this.state.page, sort: this.state.sort, size: this.state.size })
+  }
 }
+
 
 const mapStateToProps = (state) => {
   return {
@@ -222,8 +233,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginRight: 10,
-    marginTop: 17,
-    fontSize: 20
+    marginTop: 17
   },
   emptyDate: {
     height: 15,
