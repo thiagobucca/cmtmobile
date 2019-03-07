@@ -59,11 +59,11 @@ class AgendaEventoEntityScreen extends React.PureComponent {
            this.state.items[day.dateString] = [];
     }
 
-      const newItems = {};
-      Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
-      this.setState({
-        items: newItems
-      });
+      // const newItems = {};
+      // Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
+      // this.setState({
+      //   items: newItems
+      // });
 
 }
 
@@ -142,19 +142,29 @@ onDayChange = (date) => {
   loadItems(day) {
     setTimeout(() => {
 
-      this.props.agendaEventos.forEach(agendaEvento => {
+      if(this.props.agendaEventos != null && this.props.agendaEventos.length > 0)
+      {
+        this.props.agendaEventos.forEach(agendaEvento => {
 
 
-        this.state.items[agendaEvento.data.toString().substring(0,10)] = [];
-        this.state.items[agendaEvento.data.toString().substring(0,10)].push({
-          name: agendaEvento.titulo,
-          height: Math.max(50, Math.floor(Math.random() * 150))
-        });
-       // console.log("logando agendas")
-       // console.log(agendaEvento.data.toString().substring(0,10))
+          this.state.items[agendaEvento.data.toString().substring(0,10)] = [];
+          this.state.items[agendaEvento.data.toString().substring(0,10)].push({
+            name: agendaEvento.titulo,
+            height: Math.max(50, Math.floor(Math.random() * 150))
+          });
+         // console.log("logando agendas")
+         // console.log(agendaEvento.data.toString().substring(0,10))
 
 
-      })
+         const newItems = {};
+         Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
+         this.setState({
+           items: newItems
+         });
+        })
+
+      }
+
 
       // for (let i = -15; i < 85; i++) {
       //   const time = day.timestamp + i * 24 * 60 * 60 * 1000;
@@ -171,11 +181,7 @@ onDayChange = (date) => {
       //   }
       // }
       //console.log(this.state.items);
-      const newItems = {};
-      Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
-      this.setState({
-        items: newItems
-      });
+
     }, 1000);
     // console.log(`Load Items for ${day.year}-${day.month}`);
   }

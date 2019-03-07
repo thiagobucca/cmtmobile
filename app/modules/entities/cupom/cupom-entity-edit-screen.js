@@ -209,7 +209,7 @@ class CupomEntityEditScreen extends React.Component {
       if(cupom)
       {
 
-        if(cupom.data == '' || cupom.data.length != 10)
+        if(cupom.data == null || cupom.data == '' || cupom.data.length != 10)
         {
           Alert.alert('Erro', 'Data de nascimento inválida.', [{text: 'OK'}])
           return
@@ -234,10 +234,11 @@ class CupomEntityEditScreen extends React.Component {
       let foto = ImgToBase64.getBase64String('file://' + cupom.foto)
     .then(base64String => {
       foto = base64String
-      cupom.foto = foto.replace("/9/", "")
+    //  cupom.foto = foto.replace("/9/", "")
+      cupom.foto = foto
       cupom.fotoContentType = "image/png"
       cupom.usuarioId = this.props.account.id
-      cupom.data = moment.utc(moment(cupom.data, "DD/MM/YYYY")).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+      cupom.data = moment.utc(moment(cupom.data, "DD/MM/YYYY")).format("YYYY-MM-DDTHH:mm:ss.SSS").concat("Z")
       cupom.valor = cupom.valor.replace("R$", "").replace(",",".");
   console.log("logando state antes", this.state)
       this.setState({

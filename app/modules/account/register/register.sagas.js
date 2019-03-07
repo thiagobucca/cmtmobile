@@ -11,6 +11,7 @@ export function * register (api, { user }) {
     yield put(RegisterActions.registerSuccess())
   } else {
     console.tron.log('Register - FAIL')
+    console.log(response,"retorno failure register")
     yield put(RegisterActions.registerFailure(response.data))
   }
 }

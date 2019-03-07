@@ -211,7 +211,10 @@ class RegisterScreen extends React.Component {
 
     const user = this.refs.form.getValue()
     let jasper = {...this.state.formValue};
-    jasper.dataNascimento = moment.utc(user.dataNascimento).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+    //jasper.dataNascimento = moment.utc(user.dataNascimento).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+    //Alert.alert('Erro Antes Moment Data', user.dataNascimento, [{text: 'OK'}])
+    jasper.dataNascimento = moment(moment(user.dataNascimento, 'DD/MM/YYYY')).format("YYYY-MM-DDTHH:mm:ss.SSS").concat("Z")
+    //Alert.alert('Erro Data', jasper.dataNascimento, [{text: 'OK'}])
     jasper.telefone = user.telefone.replace('(','').replace(')','').replace('-','').replace(" ","","g")
     jasper.deviceId = this.state.account.deviceId
     jasper.confirmPassword = jasper.password
@@ -223,7 +226,37 @@ class RegisterScreen extends React.Component {
     console.log('jasper',this.state.jasper)
     if (user) { // if validation fails, value will be null
 
-      this.props.register(jasper)
+      console.log('request',jasper)
+        let x = this.props.register(jasper)
+         debugger;
+        if(this.props.error != null && this.props.error.errorKey != null)
+        {
+
+          if(this.props.error.errorKey == "idexists")
+          {
+            Alert.alert('Erro', 'Não foi encontrado Maçom para o Placet informado.', [{text: 'OK'}])
+            return
+          }
+
+          if(this.props.error.errorKey == "userexists")
+          {
+            Alert.alert('Erro', 'Nome de usuário existente.', [{text: 'OK'}])
+            return
+          }
+
+          if(this.props.error.errorKey == "emailexists")
+          {
+            Alert.alert('Erro', 'Email existente.', [{text: 'OK'}])
+            return
+          }
+
+        }
+
+
+
+        console.log(x,"retorno metodo")
+        console.log(this.state, "retorno state")
+        console.log(this.props, "retorno props")
       this.setState({
         success: true,
         fetching: false,

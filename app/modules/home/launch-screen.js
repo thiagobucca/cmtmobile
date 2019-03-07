@@ -409,7 +409,7 @@ handlePressForgotPassword = () => {
     const textInputStyle = editable ? styles.textInput : styles.textInputReadonly
     return (
       <Animated.View style={[styles.container, { transform: [{translateY: shift}] }]}>
-              {this.displayWelcome()}
+                 {this.displayWelcome()}
               <View>
           <Image source={Images.logoCmt} style={[styles.topLogo, this.state.topLogo]} />
         </View>

@@ -274,7 +274,7 @@ class EstabelecimentoComercialEntityScreen extends React.Component {
               subtitle={
                 <View style={styles.subtitleView}>
                   <Text style={styles.ratingText}>{item.endereco}</Text>
-                  <TextInputMask type={'cel-phone'} options={{   maskType: 'BRL', withDDD: true, dddMask: '(99) ' }} value={item.telefone} style={styles.ratingText}>
+                  <TextInputMask type={'cel-phone'} options={{   maskType: 'BRL', withDDD: true, dddMask: '(99) ' }} value={item.telefone} editable={false} style={styles.ratingText}>
                   </TextInputMask>
                 </View>
               }
