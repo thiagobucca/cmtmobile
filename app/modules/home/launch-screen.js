@@ -9,7 +9,7 @@ import { connect } from 'react-redux'
 import LoginActions from '../login/login.reducer'
 import AccountActions from '../../shared/reducers/account.reducer'
 import OneSignal from 'react-native-onesignal'
-import { registerScreen, forgotPasswordScreen, cupomEntityEditScreen } from '../../navigation/layouts'
+import { registerScreen, forgotPasswordScreen, cupomEntityEditScreen, comunicacaoPushEntityScreen } from '../../navigation/layouts'
 
 
 class LaunchScreen extends React.Component {
@@ -58,46 +58,53 @@ class LaunchScreen extends React.Component {
     })
   }
 
+  componentWillMount()
+  {
+    //  console.log("state mount",this.state)
+    //  console.log("props mount",this.props)
+  }
+
   componentWillReceiveProps (newProps) {
     // Did the login attempt complete?
-  //  console.log("state login", newProps.account)
     if (!newProps.fetching) {
       if (newProps.error) {
         if (newProps.error === 'WRONG') {
-  //        Alert.alert('Erro', 'Login Inválido', [{text: 'OK'}])
+          Alert.alert('Erro', 'Login Inválido', [{text: 'OK'}])
 
         }
       } else if (newProps.account) {
 
+        if(this.state.deviceId != '' && this.state.deviceId != newProps.account.deviceId)
+        {
+          this.props.updateAccount({...newProps.account,deviceId : this.state.deviceId})
+        }
         //this.showSideMenu()
         //Alert.alert('Sucesso', 'Login Correto', [{text: 'OK'}])
         //Navigation.dismissModal(this.props.componentId)
+        this.setState({ password: '', username: '' })
+
       }
     }
   }
 
-  componentWillMount()
- {
-    console.log("logando props e ",this.props)
-    console.log("logando e state",this.state)
 
- }
  handlePressLogin = () => {
   const { username, password } = this.state
 
-  console.log('testestate',this.state)
-  console.log('testeprops',this.props)
-  if(username != '' && password != '')
-  {
-  // attempt a login - a saga is listening to pick it up from here.
-  this.props.attemptLogin(username, password)
-  this.setState({ username: '' })
-  }else
-  {
-    Alert.alert('Erro', 'Usuário ou Senha inválidos.', [{text: 'OK'}])
+  if (username === '') {
+    Alert.alert('Erro', 'Usuário não informado.', [{text: 'OK'}])
+    return
+
   }
 
+  if (password === '') {
+    Alert.alert('Erro', 'Senha não informada.', [{text: 'OK'}])
+    return
+  }
+
+  this.props.attemptLogin(username, password)
 }
+
 
   handlePressCupom = () => {
 
@@ -110,6 +117,7 @@ class LaunchScreen extends React.Component {
   }
 
   handleChangeUsername = (text) => {
+
     this.setState({ username: text })
   }
 
@@ -133,24 +141,38 @@ class LaunchScreen extends React.Component {
     console.log('Data: ', openResult.notification.payload.additionalData);
     console.log('isActive: ', openResult.notification.isAppInFocus);
     console.log('openResult: ', openResult);
+
+    // if(this.state != null)
+    // {
+    //   Alert.alert('Erro', 'State criado', [{text: 'OK'}])
+    //   Alert.alert('Erro', this.state, [{text: 'OK'}])
+    // }else
+    // {
+    //   Alert.alert('Erro', 'State naocriado', [{text: 'OK'}])
+    // }
+
+    // if(this.props != null)
+    // {
+    //   Alert.alert('Erro', 'Prop criado', [{text: 'OK'}])
+    //   Alert.alert('Erro', this.props, [{text: 'OK'}])
+    // }else
+    // {
+    //   Alert.alert('Erro', 'Prop nao criado', [{text: 'OK'}])
+    // }
+
+    // if(this.state.account != null && this.state.account.login != '')
+    // {
+      comunicacaoPushEntityScreen()
+    // }
   }
 
   onIds = (device) => {
 
-
-    this.props.updateAccount(this.state.account)
-
-    console.log('account',this.state.account)
-    if(device != null && device.userId !=  null && this.props.account != null && this.props.account.deviceId != null && device.userId)
-    {
-    //   console.log('Device info: ', device.userId);
-    //   this.setState({
-    //     account : {...this.state.account,deviceId: device.userId}
-    //   })
-    //  this.setState({ deviceId: device.userId })
-    //  this.props.updateAccount(account)
-    }
-  }
+     console.log('Device info: ', device.userId);
+     this.setState({
+      deviceId : device.userId
+    })
+}
 
   componentDidAppear () {
     Navigation.mergeOptions(this.props.componentId, {
@@ -203,7 +225,7 @@ displayStore() {
   if (!this.props.account) {
       return <Text></Text>;
   } else {
-      return         <View style={[styles.buttonContainer]}>
+      return         <View style={[styles.storeContainer]}>
       <Text style={styles.topText}>Loja: {this.props.account.loja}</Text>
   </View>
 
@@ -285,6 +307,19 @@ displayEnter()
 
 }
 }
+
+
+// displayPush()
+// {
+//   if (!this.props.account) {
+//     return <Text></Text>;
+// } else {
+//     return              <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={this.handlePush}>
+//     <Text style={styles.loginText}>Push</Text>
+//   </TouchableHighlight>
+
+// }
+// }
 
 displayUsername(username,editable) {
   if (this.props.account) {

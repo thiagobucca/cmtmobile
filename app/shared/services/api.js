@@ -78,7 +78,7 @@ const create = (baseURL = AppConfig.apiUrl) => {
   const deleteEstabelecimentoComercial = (estabelecimentoComercialId) => api.delete('api/estabelecimento-comercials/' + estabelecimentoComercialId)
 
   const getLojaMaconica = (lojaMaconicaId) => api.get('api/loja-maconicas/' + lojaMaconicaId)
-  const getLojaMaconicas = (options) => api.get('api/loja-maconicas', options)
+  const getLojaMaconicas = (options) => api.get('api/loja-maconicas?sort=nome', options)
   const createLojaMaconica = (lojaMaconica) => api.post('api/loja-maconicas', lojaMaconica)
   const updateLojaMaconica = (lojaMaconica) => api.put('api/loja-maconicas', lojaMaconica)
   const deleteLojaMaconica = (lojaMaconicaId) => api.delete('api/loja-maconicas/' + lojaMaconicaId)

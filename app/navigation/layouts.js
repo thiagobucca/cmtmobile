@@ -127,12 +127,14 @@ export const appStack = {
                 topBar: {
                   title: {
                     text: 'Bem-vindo ao CMT!',
+                    alignment: "center",
                     color: Colors.snow
                   },
                   leftButtons: [
                     {
                       id: 'menuButton',
                       icon: Images.menuIcon,
+                      color: Colors.snow,
                       testID: 'menuButton'
                     }
                   ]
@@ -286,6 +288,7 @@ export const registerScreen = () => Navigation.push('center', {
       topBar: {
         title: {
           text: 'Novo Cadastro',
+          alignment: "center",
           color: Colors.snow
         }
       }
@@ -300,6 +303,7 @@ export const forgotPasswordScreen = () => Navigation.push('center', {
       topBar: {
         title: {
           text: 'Recuperar Senha',
+          alignment: "center",
           color: Colors.snow
         }
       }
@@ -313,6 +317,7 @@ export const changePasswordScreen = () => Navigation.push('center', {
       topBar: {
         title: {
           text: 'Trocar Senha',
+          alignment: "center",
           color: Colors.snow
         }
       }
@@ -354,12 +359,14 @@ export const cupomEntityScreen = () => Navigation.push('center', {
       topBar: {
         title: {
           text: 'Meus Cupons',
+          alignment: "center",
           color: Colors.snow
         },
         rightButtons: [
           {
             id: 'createButton',
             text: 'Novo',
+            alignment: "center",
             color: Colors.snow
           }
         ]
@@ -378,6 +385,7 @@ export const cupomEntityEditScreen = (data) => Navigation.push('center', {
       topBar: {
         title: {
           text: 'Novo Cupom',
+          alignment: "center",
           color: Colors.snow
         }
       }
@@ -395,6 +403,7 @@ export const cupomEntityDetailScreen = (data) => Navigation.push('center', {
       topBar: {
         title: {
           text: 'Detalhe Cupom',
+          alignment: "center",
           color: Colors.snow
         }
       }
@@ -409,12 +418,14 @@ export const agendaEventoEntityScreen = () => Navigation.push('center', {
       topBar: {
         title: {
           text: 'Agenda',
+          alignment: "center",
           color: Colors.snow
         },
         rightButtons: [
           {
             id: 'createButton',
             text: '',
+            alignment: "center",
             color: Colors.snow
           }
         ]
@@ -519,6 +530,7 @@ export const estabelecimentoComercialEntityScreen = () => Navigation.push('cente
       topBar: {
         title: {
           text: 'Estabelecimentos',
+          alignment: "center",
           color: Colors.snow
         },
         rightButtons: [
@@ -904,6 +916,7 @@ export const comunicacaoPushEntityScreen = () => Navigation.push('center', {
       topBar: {
         title: {
           text: 'Notificações',
+          alignment: "center",
           color: Colors.snow
         },
         rightButtons: [

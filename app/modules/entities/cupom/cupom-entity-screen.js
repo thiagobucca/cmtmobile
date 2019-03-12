@@ -1,5 +1,5 @@
 import React from 'react'
-import { FlatList, Text, TouchableOpacity, View, ActivityIndicator} from 'react-native'
+import { FlatList, Text, TouchableOpacity, View, ActivityIndicator, Image} from 'react-native'
 import { List, ListItem, SearchBar, Icon } from 'react-native-elements';
 import { connect } from 'react-redux'
 import { Navigation } from 'react-native-navigation'
@@ -8,7 +8,7 @@ import CupomActions from './cupom.reducer'
 import LoginActions from '../../login/login.reducer'
 import styles from './cupom-entity-screen-style'
 import AlertMessage from '../../../shared/components/alert-message/alert-message'
-import { Colors } from '../../../shared/themes';
+import { Colors, Images } from '../../../shared/themes';
 import { TextInputMask } from 'react-native-masked-text'
 import moment from 'moment';
 
@@ -153,51 +153,71 @@ class CupomEntityScreen extends React.PureComponent {
 
   }
 
+  displayNoCupoms()
+  {
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <ActivityIndicator />
+  </View>
+  }
+
   render () {
-    if (this.state.updating || this.state.fetching) {
-      return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <ActivityIndicator />
-        </View>
-      );
-    }else
+    if(this.props.cupomUser != null && this.props.cupomUser.length == 0)
     {
       return (
-        <View style={styles.container} testID='cupomScreen'>
-          <FlatList
-            data={this.state.dataObjects}
-            renderItem={({ item }) => (
-              <ListItem
-                roundAvatar
-                onPress={cupomEntityDetailScreen.bind(this, { entityId: item.id })}
-                // title={`Data: ${item.data}`}
-                subtitle={
-                  <View style={styles.subtitleView}>
-                    <TextInputMask type={'money'} options={{ precision: 2, separator: ',', delimiter: '.', unit: 'R$', suffixUnit: '' }} editable={false} value={item.valor} style={styles.dateText}>
-                    </TextInputMask>
-                     <Text style={styles.ratingText}>Data: {moment.utc(item.data).format("DD/MM/YYYY")}
-                    </Text>
-                    <Text style={styles.ratingText}>Número: {item.numero}</Text>
-                  </View>
-                }
-                leftAvatar={{ source: { uri: item.foto } }}
-                // avatar={{ uri: item.telefone }}
-                containerStyle={{ borderBottomWidth: 0 }}
-                chevronColor="gray"
-                chevron
-              />
-            )}
-            onEndReached={this.handleLoadMore}
-            onEndThreshold={100}
-            keyExtractor={this.keyExtractor}
-            ItemSeparatorComponent={this.renderSeparator}
-            ListHeaderComponent={this.renderHeader}
-            ItemSeparatorComponent={this.renderSeparator}
-          />
-        </View>
-      )
-    }
+        <View style={styles.headerText}>
+        <Image source={Images.cupomVazio} style={[styles.topLogo, this.state.topLogo]} />
+        <Text style={[styles.emptyText]}></Text>
+        <Text style={[styles.emptyText]}> Você ainda não cadastrou Cupons.</Text>
+      </View>
+      );
 
+    }else
+    {
+      if (this.state.updating || this.state.fetching) {
+        return (
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <ActivityIndicator />
+          </View>
+        );
+      }else
+      {
+        return (
+          <View style={styles.container} testID='cupomScreen'>
+            <FlatList
+              data={this.state.dataObjects}
+              renderItem={({ item }) => (
+                <ListItem
+                  roundAvatar
+                  onPress={cupomEntityDetailScreen.bind(this, { entityId: item.id })}
+                  // title={`Data: ${item.data}`}
+                  subtitle={
+                    <View style={styles.subtitleView}>
+                      <TextInputMask type={'money'} options={{ precision: 2, separator: ',', delimiter: '.', unit: 'R$', suffixUnit: '' }} editable={false} value={item.valor} style={styles.dateText}>
+                      </TextInputMask>
+                       <Text style={styles.ratingText}>Data: {moment.utc(item.data).format("DD/MM/YYYY")}
+                      </Text>
+                      <Text style={styles.ratingText}>Número: {item.numero}</Text>
+                    </View>
+                  }
+                  leftAvatar={{ source: { uri: item.foto } }}
+                  // avatar={{ uri: item.telefone }}
+                  containerStyle={{ borderBottomWidth: 0 }}
+                  chevronColor="gray"
+                  chevron
+                />
+              )}
+              onEndReached={this.handleLoadMore}
+              onEndThreshold={100}
+              keyExtractor={this.keyExtractor}
+              ItemSeparatorComponent={this.renderSeparator}
+              ListHeaderComponent={this.renderHeader}
+              ItemSeparatorComponent={this.renderSeparator}
+            />
+          </View>
+        )
+      }
+
+    }
   }
 }
 

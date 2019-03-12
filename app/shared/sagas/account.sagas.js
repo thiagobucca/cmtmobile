@@ -13,7 +13,6 @@ export function * getAccount (api) {
     yield put(AccountActions.accountSuccess(response.data))
   } else {
     console.tron.log('Account - FAIL')
-    console.log('erro cadastro:',response)
     yield put(AccountActions.accountFailure('WRONG'))
   }
 }
@@ -30,7 +29,6 @@ export function * updateAccount (api, action) {
     yield put(AccountActions.accountUpdateSuccess())
   } else {
     console.tron.log('AccountUpdate - FAIL')
-    console.log('erro cadastro update:',response)
     yield put(AccountActions.accountUpdateFailure('WRONG'))
   }
 }

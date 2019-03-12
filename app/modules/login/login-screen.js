@@ -16,8 +16,8 @@ const { State: TextInputState } = TextInput;
 class LoginScreen extends React.Component {
   static propTypes = {
     dispatch: PropTypes.func,
-    fetching: PropTypes.bool,
-    attemptLogin: PropTypes.func
+    fetching: PropTypes.bool
+    //attemptLogin: PropTypes.func
   }
 
   constructor (props) {
@@ -67,7 +67,7 @@ class LoginScreen extends React.Component {
     if(username != '' && password != '')
     {
     // attempt a login - a saga is listening to pick it up from here.
-    this.props.attemptLogin(username, password)
+    //this.props.attemptLogin(username, password)
     }else
     {
       Alert.alert('Erro', 'Usuário ou Senha inválidos.', [{text: 'OK'}])
@@ -88,7 +88,7 @@ class LoginScreen extends React.Component {
   handlePressPassword = () => {
     const { username, password } = this.state
     // attempt a login - a saga is listening to pick it up from here.
-    this.props.attemptLogin(username, password)
+   // this.props.attemptLogin(username, password)
   }
   handlePressCancel = () => {
     this.props.logout()
@@ -286,7 +286,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    attemptLogin: (username, password) => dispatch(LoginActions.loginRequest(username, password)),
+    //attemptLogin: (username, password) => dispatch(LoginActions.loginRequest(username, password)),
     logout: () => dispatch(LoginActions.logoutRequest())
   }
 }

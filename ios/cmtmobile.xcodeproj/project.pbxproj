@@ -21,6 +21,8 @@
 		0D2D95622220B1B000DFFE33 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D2D95612220B1B000DFFE33 /* UIKit.framework */; };
 		0D2D95642220B1B700DFFE33 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D2D95632220B1B700DFFE33 /* SystemConfiguration.framework */; };
 		0D2D95652220B1C300DFFE33 /* libRCTOneSignal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D2D95422220B02700DFFE33 /* libRCTOneSignal.a */; };
+		0D8C8C6E2237F94100250D70 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D8C8C6D2237F94100250D70 /* Ionicons.ttf */; };
+		0D8C8C6F2237F97600250D70 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D2D954C2220B02700DFFE33 /* libRNVectorIcons.a */; };
 		11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
@@ -48,7 +50,6 @@
 		727AA61105DB496BB5674C8E /* libRCTOneSignal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B06F1E8825B4979B0347168 /* libRCTOneSignal.a */; };
 		7B81A69007964AB695A64FBE /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCF879DECD94108800920EC /* libReactNativeNavigation.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
-		8375A459E29A459F972CE791 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 087633D30AE54EF488C52CEC /* libRNVectorIcons.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		B0784B763C7E41208FB706A9 /* libimageCropPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FB8DE646C5D4C49AD903E76 /* libimageCropPicker.a */; };
 		D6D32AF81E9C4AE587480F1E /* libRNVectorIcons-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 425E82324FE44F3EB3BCA938 /* libRNVectorIcons-tvOS.a */; };
@@ -443,6 +444,7 @@
 		0D2D95612220B1B000DFFE33 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		0D2D95632220B1B700DFFE33 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		0D391502F6E740BFB380135A /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/native-base/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
+		0D8C8C6D2237F94100250D70 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		0DCF879DECD94108800920EC /* libReactNativeNavigation.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libReactNativeNavigation.a; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
@@ -513,6 +515,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D8C8C6F2237F97600250D70 /* libRNVectorIcons.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -526,7 +529,6 @@
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				0D296E8F22219FA70066D80E /* RSKImageCropper.framework in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
-				8375A459E29A459F972CE791 /* libRNVectorIcons.a in Frameworks */,
 				7B81A69007964AB695A64FBE /* libReactNativeNavigation.a in Frameworks */,
 				727AA61105DB496BB5674C8E /* libRCTOneSignal.a in Frameworks */,
 				F4B585FA75B84759AD8CBA49 /* libRNImgToBase64.a in Frameworks */,
@@ -755,6 +757,7 @@
 		13B07FAE1A68108700A75B9A /* cmtmobile */ = {
 			isa = PBXGroup;
 			children = (
+				0D8C8C6D2237F94100250D70 /* Ionicons.ttf */,
 				0D2D954F2220B04600DFFE33 /* cmtmobile.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -1008,7 +1011,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 7ARU5X2U77;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1482,6 +1485,7 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				0D8C8C6E2237F94100250D70 /* Ionicons.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1752,11 +1756,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = cmtmobile/cmtmobile.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 12;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 7ARU5X2U77;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
@@ -1777,7 +1781,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.cmtuberlandia;
 				PRODUCT_NAME = cmtmobile;
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = com.cmtuberlandia;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1788,9 +1792,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = cmtmobile/cmtmobile.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 12;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 7ARU5X2U77;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
@@ -1811,7 +1815,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.cmtuberlandia;
 				PRODUCT_NAME = cmtmobile;
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "CMT Uberlandia Profile";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

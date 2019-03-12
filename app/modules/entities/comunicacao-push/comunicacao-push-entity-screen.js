@@ -1,13 +1,15 @@
 import React from 'react'
-import { View, Text, FlatList, ActivityIndicator, TouchableOpacity, Image } from 'react-native'
+import { View, Text, FlatList, ActivityIndicator, TouchableOpacity, Image, BackHandler, Platform } from 'react-native'
 import { List, ListItem, SearchBar, Icon } from 'react-native-elements';
 import { connect } from 'react-redux'
 import { Navigation } from 'react-native-navigation'
 import { comunicacaoPushEntityDetailScreen, comunicacaoPushEntityEditScreen } from '../../../navigation/layouts'
 import ComunicacaoPushActions from './comunicacao-push.reducer'
+import LoginActions from '../../login/login.reducer'
 import styles from './comunicacao-push-entity-screen-style'
 import AlertMessage from '../../../shared/components/alert-message/alert-message'
 import { Colors, Images } from '../../../shared/themes';
+import loginScreen from '../../login/login-screen';
 
 // More info here: https://facebook.github.io/react-native/docs/flatlist.html
 
@@ -31,6 +33,7 @@ class ComunicacaoPushEntityScreen extends React.PureComponent {
       data: [],
       error: null,
       search: '',
+      account: []
     }
     lastTimeout = setTimeout;
     this.arrayholder = [];
@@ -165,14 +168,25 @@ class ComunicacaoPushEntityScreen extends React.PureComponent {
   };
 
   ListEmpty = () => {
-    return (
-      //View to show when list is empty
-      <View style={styles.headerText}>
-      <Image source={Images.vazio} style={[styles.topLogo, this.state.topLogo]} />
-      <Text style={[styles.emptyText]}> Não foram encontrados registros.</Text>
-    </View>
-    );
-  };
+    console.log("state vazio",this.state)
+    if(this.state.dataObjects != null && this.state.dataObjects.length == 0)
+    {
+      return (
+        //View to show when list is empty
+        <View style={styles.container}>
+        <Image source={Images.vazio} style={[styles.topLogo, this.state.topLogo]} />
+        <Text style={[styles.emptyText]}> Não foram encontrados registros.</Text>
+      </View>
+      );
+    }else
+    {
+      return (
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <ActivityIndicator />
+        </View>
+      );
+    }
+    }
 
   searchFilterFunction = text => {
     if(this.arrayholder != null && this.arrayholder.length > 0)
@@ -208,9 +222,18 @@ class ComunicacaoPushEntityScreen extends React.PureComponent {
   handleSearchClear = () => this.handleQueryChange(""); // maybe differentiate between cancel and clear
 
   render () {
-    console.log(this.state,'push log')
+    console.log(this.props,'push logeee')
     const { search } = this.state;
-    if (this.state.loading) {
+
+    if (!this.props.account)
+    {
+      this.props.logout()
+      Navigation.popToRoot(this.props.componentId)
+      // BackHandler.addEventListener('hardwareBackPress', () => {
+      //   this.hideSideMenu()
+      // })
+    }
+    if (!this.state.done) {
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <ActivityIndicator />
@@ -218,50 +241,66 @@ class ComunicacaoPushEntityScreen extends React.PureComponent {
       );
     }else
     {
-      return (
-        <View style={styles.container} testID='comunicacaoPushScreen'>
-         <SearchBar inputStyle={{backgroundColor: 'white'}} inputContainerStyle={{backgroundColor: 'white'}}
-      containerStyle={{backgroundColor: 'white'}} leftIconContainerStyle={{backgroundColor: 'white'}}
-        placeholder="Pesquisar Notificação"
-        onChangeText={this.updateSearch}
-          //         onChangeText={ (text) => {
-          //     clearTimeout(this.lastTimeout);
-          //     this.lastTimeout = setTimeout(() => {this.searchFilterFunction(search)} ,1000)
-          // } }
-        value={search}
-        lightTheme
-        cancelButtonTitle='Cancelar'
-        round
-      />
-          <FlatList
-            data={this.state.dataObjects}
-            renderItem={({ item }) => (
-              <ListItem
-                roundAvatar
-                // onPress={estabelecimentoComercialEntityDetailScreen.bind(this, { entityId: item.id })}
-                title={`${item.titulo}`}
-                subtitle={
-                  <View style={styles.subtitleView}>
-                    <Text style={styles.ratingText}>{item.conteudoPush}</Text>
-                    <Text style={styles.ratingText}>{item.subTitulo ? item.subTitulo : ""}</Text>
-                  </View>
-                }
-                leftAvatar={{ source: { uri: "https://camo.githubusercontent.com/db9645b6605609aee21bd1472056fae607583f89/68747470733a2f2f636c6475702e636f6d2f556861626261304962642d3330303078333030302e706e67" } }}
-                // avatar={{ uri: item.telefone }}
-                containerStyle={{ borderBottomWidth: 0 }}
-                // chevronColor="gray"
-                // chevron
-              />
-            )}
-            onEndReached={this.handleLoadMore}
-            onEndThreshold={100}
-            keyExtractor={this.keyExtractor}
-            ItemSeparatorComponent={this.renderSeparator}
-            ListHeaderComponent={this.renderHeader}
-            // ListEmptyComponent={this.ListEmpty}
-          />
+      if(this.props.comunicacaoPushes != null && this.props.comunicacaoPushes.length == 0)
+      {
+        return (
+          <View style={styles.headerText}>
+          <Image source={Images.pushVazio} style={[styles.topLogo, this.state.topLogo]} />
+          <Text style={[styles.emptyText]}></Text>
+          <Text style={[styles.emptyText]}> Você ainda não tem notificações.</Text>
         </View>
-      )
+        );
+
+      }else
+      {
+        return (
+          <View style={styles.container} testID='comunicacaoPushScreen'>
+           <SearchBar inputStyle={{backgroundColor: 'white'}} inputContainerStyle={{backgroundColor: 'white'}}
+        containerStyle={{backgroundColor: 'white'}} leftIconContainerStyle={{backgroundColor: 'white'}}
+          placeholder="Pesquisar Notificação"
+          onChangeText={this.updateSearch}
+            //         onChangeText={ (text) => {
+            //     clearTimeout(this.lastTimeout);
+            //     this.lastTimeout = setTimeout(() => {this.searchFilterFunction(search)} ,1000)
+            // } }
+          value={search}
+          platform= {Platform.OS === 'ios' ? 'ios' : 'android'}
+          lightTheme
+          cancelButtonTitle=''
+          round
+        />
+            <FlatList
+              data={this.state.dataObjects}
+              renderItem={({ item }) => (
+                <ListItem
+                  roundAvatar
+                  // onPress={estabelecimentoComercialEntityDetailScreen.bind(this, { entityId: item.id })}
+                  title={`${item.titulo}`}
+                  subtitle={
+                    <View style={styles.subtitleView}>
+                      <Text style={styles.ratingText}>{item.conteudoPush}</Text>
+                      <Text style={styles.ratingText}>{item.subTitulo ? item.subTitulo : ""}</Text>
+                    </View>
+                  }
+                  leftAvatar={{ source: { uri: "https://camo.githubusercontent.com/db9645b6605609aee21bd1472056fae607583f89/68747470733a2f2f636c6475702e636f6d2f556861626261304962642d3330303078333030302e706e67" } }}
+                  // avatar={{ uri: item.telefone }}
+                  containerStyle={{ borderBottomWidth: 0 }}
+                  // chevronColor="gray"
+                  // chevron
+                />
+              )}
+              onEndReached={this.handleLoadMore}
+              onEndThreshold={100}
+              keyExtractor={this.keyExtractor}
+              ItemSeparatorComponent={this.renderSeparator}
+              ListHeaderComponent={this.renderHeader}
+              ListEmptyComponent={this.ListEmpty}
+            />
+          </View>
+        )
+
+      }
+
     }
 
   }
@@ -274,13 +313,15 @@ const mapStateToProps = (state) => {
     // ...redux state to props here
     comunicacaoPushes: state.comunicacaoPushes.comunicacaoPushes,
     fetching: state.comunicacaoPushes.fetchingAll,
-    error: state.comunicacaoPushes.errorAll
+    error: state.comunicacaoPushes.errorAll,
+    account: state.account.account
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getAllComunicacaoPushes: (options) => dispatch(ComunicacaoPushActions.comunicacaoPushAllRequest(options))
+    getAllComunicacaoPushes: (options) => dispatch(ComunicacaoPushActions.comunicacaoPushAllRequest(options)),
+    logout: () => dispatch(LoginActions.logoutRequest())
   }
 }
 

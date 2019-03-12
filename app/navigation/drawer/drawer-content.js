@@ -86,7 +86,6 @@ class DrawerContent extends Component {
   }
 
   render () {
-    console.log("props do drawer",this.props)
     return (
       <ScrollView style={styles.container}>
         {/* <Image testID='drawerLogo' source={Images.logoJhipster} style={styles.logo} /> */}

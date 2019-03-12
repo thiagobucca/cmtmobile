@@ -49,7 +49,7 @@ class CupomEntityEditScreen extends React.Component {
                 format: 'DD/MM/YYYY'
               },
             },
-            error: 'Preencha a Data de Nascimento.',
+            error: 'Preencha a Data do Cupom.',
             onSubmitEditing: () => this.refs.form.getComponent('valor').refs.input._inputElement.focus(),
             testID: 'dataInput'
           },
@@ -74,6 +74,7 @@ class CupomEntityEditScreen extends React.Component {
           },
           estabelecimentoComercialId: {
             returnKeyType: 'done',
+            order: 'asc',
             placeholder: 'Selecione',
             label: 'Estabelecimento Comercial',
             i18n: {
@@ -115,7 +116,7 @@ class CupomEntityEditScreen extends React.Component {
 
   componentWillMount () {
 
-      this.props.getAllEstabelecimentoComercials()
+     this.props.getAllEstabelecimentoComercials()
 
     if (this.props.data.entityId) {
       this.props.getCupom(this.props.data.entityId)
@@ -171,6 +172,11 @@ class CupomEntityEditScreen extends React.Component {
         Alert.alert('Success', 'Cupom enviado com sucesso.', alertOptions)
       }
     }
+
+    if(this.props.estabelecimentoComercials != null && this.props.estabelecimentoComercials.lenght == 0)
+    {
+      this.getEstabelecimentoComercials()
+    }
   }
 
   // convenience methods for customizing the mapping of the entity to/from the form value
@@ -206,23 +212,45 @@ class CupomEntityEditScreen extends React.Component {
 
       const cupom = this.state.formValue
 
+      console.log(cupom, "log cupom")
       if(cupom)
       {
 
         if(cupom.data == null || cupom.data == '' || cupom.data.length != 10)
         {
-          Alert.alert('Erro', 'Data de nascimento inválida.', [{text: 'OK'}])
+          Alert.alert('Erro', 'Data do Cupom inválida.', [{text: 'OK'}])
           return
         }
         if(!moment(cupom.data, 'DD-MM-YYYY').isValid())
         {
-          Alert.alert('Erro', 'Data de nascimento inválida.', [{text: 'OK'}])
+          Alert.alert('Erro', 'Data do Cupom inválida.', [{text: 'OK'}])
           return
         }
 
         if(cupom.valor == '')
         {
           Alert.alert('Erro', 'Valor inválido', [{text: 'OK'}])
+          return
+
+        }
+
+        if(cupom.estabelecimentoComercialId == null || cupom.estabelecimentoComercialId == '')
+        {
+          Alert.alert('Erro', 'Favor selecionar um estabelecimento.', [{text: 'OK'}])
+          return
+
+        }
+
+        if(cupom.numero == null || cupom.numero == '')
+        {
+          Alert.alert('Erro', 'Favor selecionar o número do cupom.', [{text: 'OK'}])
+          return
+
+        }
+
+        if(cupom.foto == null || cupom.foto == '')
+        {
+          Alert.alert('Erro', 'Favor informar a imagem do cupom.', [{text: 'OK'}])
           return
 
         }
@@ -234,7 +262,6 @@ class CupomEntityEditScreen extends React.Component {
       let foto = ImgToBase64.getBase64String('file://' + cupom.foto)
     .then(base64String => {
       foto = base64String
-    //  cupom.foto = foto.replace("/9/", "")
       cupom.foto = foto
       cupom.fotoContentType = "image/png"
       cupom.usuarioId = this.props.account.id

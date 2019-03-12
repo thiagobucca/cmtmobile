@@ -73,8 +73,8 @@ export default StyleSheet.create({
   topLogo: {
     alignSelf: 'center',
     resizeMode: 'contain',
-    height: Metrics.images.logo,
-    width: Metrics.images.logo,
+    // height: Metrics.images.logo,
+    // width: Metrics.images.logo,
     marginBottom: 15
   },
   container: {
@@ -131,6 +131,13 @@ export default StyleSheet.create({
     alignItems: 'center',
     marginBottom:20,
     width:250,
+    borderRadius:5,
+  },
+  storeContainer: {
+    // height:45,
+    justifyContent: 'center',
+    alignItems: 'center',
+    // marginBottom:20,
     borderRadius:5,
   },
   loginButton: {

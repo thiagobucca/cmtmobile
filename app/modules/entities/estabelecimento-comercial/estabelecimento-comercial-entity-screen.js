@@ -196,6 +196,7 @@ class EstabelecimentoComercialEntityScreen extends React.Component {
   // )}
 
   fetchEstabelecimentoComercials = () => {
+
     this.props.getAllEstabelecimentoComercials({ page: this.state.page, sort: this.state.sort, size: this.state.size })
   }
 
@@ -231,69 +232,83 @@ class EstabelecimentoComercialEntityScreen extends React.Component {
   }
 
   ListEmpty = () => {
-    return (
-      //View to show when list is empty
-      <View style={styles.headerText}>
-      <Image source={Images.vazio} style={[styles.topLogo, this.state.topLogo]} />
-      <Text style={[styles.emptyText]}> Não foram encontrados registros.</Text>
-    </View>
-    );
-  };
-
-  render () {
-    const { search } = this.state;
-    if (this.state.loading) {
+    console.log("state vazio",this.state)
+    if(this.state.dataObjects != null && this.state.dataObjects.length == 0)
+    {
+      return (
+        //View to show when list is empty
+        <View style={styles.container}>
+        <Image source={Images.vazio} style={[styles.topLogo, this.state.topLogo]} />
+        <Text style={[styles.emptyText]}> Não foram encontrados registros.</Text>
+      </View>
+      );
+    }else
+    {
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <ActivityIndicator />
         </View>
       );
     }
-    return (
-      <View style={styles.container} testID='estabelecimentoComercialScreen'>
-       <SearchBar inputStyle={{backgroundColor: 'white'}} inputContainerStyle={{backgroundColor: 'white'}}
-    containerStyle={{backgroundColor: 'white'}} leftIconContainerStyle={{backgroundColor: 'white'}}
-      placeholder="Pesquisar Estabelecimento"
-      onChangeText={this.updateSearch}
-        //         onChangeText={ (text) => {
-        //     clearTimeout(this.lastTimeout);
-        //     this.lastTimeout = setTimeout(() => {this.searchFilterFunction(search)} ,1000)
-        // } }
-      value={search}
-      lightTheme
-      cancelButtonTitle='Cancelar'
-      round
-    />
-        <FlatList
-          data={this.state.dataObjects}
-          renderItem={({ item }) => (
-            <ListItem
-              roundAvatar
-              // onPress={estabelecimentoComercialEntityDetailScreen.bind(this, { entityId: item.id })}
-              title={`${item.nome}`}
-              subtitle={
-                <View style={styles.subtitleView}>
-                  <Text style={styles.ratingText}>{item.endereco}</Text>
-                  <TextInputMask type={'cel-phone'} options={{   maskType: 'BRL', withDDD: true, dddMask: '(99) ' }} value={item.telefone} editable={false} style={styles.ratingText}>
-                  </TextInputMask>
-                </View>
-              }
-              leftAvatar={{ source: { uri: item.logo ? item.logo : "http://cmtweb.ddns.net/resources/store.png" } }}
-              // avatar={{ uri: item.telefone }}
-              containerStyle={{ borderBottomWidth: 0 }}
-              // chevronColor="gray"
-              // chevron
-            />
-          )}
-          onEndReached={this.handleLoadMore}
-          onEndThreshold={100}
-          keyExtractor={this.keyExtractor}
-          ItemSeparatorComponent={this.renderSeparator}
-          ListHeaderComponent={this.renderHeader}
-          ListEmptyComponent={this.ListEmpty}
-        />
-      </View>
-    )
+    }
+  render () {
+    console.log("state render",this.state)
+    const { search } = this.state;
+    if (!this.state.done) {
+      return (
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <ActivityIndicator />
+        </View>
+      );
+    }else
+    {
+      return (
+        <View style={styles.container} testID='estabelecimentoComercialScreen'>
+         <SearchBar inputStyle={{backgroundColor: 'white'}} inputContainerStyle={{backgroundColor: 'white'}}
+      containerStyle={{backgroundColor: 'white'}} leftIconContainerStyle={{backgroundColor: 'white'}}
+        placeholder="Pesquisar Estabelecimento"
+        onChangeText={this.updateSearch}
+          //         onChangeText={ (text) => {
+          //     clearTimeout(this.lastTimeout);
+          //     this.lastTimeout = setTimeout(() => {this.searchFilterFunction(search)} ,1000)
+          // } }
+        value={search}
+        platform= {Platform.OS === 'ios' ? 'ios' : 'android'}
+        lightTheme
+        cancelButtonTitle=''
+        round
+      />
+          <FlatList
+            data={this.state.dataObjects}
+            renderItem={({ item }) => (
+              <ListItem
+                roundAvatar
+                // onPress={estabelecimentoComercialEntityDetailScreen.bind(this, { entityId: item.id })}
+                title={`${item.nome}`}
+                subtitle={
+                  <View style={styles.subtitleView}>
+                    <Text style={styles.ratingText}>{item.endereco}</Text>
+                    <TextInputMask type={'cel-phone'} options={{   maskType: 'BRL', withDDD: true, dddMask: '(99) ' }} value={item.telefone} editable={false} style={styles.ratingText}>
+                    </TextInputMask>
+                  </View>
+                }
+                leftAvatar={{ source: { uri: item.logo ? item.logo : "http://cmtweb.ddns.net/resources/store.png" } }}
+                // avatar={{ uri: item.telefone }}
+                containerStyle={{ borderBottomWidth: 0 }}
+                // chevronColor="gray"
+                // chevron
+              />
+            )}
+            onEndReached={this.handleLoadMore}
+            onEndThreshold={100}
+            keyExtractor={this.keyExtractor}
+            ItemSeparatorComponent={this.renderSeparator}
+            ListHeaderComponent={this.renderHeader}
+            ListEmptyComponent={this.ListEmpty}
+          />
+        </View>
+      )
+    }
   }
 }
 

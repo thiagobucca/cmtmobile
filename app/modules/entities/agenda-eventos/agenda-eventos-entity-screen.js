@@ -52,6 +52,11 @@ class AgendaEventoEntityScreen extends React.PureComponent {
    //this.agenda.chooseDay('2019-01-07')
   }
 
+  componentDidMount()
+  {
+    this.fetchAgendaEventos()
+  }
+
 
   disableUnmarkedDays(day) {
     if(!this.state.items[day.dateString])

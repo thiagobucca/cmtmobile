@@ -22,8 +22,6 @@ let Form = t.form.Form
 class RegisterScreen extends React.Component {
   constructor (props) {
     super(props)
-    //let template = MaskedInputTemplate
-   // Form.template = template
     OneSignal.init("1ee29f2c-4652-4629-ab1e-1d016cfad22e")
     OneSignal.addEventListener('received', this.onReceived);
     OneSignal.addEventListener('opened', this.onOpened);
@@ -61,6 +59,7 @@ class RegisterScreen extends React.Component {
           },
           lojaMaconicaId: {
             returnKeyType: 'done',
+            order: 'asc',
             hidden: true,
             label: 'Loja',
             i18n: {
@@ -140,6 +139,7 @@ class RegisterScreen extends React.Component {
         }
       },
       success: false,
+      creating: false,
       account: {},
       jasper:{}
     }
@@ -177,7 +177,8 @@ class RegisterScreen extends React.Component {
 
 
     this.setState({
-      updating: true
+      updating: true,
+      creating: true
     })
 
        const value = this.refs.form.getValue()
@@ -187,8 +188,11 @@ class RegisterScreen extends React.Component {
       //   return
       // }
       if (value.email != '') {
+        const mail = value.email.trim()
+        console.log("trimmail",mail)
         const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-           if (reg.test(value.email) === false){
+        console.log
+           if (reg.test(mail) === false){
             Alert.alert('Erro', 'O Email digitado é inválido.', [{text: 'OK'}])
             return
            }
@@ -211,61 +215,47 @@ class RegisterScreen extends React.Component {
 
     const user = this.refs.form.getValue()
     let jasper = {...this.state.formValue};
-    //jasper.dataNascimento = moment.utc(user.dataNascimento).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-    //Alert.alert('Erro Antes Moment Data', user.dataNascimento, [{text: 'OK'}])
     jasper.dataNascimento = moment(moment(user.dataNascimento, 'DD/MM/YYYY')).format("YYYY-MM-DDTHH:mm:ss.SSS").concat("Z")
-    //Alert.alert('Erro Data', jasper.dataNascimento, [{text: 'OK'}])
     jasper.telefone = user.telefone.replace('(','').replace(')','').replace('-','').replace(" ","","g")
     jasper.deviceId = this.state.account.deviceId
     jasper.confirmPassword = jasper.password
+    jasper.email = jasper.email.trim()
     this.setState({jasper});
     this.setState({
       success: false,
       requesting: true
     })
-    console.log('jasper',this.state.jasper)
+
     if (user) { // if validation fails, value will be null
 
-      console.log('request',jasper)
-        let x = this.props.register(jasper)
-         debugger;
         if(this.props.error != null && this.props.error.errorKey != null)
         {
 
-          if(this.props.error.errorKey == "idexists")
-          {
-            Alert.alert('Erro', 'Não foi encontrado Maçom para o Placet informado.', [{text: 'OK'}])
-            return
-          }
+          // if(this.props.error.errorKey == "idexists")
+          // {
+          //   Alert.alert('Erro', 'Não foi encontrado Maçom para o Placet informado.', [{text: 'OK'}])
+          //   return
+          // }
 
-          if(this.props.error.errorKey == "userexists")
-          {
-            Alert.alert('Erro', 'Nome de usuário existente.', [{text: 'OK'}])
-            return
-          }
+          // if(this.props.error.errorKey == "userexists")
+          // {
+          //   Alert.alert('Erro', 'Nome de usuário existente.', [{text: 'OK'}])
+          //   return
+          // }
 
-          if(this.props.error.errorKey == "emailexists")
-          {
-            Alert.alert('Erro', 'Email existente.', [{text: 'OK'}])
-            return
-          }
+          // if(this.props.error.errorKey == "emailexists")
+          // {
+          //   Alert.alert('Erro', 'Email existente.', [{text: 'OK'}])
+          //   return
+          // }
 
         }
 
-
-
-        console.log(x,"retorno metodo")
-        console.log(this.state, "retorno state")
-        console.log(this.props, "retorno props")
       this.setState({
         success: true,
-        fetching: false,
-        formValue: { id: null }
+        fetching: false
       })
-      Navigation.popToRoot(this.props.componentId)
-      Alert.alert('Cadastro realizado com Sucesso!', 'Verifique seu e-mail.', [{text: 'OK'}])
-
-
+      this.props.register(jasper)
     }else
     {
       Alert.alert('Atenção', 'Verifique as informações e tente novamente.', [{text: 'Erro'}])
@@ -301,28 +291,62 @@ class RegisterScreen extends React.Component {
 
   componentWillReceiveProps (newProps) {
 
-
-  //   console.log(newProps, 'log props')
-  //   console.log(this.state, 'log props')
-  //  if (!newProps.fetching) {
-  //     if (newProps.error) {
-  //       Alert.alert('Erro', newProps.error, [{text: 'OK'}])
-  //     } else if(!newProps.fetching) {
-  //      console.log("sucesso")
-  //       this.setState({
-  //         success: true
-  //       })
-  //       Navigation.popToRoot(this.props.componentId)
-  //       Alert.alert('Cadastro realizado3 com Sucesso!', 'Verifique seu e-mail.', [{text: 'OK'}])
+    if(this.props.lojaMaconicas != null && this.props.lojaMaconicas.lenght == 0)
+    {
+      this.getLojaMaconicas()
+    }
 
 
-  //     }
-  //  }
+     console.log(newProps, 'newprops')
+
+
+    if (!newProps.fetching && this.state.creating == true) {
+
+      this.setState({
+        creating : false
+      })
+
+      if (newProps.error) {
+
+        if(newProps.error.errorKey == "placetexists")
+        {
+          Alert.alert('Erro', 'Placet já cadastrado.', [{text: 'OK'}])
+          return
+        }
+
+        if(newProps.error.errorKey == "idexists")
+        {
+          Alert.alert('Erro', 'Não foi encontrado Maçom para o Placet informado.', [{text: 'OK'}])
+          return
+        }
+
+        if(newProps.error.errorKey == "userexists")
+        {
+          Alert.alert('Erro', 'Nome de usuário existente.', [{text: 'OK'}])
+          return
+        }
+
+        if(newProps.error.errorKey == "emailexists")
+        {
+          Alert.alert('Erro', 'Email existente.', [{text: 'OK'}])
+          return
+        }
+      } else{
+
+        Navigation.popToRoot(this.props.componentId)
+        Alert.alert('Cadastro realizado com Sucesso!', '', [{text: 'OK'}])
+
+      }
+    }
+
   }
 
   componentWillMount () {
 
+console.log(this.state,'logstate')
+console.log(this.props,'logprops')
 
+console.log(this.props,'logprops depois')
     //console.log("vai logar lojas maconicas")
     this.props.getAllLojaMaconicas()
     //this.props.getAllUsuarios()
@@ -337,7 +361,6 @@ class RegisterScreen extends React.Component {
     const lojaMaconicas = {}
     this.props.lojaMaconicas.forEach(lojaMaconica => {
 
-     console.log(lojaMaconica)
       lojaMaconicas[lojaMaconica.id] = lojaMaconica.nome ? lojaMaconica.nome.toString() : lojaMaconica.nome.toString()
     })
 
