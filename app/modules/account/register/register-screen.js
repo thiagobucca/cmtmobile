@@ -1,5 +1,5 @@
 import React from 'react'
-import { Alert, ScrollView, Text, TouchableHighlight } from 'react-native'
+import { Alert, ScrollView, Text, TouchableHighlight, View, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
 import LojaMaconicaActions from './../../entities/loja-maconica/loja-maconica.reducer'
 import RegisterActions from '../register/register.reducer'
@@ -189,15 +189,13 @@ class RegisterScreen extends React.Component {
       // }
       if (value.email != '') {
         const mail = value.email.trim()
-        console.log("trimmail",mail)
         const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        console.log
            if (reg.test(mail) === false){
             Alert.alert('Erro', 'O Email digitado é inválido.', [{text: 'OK'}])
             return
            }
       }
-      console.log(value,'log value')
+
       if ((value.lojaMaconicaId == null || value.lojaMaconicaId == '') && value.tipoPessoa == 'Macom') {
         // const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         //    if (reg.test(value.email) === false){
@@ -297,7 +295,7 @@ class RegisterScreen extends React.Component {
     }
 
 
-     console.log(newProps, 'newprops')
+
 
 
     if (!newProps.fetching && this.state.creating == true) {
@@ -343,10 +341,7 @@ class RegisterScreen extends React.Component {
 
   componentWillMount () {
 
-console.log(this.state,'logstate')
-console.log(this.props,'logprops')
 
-console.log(this.props,'logprops depois')
     //console.log("vai logar lojas maconicas")
     this.props.getAllLojaMaconicas()
     //this.props.getAllUsuarios()
@@ -385,23 +380,35 @@ console.log(this.props,'logprops depois')
 
 
   render () {
+    console.log(this.props.lojaMaconicas, "lojasmaconicas")
+    console.log(this.state, "state")
+    if (this.state.fetching || this.props.lojaMaconicas.length == 0) {
+      return (
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <ActivityIndicator />
+        </View>
+      );
+    }else
+    {
+      return (
+        <KeyboardAwareScrollView>
+          <ScrollView style={styles.container}>
+            <Form
+              ref='form'
+              type={this.state.formModel}
+              options={this.state.formOptions}
+              value={this.state.formValue}
+              onChange={this.onChange}
+            />
+            <TouchableHighlight style={styles.button} onPress={this.submitUpdate} underlayColor='#99d9f4'>
+              <Text style={styles.buttonText}>Cadastrar</Text>
+            </TouchableHighlight>
+          </ScrollView>
+        </KeyboardAwareScrollView>
+      )
 
-    return (
-      <KeyboardAwareScrollView>
-        <ScrollView style={styles.container}>
-          <Form
-            ref='form'
-            type={this.state.formModel}
-            options={this.state.formOptions}
-            value={this.state.formValue}
-            onChange={this.onChange}
-          />
-          <TouchableHighlight style={styles.button} onPress={this.submitUpdate} underlayColor='#99d9f4'>
-            <Text style={styles.buttonText}>Cadastrar</Text>
-          </TouchableHighlight>
-        </ScrollView>
-      </KeyboardAwareScrollView>
-    )
+    }
+
   }
 }
 

@@ -9,6 +9,7 @@ import { cupomEntityEditScreen } from '../../../navigation/layouts'
 import CupomActions from './cupom.reducer'
 import RoundedButton from '../../../shared/components/rounded-button/rounded-button'
 import styles from './cupom-entity-detail-screen-style'
+import moment from 'moment';
 
 class CupomEntityDetailScreen extends React.Component {
   constructor (props) {
@@ -32,7 +33,7 @@ class CupomEntityDetailScreen extends React.Component {
 
     if (this.state.deleting && newProps.deleting === false) {
       if (!newProps.errorDeleting) {
-        this.props.getAllCupoms()
+        this.props.getCupomByUser({ page: this.state.page, sort: this.state.sort, size: this.state.size, usuario_id: this.props.account.id })
         Navigation.pop(this.props.componentId)
       } else {
         Alert.alert('Error', 'Something went wrong deleting the entity', [{text: 'OK'}])
@@ -102,7 +103,7 @@ render () {
   Numero: {this.state.cupom.numero > 0 ? this.state.cupom.numero : "Não Informado"}
   </Text>
   <Text style={{marginBottom: 10}}>
-  Data: {this.state.cupom.data}
+  Data: {moment.utc(this.state.cupom.data).format("DD/MM/YYYY")}
   </Text>
   <RoundedButton text='Deletar' onPress={this.confirmDelete} />
 </Card>
@@ -113,6 +114,8 @@ render () {
 const mapStateToProps = (state) => {
   return {
     cupom: state.cupoms.cupom,
+    account: state.account.account,
+    cupomUser: state.cupoms.cupomUser,
     deleting: state.cupoms.deleting,
     errorDeleting: state.cupoms.errorDeleting
   }
@@ -121,7 +124,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getCupom: (id) => dispatch(CupomActions.cupomRequest(id)),
-    getAllCupoms: (options) => dispatch(CupomActions.cupomAllRequest(options)),
+   // getAllCupoms: (options) => dispatch(CupomActions.cupomAllRequest(options)),
+    getCupomByUser: (id) => dispatch(CupomActions.cupomUserRequest(id)),
     deleteCupom: (id) => dispatch(CupomActions.cupomDeleteRequest(id))
   }
 }

@@ -104,7 +104,7 @@ class CupomEntityScreen extends React.PureComponent {
 
   fetchCupomsbyId = (id) => {
 
-  this.props.getCupomByUser({ page: this.state.page, sort: this.state.sort, size: this.state.size, usuario_id: id })
+  this.props.getCupomByUser({ page: this.state.page, sort: this.state.sort, size: this.state.size, usuario_id: id, status: 'Ativo' })
 
   }
 

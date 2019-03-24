@@ -7,13 +7,14 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { cupomEntityDetailScreen } from '../../../navigation/layouts'
 import EstabelecimentoComercialActions from './../../entities/estabelecimento-comercial/estabelecimento-comercial.reducer'
 
-import t from 'tcomb-form-native'
+
 import { TextInputMask } from 'react-native-masked-text'
 import maskedInputTemplate from '../../../../node_modules/tcomb-form-native/lib/templates/MaskedInputTemplate/MaskedInputTemplate'
 import ImageFactory from 'react-native-image-picker-form'
 import ImgToBase64 from 'react-native-image-base64';
 import moment from 'moment';
 
+import t from 'tcomb-form-native'
 import styles from './cupom-entity-edit-screen-style'
 
 let Form = t.form.Form
@@ -23,17 +24,16 @@ class CupomEntityEditScreen extends React.Component {
     super(props)
     Navigation.events().bindComponent(this)
     this.state = {
-      updating: props.data.entityId !== null && props.data.entityId !== undefined,
       formModel: t.struct({
-        id: t.Number,
+        id: t.maybe(t.Number),
         data: t.String,
         valor: t.String,
         estabelecimentoComercialId: this.getEstabelecimentoComercials(),
         numero: t.maybe(t.String),
         foto: t.String,
-        usuarioId: t.Number
+        usuarioId: t.maybe(t.Number)
       }),
-      formValue: { id: null},
+      formValue: { id: null, data: null, valor: null, estabelecimentoComercialId: null, numero: null, foto: null, usuarioId: null },
       formOptions: {
         fields: {
           id: {
@@ -107,7 +107,9 @@ class CupomEntityEditScreen extends React.Component {
         }
       },
       success: false,
-      cupom: {}
+      creating: false,
+      cupom: {},
+      jasper:{}
     }
 
     this.submitForm = this.submitForm.bind(this)
@@ -118,18 +120,18 @@ class CupomEntityEditScreen extends React.Component {
 
      this.props.getAllEstabelecimentoComercials()
 
-    if (this.props.data.entityId) {
-      this.props.getCupom(this.props.data.entityId)
-    } else {
-       this.setState({formValue: { id: null }})
-    }
+    // if (this.props.data.entityId) {
+    //   this.props.getCupom(this.props.data.entityId)
+    // } else {
+    //    this.setState({formValue: { id: null }})
+    // }
   }
 
   getEstabelecimentoComercials = () => {
 
     const estabelecimentoComercials = {}
     this.props.estabelecimentoComercials.forEach(estabelecimentoComercial => {
-     console.log(estabelecimentoComercial)
+
      estabelecimentoComercials[estabelecimentoComercial.id] = estabelecimentoComercial.nome ? estabelecimentoComercial.nome.toString() : estabelecimentoComercial.nome.toString()
     })
 
@@ -142,19 +144,32 @@ class CupomEntityEditScreen extends React.Component {
         formValue: this.entityToFormValue(newProps.cupom)
       })
     }
+    console.log("log das newprops",newProps)
+
+    if(this.props.estabelecimentoComercials != null && this.props.estabelecimentoComercials.lenght == 0)
+    {
+      this.getEstabelecimentoComercials()
+    }
 
     // Did the update attempt complete?
-    if (!newProps.updating && this.state.requesting) {
+
+    if (!newProps.fetching && this.state.creating == true) {
+
+      this.setState({
+        creating : false
+      })
+
       if (newProps.error) {
-        Alert.alert('Erro', 'Cupom já cadastrado.', [{text: 'OK'}])
-        this.setState({
-          success: false,
-          requesting: false,
-          updating: false
-        })
+        console.log("error log",newProps.error)
+        Alert.alert('Erro', newProps.error.title, [{text: 'OK'}])
+       // return
       }
       else {
-        this.props.getAllCupoms({page: 0, sort: 'id,asc', size: 20})
+
+        this.setState({
+          success: true,
+          fetching: false
+        })
         const entityId = newProps.cupom.id
         const alertOptions = [{ text: 'OK' }]
         if (!this.state.formValue.id) {
@@ -163,19 +178,9 @@ class CupomEntityEditScreen extends React.Component {
             onPress: cupomEntityDetailScreen.bind(this, { entityId })
           })
         }
-        this.setState({
-          success: true,
-          requesting: false,
-          formValue: { id: null }
-        })
         Navigation.pop(this.props.componentId)
         Alert.alert('Success', 'Cupom enviado com sucesso.', alertOptions)
       }
-    }
-
-    if(this.props.estabelecimentoComercials != null && this.props.estabelecimentoComercials.lenght == 0)
-    {
-      this.getEstabelecimentoComercials()
     }
   }
 
@@ -210,92 +215,89 @@ class CupomEntityEditScreen extends React.Component {
   submitForm () {
 
 
-      const cupom = this.state.formValue
 
-      console.log(cupom, "log cupom")
-      if(cupom)
+    this.setState({
+      updating: true,
+      creating: true
+    })
+    const value = this.refs.form.getValue()
+
+
+      if(value)
       {
 
-        if(cupom.data == null || cupom.data == '' || cupom.data.length != 10)
+        if(value.data == null || value.data == '' || value.data.length != 10)
         {
           Alert.alert('Erro', 'Data do Cupom inválida.', [{text: 'OK'}])
           return
         }
-        if(!moment(cupom.data, 'DD-MM-YYYY').isValid())
+        if(!moment(value.data, 'DD-MM-YYYY').isValid())
         {
           Alert.alert('Erro', 'Data do Cupom inválida.', [{text: 'OK'}])
           return
         }
 
-        if(cupom.valor == '')
+        if(!moment(value.data, 'DD/MM/YYYY').isValid())
+        {
+          Alert.alert('Erro', 'Data do Cupom inválida.', [{text: 'OK'}])
+          return
+
+        }
+
+        if(value.valor == '')
         {
           Alert.alert('Erro', 'Valor inválido', [{text: 'OK'}])
           return
 
         }
 
-        if(cupom.estabelecimentoComercialId == null || cupom.estabelecimentoComercialId == '')
+        if(value.estabelecimentoComercialId == null || value.estabelecimentoComercialId == '')
         {
           Alert.alert('Erro', 'Favor selecionar um estabelecimento.', [{text: 'OK'}])
           return
 
         }
 
-        if(cupom.numero == null || cupom.numero == '')
+        if(value.numero == null || value.numero == '')
         {
           Alert.alert('Erro', 'Favor selecionar o número do cupom.', [{text: 'OK'}])
           return
 
         }
 
-        if(cupom.foto == null || cupom.foto == '')
+        if(value.foto == null || value.foto == '')
         {
           Alert.alert('Erro', 'Favor informar a imagem do cupom.', [{text: 'OK'}])
           return
 
         }
 
-        this.setState({
-          updating: true
-        })
-
-      let foto = ImgToBase64.getBase64String('file://' + cupom.foto)
+      let cupom = {...this.state.formValue};
+      let foto = ImgToBase64.getBase64String('file://' + value.foto)
     .then(base64String => {
       foto = base64String
       cupom.foto = foto
       cupom.fotoContentType = "image/png"
       cupom.usuarioId = this.props.account.id
       cupom.data = moment.utc(moment(cupom.data, "DD/MM/YYYY")).format("YYYY-MM-DDTHH:mm:ss.SSS").concat("Z")
-      cupom.valor = cupom.valor.replace("R$", "").replace(",",".");
-  console.log("logando state antes", this.state)
+      cupom.valor = cupom.valor.replace("R$", "").replace(/\./g, '').replace(",",".");
+      this.setState({cupom});
       this.setState({
         success: false,
-        requesting: true,
-        cupom
+        requesting: true
       })
-      console.log("logando state depois", this.state)
-      console.log("logando cupom",cupom)
-      if (cupom) { // if validation fails, value will be null
 
-        console.log("caiu if", cupom)
+
+      if(value)
+      {
+
+        console.log("logando cupom enviado", cupom)
+
         this.props.updateCupom(cupom)
-      }else
-      {
-        console.log("caiu else", cupom)
-      }
-      Alert.alert('Success', 'Cupom enviado com sucesso.', alertOptions)
-
-      if(this.state.error)
-      {
-        this.setState({
-          updating: false
-        })
-        console.log(this.state,'logando state')
-        Alert.alert('Error', 'Somethinddddddg went wrong updating the entity', [{text: 'Erro'}])
 
       }
 
-      Navigation.pop(this.props.componentId)
+
 
     })
     .catch(err => console.log(err));
@@ -313,7 +315,8 @@ class CupomEntityEditScreen extends React.Component {
   }
 
   render () {
-    if (this.state.updating) {
+
+    if (this.state.fetching || this.props.estabelecimentoComercials.length == 0) {
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <ActivityIndicator />
