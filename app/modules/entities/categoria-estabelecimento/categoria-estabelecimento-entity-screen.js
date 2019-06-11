@@ -1,11 +1,13 @@
-import React from 'react'
-import { FlatList, Text, TouchableOpacity, View } from 'react-native'
+import React, { Component } from "react";
+import { Platform, StyleSheet, FlatList, Text, View, Alert, Image, TouchableOpacity } from "react-native";
+import { Badge, Icon } from 'react-native-elements';
 import { connect } from 'react-redux'
 import { Navigation } from 'react-native-navigation'
-import { categoriaEstabelecimentoEntityDetailScreen, categoriaEstabelecimentoEntityEditScreen } from '../../../navigation/layouts'
+import { categoriaEstabelecimentoEntityDetailScreen, categoriaEstabelecimentoEntityEditScreen, estabelecimentoComercialEntityScreen } from '../../../navigation/layouts'
 import CategoriaEstabelecimentoActions from './categoria-estabelecimento.reducer'
 import styles from './categoria-estabelecimento-entity-screen-style'
 import AlertMessage from '../../../shared/components/alert-message/alert-message'
+//import estabelecimentoComercialEntityScreen from "../estabelecimento-comercial/estabelecimento-comercial-entity-screen";
 
 // More info here: https://facebook.github.io/react-native/docs/flatlist.html
 
@@ -22,10 +24,32 @@ class CategoriaEstabelecimentoEntityScreen extends React.PureComponent {
     this.state = {
       page: 0,
       sort: 'id,asc',
-      size: 20,
+      size: 1000,
       loading: true,
       done: false,
-      dataObjects: []
+      dataObjects: [],
+      GridListItems: [
+        { key: "Skptricks" },
+        { key: "Sumit" },
+        { key: "Amit" },
+        { key: "React" },
+        { key: "React Native" },
+        { key: "Java" },
+        { key: "Javascript" },
+        { key: "PHP" },
+        { key: "AJAX" },
+        { key: "Android" },
+        { key: "Selenium" },
+        { key: "HTML" },
+        { key: "Database" },
+        { key: "MYSQL" },
+        { key: "SQLLite" },
+        { key: "Web Technology" },
+        { key: "CSS" },
+        { key: "Python" },
+        { key: "Linux" },
+        { key: "Kotlin" },
+      ]
     }
   }
 
@@ -42,12 +66,12 @@ class CategoriaEstabelecimentoEntityScreen extends React.PureComponent {
   *************************************************************/
   renderRow ({item}) {
     return (
-      <TouchableOpacity onPress={categoriaEstabelecimentoEntityDetailScreen.bind(this, { entityId: item.id })}>
+      <TouchableWithoutFeedback onPress={categoriaEstabelecimentoEntityDetailScreen.bind(this, { entityId: item.id })}>
         <View style={styles.row}>
           <Text style={styles.boldLabel}>{item.id}</Text>
           {/* <Text style={styles.label}>{item.description}</Text> */}
         </View>
-      </TouchableOpacity>
+      </TouchableWithoutFeedback>
     )
   }
 
@@ -122,24 +146,50 @@ class CategoriaEstabelecimentoEntityScreen extends React.PureComponent {
     this.fetchCategoriaEstabelecimentos()
   }
 
-  render () {
+  GetGridViewItem(item) {
+    Alert.alert(item);
+  }
+
+  // render () {
+  //   return (
+  //     <View style={styles.container} testID='categoriaEstabelecimentoScreen'>
+  //       <FlatList
+  //         contentContainerStyle={styles.listContent}
+  //         data={this.state.dataObjects}
+  //         renderItem={this.renderRow}
+  //         keyExtractor={this.keyExtractor}
+  //         initialNumToRender={this.oneScreensWorth}
+  //         onEndReached={this.handleLoadMore}
+  //         onEndThreshold={100}
+  //         /* ListHeaderComponent={this.renderHeader} */
+  //         /* ListFooterComponent={this.renderFooter} */
+  //         ListEmptyComponent={this.renderEmpty}
+  //         ItemSeparatorComponent={this.renderSeparator}
+  //       />
+  //     </View>
+  //   )
+  // }
+  render ()
+  {
+     console.log("props",this.props)
+     console.log("state",this.state)
     return (
-      <View style={styles.container} testID='categoriaEstabelecimentoScreen'>
+      <View style={styles.container}>
         <FlatList
-          contentContainerStyle={styles.listContent}
-          data={this.state.dataObjects}
-          renderItem={this.renderRow}
-          keyExtractor={this.keyExtractor}
-          initialNumToRender={this.oneScreensWorth}
-          onEndReached={this.handleLoadMore}
-          onEndThreshold={100}
-          /* ListHeaderComponent={this.renderHeader} */
-          /* ListFooterComponent={this.renderFooter} */
-          ListEmptyComponent={this.renderEmpty}
-          ItemSeparatorComponent={this.renderSeparator}
+           data={ this.props.categoriaEstabelecimentos }
+           numColumns={2}
+           renderItem={ ({item}) =>
+           <TouchableOpacity style={styles.GridViewContainer} onPress={estabelecimentoComercialEntityScreen.bind(this, { entityId: item.id})}>
+             <View >
+             <Icon
+  name='store' color='#154553' />
+              <Text style={styles.GridViewTextLayout} onPress={estabelecimentoComercialEntityScreen.bind(this, { entityId: item.id})} > {item.nome} </Text>
+              <Badge value={item.estabelecimentos} status="error" />
+             </View></TouchableOpacity> }
+
         />
       </View>
-    )
+   );
   }
 }
 

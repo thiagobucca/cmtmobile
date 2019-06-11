@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Alert, ScrollView, Text, TextInput, Image, View, TouchableOpacity, BackHandler, Animated, TouchableHighlight } from 'react-native'
+import { Alert, ScrollView, Text, TextInput, Image, View, TouchableOpacity, BackHandler, Animated, TouchableHighlight,ActivityIndicator } from 'react-native'
 import { Navigation } from 'react-native-navigation'
 
 import { Images, Metrics } from '../../shared/themes'
@@ -442,24 +442,36 @@ handlePressForgotPassword = () => {
     const { fetching } = this.props
     const editable = !fetching
     const textInputStyle = editable ? styles.textInput : styles.textInputReadonly
-    return (
-      <Animated.View style={[styles.container, { transform: [{translateY: shift}] }]}>
-                 {this.displayWelcome()}
-              <View>
-          <Image source={Images.logoCmt} style={[styles.topLogo, this.state.topLogo]} />
-        </View>
+    if (this.props.fetching) {
+      return (
+        <Animated.View style={[styles.container, { transform: [{translateY: shift}] }]}>
+          <ActivityIndicator />
+          </Animated.View>
+      );
+    }else
+    {
+      return (
 
-        {this.displayStore()}
-        {this.displayPlacet()}
-        {this.displayCupom()}
-        {this.displayUsername()}
-        {this.displayPassword()}
-        {this.displayEnter()}
-        {this.displayForgotPassword()}
-        {this.displayRegister()}
-      </Animated.View>
-    );
-  }
+        <Animated.View style={[styles.container, { transform: [{translateY: shift}] }]}>
+                   {this.displayWelcome()}
+                <View>
+            <Image source={Images.logoCmt} style={[styles.topLogo, this.state.topLogo]} />
+          </View>
+
+          {this.displayStore()}
+          {this.displayPlacet()}
+          {this.displayCupom()}
+          {this.displayUsername()}
+          {this.displayPassword()}
+          {this.displayEnter()}
+          {this.displayForgotPassword()}
+          {this.displayRegister()}
+        </Animated.View>
+      );
+    }
+
+    }
+
 
 }
 

@@ -27,7 +27,7 @@ class CupomEntityScreen extends React.PureComponent {
     this.state = {
       page: 0,
       sort: 'id,asc',
-      size: 20,
+      size: 1000,
       loading: true,
       done: false,
       dataObjects: []
@@ -135,7 +135,7 @@ class CupomEntityScreen extends React.PureComponent {
   componentWillReceiveProps (newProps) {
     if (newProps.cupomUser) {
       this.setState({
-        done: newProps.cupomUser.length < this.state.size,
+        done: newProps.cupomUser.length <= this.state.size,
         dataObjects: this.state.loading ? [...this.state.dataObjects, ...newProps.cupomUser] : newProps.cupomUser,
         loading: false
       })
@@ -173,7 +173,7 @@ class CupomEntityScreen extends React.PureComponent {
 
     }else
     {
-      if (this.state.updating || this.state.fetching) {
+      if (!this.state.done) {
         return (
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <ActivityIndicator />

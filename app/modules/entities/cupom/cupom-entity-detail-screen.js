@@ -1,6 +1,6 @@
 import React from 'react'
 import { Alert, ScrollView, Text, View, Image } from 'react-native'
-import { Card, ListItem, Button, Icon, Divider} from 'react-native-elements'
+import { Card, ListItem, Button, Icon, Divider, Tile} from 'react-native-elements'
 
 import { connect } from 'react-redux'
 import { Navigation } from 'react-native-navigation'
@@ -64,51 +64,34 @@ class CupomEntityDetailScreen extends React.Component {
     )
   }
 
-//   render () {
-//     return (
-//       <ScrollView style={styles.container}>
-//         {/* <Text>ID: {this.state.cupom.id}</Text>
-//         <Text testID='data'>Data: {this.state.cupom.data}</Text>
-//         <Text testID='valor'>Valor: {this.state.cupom.valor}</Text>
-//         <Text testID='numero'>Numero: {this.state.cupom.numero}</Text>
-//         <Text testID='foto'>Foto: {this.state.cupom.foto}</Text>
-//         <Text testID='estabelecimentoComercialId'>EstabelecimentoComercialId: {this.state.cupom.estabelecimentoComercialId}</Text>
-//         <RoundedButton text='Edit' onPress={cupomEntityEditScreen.bind(this, { entityId: this.state.cupom.id })} />
-//         <RoundedButton text='Delete' onPress={this.confirmDelete} /> */}
-//               <Card title="Local Modules">
-//         {/*react-native-elements Card*/}
-//           <Text style={styles.paragraph}>
-//             This is a card from the react-native-elements
-//           </Text>
-//         </Card>
-//       </ScrollView>
-//     )
-//   }
-// }
-
 render () {
   return (
 // implemented with Text and Button as children
 <Card
   title='Detalhamento'
   image={{uri: this.state.cupom.foto}}
-  imageStyle={{height:300, width:300}}>
-  <Text style={{marginBottom: 10}}>
-  Estabelecimento: {this.state.cupom.estabelecimento}
+  imageStyle={{height:300, width:300, alignSelf: 'center', justifyContent: 'center'}}>
+  <Text icon={<Icon name='home' color='#000000' />} style={{marginBottom: 10}}>
+  <Text style={{fontWeight: "bold"}}> Est: </Text>
+  <Text style={{fontSize: 12, flex: 1, alignSelf: 'center', justifyContent: 'center'}}>{this.state.cupom.estabelecimento}</Text>
   </Text>
   <Text style={{marginBottom: 10}}>
-  Valor: {this.state.cupom.valor}
+  <Text style={{fontWeight: "bold"}}> Valor: </Text>
+  {'R$' + this.state.cupom.valor}
   </Text>
   <Text style={{marginBottom: 10}}>
-  Numero: {this.state.cupom.numero > 0 ? this.state.cupom.numero : "Não Informado"}
+  <Text style={{fontWeight: "bold"}}> Numero: </Text>
+  {this.state.cupom.numero > 0 ? this.state.cupom.numero : "Não Informado"}
   </Text>
   <Text style={{marginBottom: 10}}>
-  Data: {moment.utc(this.state.cupom.data).format("DD/MM/YYYY")}
+  <Text style={{fontWeight: "bold"}}> Data: </Text>
+  {moment.utc(this.state.cupom.data).format("DD/MM/YYYY")}
   </Text>
-  <RoundedButton text='Deletar' onPress={this.confirmDelete} />
 </Card>
   )
 }
+
+
 }
 
 const mapStateToProps = (state) => {

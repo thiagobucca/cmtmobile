@@ -26,7 +26,7 @@ class ComunicacaoPushEntityScreen extends React.PureComponent {
     this.state = {
       page: 0,
       sort: 'id,asc',
-      size: 20,
+      size: 1000,
       done: false,
       dataObjects: [],
       loading: false,
@@ -108,8 +108,8 @@ class ComunicacaoPushEntityScreen extends React.PureComponent {
   //   {length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index}
   // )}
 
-  fetchComunicacaoPushes = () => {
-    this.props.getAllComunicacaoPushes({ page: this.state.page, sort: this.state.sort, size: this.state.size })
+  fetchComunicacaoPushes = (id) => {
+    this.props.getAllComunicacaoPushes({ page: this.state.page, sort: this.state.sort, size: this.state.size, usuarioId: id })
   }
 
   handleLoadMore = () => {
@@ -126,7 +126,7 @@ class ComunicacaoPushEntityScreen extends React.PureComponent {
   componentWillReceiveProps (newProps) {
     if (newProps.comunicacaoPushes) {
       this.setState({
-        done: newProps.comunicacaoPushes.length < this.state.size,
+        done: newProps.comunicacaoPushes.length <= this.state.size,
         dataObjects: this.state.loading ? [...this.state.dataObjects, ...newProps.comunicacaoPushes] : newProps.comunicacaoPushes,
         loading: false
       })
@@ -134,7 +134,13 @@ class ComunicacaoPushEntityScreen extends React.PureComponent {
   }
 
   componentWillMount () {
-    this.fetchComunicacaoPushes()
+
+    if (this.props.account.id) {
+      this.fetchComunicacaoPushes(this.props.account.id)
+     // this.props.getCupom(this.props.data.entityId)
+    } else {
+      this.setState({formValue: { id: null }})
+    }
   }
 
   componentWillUnmount() {

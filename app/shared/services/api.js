@@ -66,7 +66,7 @@ const create = (baseURL = AppConfig.apiUrl) => {
   const deleteAgendaEvento = (agendaEventoId) => api.delete('api/agenda-eventos/' + agendaEventoId)
 
   const getCategoriaEstabelecimento = (categoriaEstabelecimentoId) => api.get('api/categoria-estabelecimentos/' + categoriaEstabelecimentoId)
-  const getCategoriaEstabelecimentos = (options) => api.get('api/categoria-estabelecimentos', options)
+  const getCategoriaEstabelecimentos = (options) => api.get('api/categoria-estabelecimentos-app/', options)
   const createCategoriaEstabelecimento = (categoriaEstabelecimento) => api.post('api/categoria-estabelecimentos', categoriaEstabelecimento)
   const updateCategoriaEstabelecimento = (categoriaEstabelecimento) => api.put('api/categoria-estabelecimentos', categoriaEstabelecimento)
   const deleteCategoriaEstabelecimento = (categoriaEstabelecimentoId) => api.delete('api/categoria-estabelecimentos/' + categoriaEstabelecimentoId)

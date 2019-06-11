@@ -474,13 +474,13 @@ export const categoriaEstabelecimentoEntityScreen = () => Navigation.push('cente
     options: {
       topBar: {
         title: {
-          text: 'CategoriaEstabelecimentos',
+          text: 'Estabelecimentos',
           color: Colors.snow
         },
         rightButtons: [
           {
             id: 'createButton',
-            text: 'Create',
+            text: '',
             color: Colors.snow
           }
         ]
@@ -523,9 +523,12 @@ export const categoriaEstabelecimentoEntityDetailScreen = (data) => Navigation.p
   }
 })
 
-export const estabelecimentoComercialEntityScreen = () => Navigation.push('center', {
+export const estabelecimentoComercialEntityScreen = (data) => Navigation.push('center', {
   component: {
     name: ESTABELECIMENTO_COMERCIAL_ENTITY_SCREEN,
+    passProps: {
+      data
+    },
     options: {
       topBar: {
         title: {

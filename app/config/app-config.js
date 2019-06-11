@@ -1,6 +1,6 @@
 // Simple React Native specific changes
 
 export default {
-  apiUrl: 'http://cmtweb.ddns.net/',
+  apiUrl: 'http://portalcmt.ddns.net/',
   appUrlScheme: 'cmtmobile'
 }

@@ -37,7 +37,9 @@ class AgendaEventoEntityScreen extends React.PureComponent {
         data: t.Date,
         local: t.String,
         descricao: t.maybe(t.String)
+
       }),
+      isPreenchido: false,
       agendaEventosValue: this.props.agendaEventos,
       items: {}
     //  diaAtual: new Date().toLocaleString("sv-SE", {timeZone: "America/Sao_Paulo"}).toString().substring(0,10)
@@ -145,14 +147,23 @@ onDayChange = (date) => {
 
 
   loadItems(day) {
+
     setTimeout(() => {
 
-      if(this.props.agendaEventos != null && this.props.agendaEventos.length > 0)
+      if(this.props.agendaEventos != null && this.props.agendaEventos.length > 0 && !this.state.isPreenchido)
       {
+        this.setState({
+          isPreenchido: true
+        });
         this.props.agendaEventos.forEach(agendaEvento => {
 
 
-          this.state.items[agendaEvento.data.toString().substring(0,10)] = [];
+          if (!this.state.items[agendaEvento.data.toString().substring(0,10)])
+          {
+         //   console.log("adicionando elemento", agendaEvento)
+            this.state.items[agendaEvento.data.toString().substring(0,10)] = [];
+          }
+          //this.state.items[agendaEvento.data.toString().substring(0,10)] = [];
           this.state.items[agendaEvento.data.toString().substring(0,10)].push({
             name: agendaEvento.titulo,
             height: Math.max(50, Math.floor(Math.random() * 150))
@@ -162,6 +173,7 @@ onDayChange = (date) => {
 
 
          const newItems = {};
+         console.log("adicionando", this.state.items)
          Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
          this.setState({
            items: newItems
@@ -216,7 +228,7 @@ onDayChange = (date) => {
   }
 
   fetchAgendaEventos = () => {
-    this.props.getAllAgendaEventos({ page: this.state.page, sort: this.state.sort, size: this.state.size })
+    this.props.getAllAgendaEventos({ page: this.state.page, sort: this.state.sort, size: 1000, bol_app: true })
   }
 }
 

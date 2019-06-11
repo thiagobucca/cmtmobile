@@ -26,13 +26,14 @@ class EstabelecimentoComercialEntityScreen extends React.Component {
     this.state = {
       page: 0,
       sort: 'id,asc',
-      size: 20,
+      size: 1000,
       done: false,
       dataObjects: [],
       loading: false,
       data: [],
       error: null,
       search: '',
+      entityId: props.data.entityId
     }
     lastTimeout = setTimeout;
     this.arrayholder = [];
@@ -197,7 +198,7 @@ class EstabelecimentoComercialEntityScreen extends React.Component {
 
   fetchEstabelecimentoComercials = () => {
 
-    this.props.getAllEstabelecimentoComercials({ page: this.state.page, sort: this.state.sort, size: this.state.size })
+    this.props.getAllEstabelecimentoComercials({ page: this.state.page, sort: this.state.sort, size: this.state.size, categoria_id: this.props.data.entityId > 0 ? this.props.data.entityId : null, bol_app : true })
   }
 
   handleLoadMore = () => {
@@ -220,7 +221,7 @@ class EstabelecimentoComercialEntityScreen extends React.Component {
   componentWillReceiveProps (newProps) {
     if (newProps.estabelecimentoComercials) {
       this.setState({
-        done: newProps.estabelecimentoComercials.length < this.state.size,
+        done: newProps.estabelecimentoComercials.length <= this.state.size,
         dataObjects: this.state.loading ? [...this.state.dataObjects, ...newProps.estabelecimentoComercials] : newProps.estabelecimentoComercials,
         loading: false
       })

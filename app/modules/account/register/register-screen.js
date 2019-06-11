@@ -29,21 +29,7 @@ class RegisterScreen extends React.Component {
     OneSignal.configure();
     Navigation.events().bindComponent(this)
     this.state = {
-      formModel: t.struct({
-        isMacon: t.Boolean,
-        lojaMaconicaId: this.getLojaMaconicas(),
-        placet: t.String,
-        firstName: t.String,
-        dataNascimento: t.String,
-        login: t.String,
-        password: t.String,
-        confirmPassword: t.String,
-        telefone: t.String,
-        email: t.String,
-        tipoPessoa: t.String,
-        langKey: t.String
-      }),
-      formValue: { login: null, password: null, confirmPassword: null, email: null, langKey: 'pt-br', firstName: null, dataNascimento: null, telefone: null, usuarioId: null,lojaMaconicaId: null, tipoPessoa: 'Macom' },
+      formValue: { login: null, password: null, confirmPassword: null, email: null, langKey: 'pt-br', firstName: null, dataNascimento: null, telefone: null, usuarioId: null, tipoPessoa: 'Macom' },
       formOptions: {
         fields: {
           firstName: {
@@ -148,6 +134,26 @@ class RegisterScreen extends React.Component {
     this.accountChange = this.accountChange.bind(this)
   }
 
+
+  getFormModel()
+  {
+
+    return t.struct({
+      isMacon: t.Boolean,
+      lojaMaconicaId: this.getLojaMaconicas(),
+      placet: t.String,
+      firstName: t.String,
+      dataNascimento: t.String,
+      login: t.String,
+      password: t.String,
+      confirmPassword: t.String,
+      telefone: t.String,
+      email: t.String,
+      tipoPessoa: t.String,
+      langKey: t.String
+    })
+  }
+
   onChange (value)
   {
 
@@ -167,7 +173,15 @@ class RegisterScreen extends React.Component {
 
     value.tipoPessoa = value.isMacon ? 'Macom' : 'Dependente'
 
+    this.getLojaMaconicas()
+
     this.setState({formOptions: formOptions, formValue: value});
+  }
+
+  componentDidMount()
+  {
+    Alert.alert(JSON.stringify(this.props.error))
+
   }
 
 
@@ -175,7 +189,7 @@ class RegisterScreen extends React.Component {
   submitUpdate () {
 
 
-
+    Alert.alert(JSON.stringify(this.props.error))
     this.setState({
       updating: true,
       creating: true
@@ -229,23 +243,24 @@ class RegisterScreen extends React.Component {
         if(this.props.error != null && this.props.error.errorKey != null)
         {
 
-          // if(this.props.error.errorKey == "idexists")
-          // {
-          //   Alert.alert('Erro', 'Não foi encontrado Maçom para o Placet informado.', [{text: 'OK'}])
-          //   return
-          // }
+          if(this.props.error.errorKey == "idexists")
+          {
+            Alert.alert('Erro', 'Não foi encontrado Maçom para o Placet informado.', [{text: 'OK'}])
+            return
+          }
 
-          // if(this.props.error.errorKey == "userexists")
-          // {
-          //   Alert.alert('Erro', 'Nome de usuário existente.', [{text: 'OK'}])
-          //   return
-          // }
+          if(this.props.error.errorKey == "userexists")
+          {
+            Alert.alert('Erro', 'Nome de usuário existente.', [{text: 'OK'}])
+            return
+          }
 
-          // if(this.props.error.errorKey == "emailexists")
-          // {
-          //   Alert.alert('Erro', 'Email existente.', [{text: 'OK'}])
-          //   return
-          // }
+          Alert.alert(JSON.stringify(this.props.error))
+          if(this.props.error.errorKey == "emailexists")
+          {
+            Alert.alert('Erro', 'Emaisl existente.', [{text: 'OK'}])
+           // return
+          }
 
         }
 
@@ -353,6 +368,8 @@ class RegisterScreen extends React.Component {
     })
   }
   getLojaMaconicas = () => {
+
+
     const lojaMaconicas = {}
     this.props.lojaMaconicas.forEach(lojaMaconica => {
 
@@ -380,9 +397,10 @@ class RegisterScreen extends React.Component {
 
 
   render () {
-    console.log(this.props.lojaMaconicas, "lojasmaconicas")
-    console.log(this.state, "state")
-    if (this.state.fetching || this.props.lojaMaconicas.length == 0) {
+    // console.log(this.props.lojaMaconicas, "lojasmaconicas")
+    // console.log(this.state, "state")
+    // console.log(this.props.lojaMaconicas.length == 0, "true ou false")
+    if (this.props.lojaMaconicas.length == 0) {
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <ActivityIndicator />
@@ -395,7 +413,7 @@ class RegisterScreen extends React.Component {
           <ScrollView style={styles.container}>
             <Form
               ref='form'
-              type={this.state.formModel}
+              type={this.getFormModel()}
               options={this.state.formOptions}
               value={this.state.formValue}
               onChange={this.onChange}

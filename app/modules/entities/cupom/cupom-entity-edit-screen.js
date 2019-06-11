@@ -7,14 +7,13 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { cupomEntityDetailScreen } from '../../../navigation/layouts'
 import EstabelecimentoComercialActions from './../../entities/estabelecimento-comercial/estabelecimento-comercial.reducer'
 
-
+import t from 'tcomb-form-native'
 import { TextInputMask } from 'react-native-masked-text'
 import maskedInputTemplate from '../../../../node_modules/tcomb-form-native/lib/templates/MaskedInputTemplate/MaskedInputTemplate'
 import ImageFactory from 'react-native-image-picker-form'
 import ImgToBase64 from 'react-native-image-base64';
 import moment from 'moment';
 
-import t from 'tcomb-form-native'
 import styles from './cupom-entity-edit-screen-style'
 
 let Form = t.form.Form
@@ -24,16 +23,8 @@ class CupomEntityEditScreen extends React.Component {
     super(props)
     Navigation.events().bindComponent(this)
     this.state = {
-      formModel: t.struct({
-        id: t.maybe(t.Number),
-        data: t.String,
-        valor: t.String,
-        estabelecimentoComercialId: this.getEstabelecimentoComercials(),
-        numero: t.maybe(t.String),
-        foto: t.String,
-        usuarioId: t.maybe(t.Number)
-      }),
-      formValue: { id: null, data: null, valor: null, estabelecimentoComercialId: null, numero: null, foto: null, usuarioId: null },
+      updating: props.data.entityId !== null && props.data.entityId !== undefined,
+      formValue: { id: null},
       formOptions: {
         fields: {
           id: {
@@ -95,7 +86,12 @@ class CupomEntityEditScreen extends React.Component {
             label: 'Foto',
             config: {
               title: 'Escolher Foto',
-              options: ['Abrir camera', 'Selecione da galeria', 'Cancelar']
+              options: ['Abrir camera', 'Selecione da galeria', 'Cancelar'],
+              mediaType: "photo",
+              width: 640,
+              height: 640,
+              compressImageMaxWidth: 640,
+              compressImageMaxHeight: 640
               // Used on Android to style BottomSheet
             },
             error: 'Sem imagem',
@@ -107,9 +103,8 @@ class CupomEntityEditScreen extends React.Component {
         }
       },
       success: false,
-      creating: false,
       cupom: {},
-      jasper:{}
+      jasper: {}
     }
 
     this.submitForm = this.submitForm.bind(this)
@@ -131,7 +126,7 @@ class CupomEntityEditScreen extends React.Component {
 
     const estabelecimentoComercials = {}
     this.props.estabelecimentoComercials.forEach(estabelecimentoComercial => {
-
+     console.log(estabelecimentoComercial)
      estabelecimentoComercials[estabelecimentoComercial.id] = estabelecimentoComercial.nome ? estabelecimentoComercial.nome.toString() : estabelecimentoComercial.nome.toString()
     })
 
@@ -139,37 +134,24 @@ class CupomEntityEditScreen extends React.Component {
 }
 
   componentWillReceiveProps (newProps) {
-    if (newProps.cupom && !newProps.updating && !this.state.requesting && this.state.updating) {
-      this.setState({
-        formValue: this.entityToFormValue(newProps.cupom)
-      })
-    }
-    console.log("log das newprops",newProps)
-
-    if(this.props.estabelecimentoComercials != null && this.props.estabelecimentoComercials.lenght == 0)
-    {
-      this.getEstabelecimentoComercials()
-    }
+    // if (newProps.cupom && !newProps.updating && !this.state.requesting && this.state.updating) {
+    //   this.setState({
+    //     formValue: this.entityToFormValue(newProps.cupom)
+    //   })
+    // }
 
     // Did the update attempt complete?
-
-    if (!newProps.fetching && this.state.creating == true) {
-
-      this.setState({
-        creating : false
-      })
-
+    if (!newProps.updating && this.state.requesting) {
       if (newProps.error) {
-        console.log("error log",newProps.error)
-        Alert.alert('Erro', newProps.error.title, [{text: 'OK'}])
-       // return
+        Alert.alert('Erro', 'Cupom já cadastrado.', [{text: 'OK'}])
+        this.setState({
+          success: false,
+          requesting: false,
+          updating: false
+        })
       }
       else {
-
-        this.setState({
-          success: true,
-          fetching: false
-        })
+        this.props.getAllCupoms({page: 0, sort: 'id,asc', size: 20})
         const entityId = newProps.cupom.id
         const alertOptions = [{ text: 'OK' }]
         if (!this.state.formValue.id) {
@@ -178,9 +160,19 @@ class CupomEntityEditScreen extends React.Component {
             onPress: cupomEntityDetailScreen.bind(this, { entityId })
           })
         }
+        // this.setState({
+        //   success: true,
+        //   requesting: false,
+        //   formValue: { id: null }
+        // })
         Navigation.pop(this.props.componentId)
         Alert.alert('Success', 'Cupom enviado com sucesso.', alertOptions)
       }
+    }
+
+    if(this.props.estabelecimentoComercials != null && this.props.estabelecimentoComercials.lenght == 0)
+    {
+      this.getEstabelecimentoComercials()
     }
   }
 
@@ -212,17 +204,25 @@ class CupomEntityEditScreen extends React.Component {
     return entity
   }
 
+  getFormModel()
+  {
+    return t.struct({
+      id: t.maybe(t.Number),
+      data: t.String,
+      valor: t.String,
+      estabelecimentoComercialId: this.getEstabelecimentoComercials(),
+      numero: t.maybe(t.String),
+      foto: t.String,
+      usuarioId: t.maybe(t.Number)
+    })
+  }
+
   submitForm () {
 
 
+      const value = this.refs.form.getValue()
 
-    this.setState({
-      updating: true,
-      creating: true
-    })
-    const value = this.refs.form.getValue()
-
-
+      console.log(value, "log cupom")
       if(value)
       {
 
@@ -235,13 +235,6 @@ class CupomEntityEditScreen extends React.Component {
         {
           Alert.alert('Erro', 'Data do Cupom inválida.', [{text: 'OK'}])
           return
-        }
-
-        if(!moment(value.data, 'DD/MM/YYYY').isValid())
-        {
-          Alert.alert('Erro', 'Data do Cupom inválida.', [{text: 'OK'}])
-          return
-
         }
 
         if(value.valor == '')
@@ -272,32 +265,49 @@ class CupomEntityEditScreen extends React.Component {
 
         }
 
-      let cupom = {...this.state.formValue};
-      let foto = ImgToBase64.getBase64String('file://' + value.foto)
+        this.setState({
+          updating: true
+        })
+
+        const user = this.refs.form.getValue()
+        let jasper = {...this.state.formValue};
+      let foto = ImgToBase64.getBase64String('file://' + jasper.foto)
     .then(base64String => {
       foto = base64String
-      cupom.foto = foto
-      cupom.fotoContentType = "image/png"
-      cupom.usuarioId = this.props.account.id
-      cupom.data = moment.utc(moment(cupom.data, "DD/MM/YYYY")).format("YYYY-MM-DDTHH:mm:ss.SSS").concat("Z")
-      cupom.valor = cupom.valor.replace("R$", "").replace(/\./g, '').replace(",",".");
-      this.setState({cupom});
+      jasper.foto = foto
+      jasper.fotoContentType = "image/png"
+      jasper.usuarioId = this.props.account.id
+      jasper.data = moment.utc(moment(jasper.data, "DD/MM/YYYY")).format("YYYY-MM-DDTHH:mm:ss.SSS").concat("Z")
+      jasper.valor = jasper.valor.replace("R$", "").replace(/\./g, '').replace(",",".");
+
       this.setState({
         success: false,
-        requesting: true
+        requesting: true,
+        jasper
       })
+      console.log("logando state depois", this.state)
+      console.log("logando cupom",jasper)
+      if (jasper) { // if validation fails, value will be null
 
-
-      if(value)
+        console.log("caiu if", jasper)
+        this.props.updateCupom(jasper)
+      }else
       {
+        console.log("caiu else", jasper)
+      }
+      Alert.alert('Success', 'Cupom enviado com sucesso.', alertOptions)
 
-        console.log("logando cupom enviado", cupom)
-
-        this.props.updateCupom(cupom)
+      if(this.state.error)
+      {
+        this.setState({
+          updating: false
+        })
+        console.log(this.state,'logando state')
+        Alert.alert('Error', 'Somethinddddddg went wrong updating the entity', [{text: 'Erro'}])
 
       }
 
-
+      Navigation.pop(this.props.componentId)
 
     })
     .catch(err => console.log(err));
@@ -315,8 +325,7 @@ class CupomEntityEditScreen extends React.Component {
   }
 
   render () {
-
-    if (this.state.fetching || this.props.estabelecimentoComercials.length == 0) {
+    if (this.state.updating) {
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <ActivityIndicator />
@@ -329,7 +338,7 @@ class CupomEntityEditScreen extends React.Component {
           <ScrollView style={styles.container} testID='entityScrollView'>
             <Form
               ref='form'
-              type={this.state.formModel}
+              type={this.getFormModel()}
               options={this.state.formOptions}
               value={this.state.formValue}
               onChange={this.formChange}
