@@ -12,6 +12,8 @@ import { TextInputMask } from 'react-native-masked-text'
 import maskedInputTemplate from '../../../../node_modules/tcomb-form-native/lib/templates/MaskedInputTemplate/MaskedInputTemplate'
 import ImageFactory from 'react-native-image-picker-form'
 import ImgToBase64 from 'react-native-image-base64';
+import ImageResizer from 'react-native-image-resizer';
+
 import moment from 'moment';
 
 import styles from './cupom-entity-edit-screen-style'
@@ -88,10 +90,7 @@ class CupomEntityEditScreen extends React.Component {
               title: 'Escolher Foto',
               options: ['Abrir camera', 'Selecione da galeria', 'Cancelar'],
               mediaType: "photo",
-              width: 640,
-              height: 640,
-              compressImageMaxWidth: 640,
-              compressImageMaxHeight: 640
+              quality: 0.1
               // Used on Android to style BottomSheet
             },
             error: 'Sem imagem',
@@ -126,7 +125,7 @@ class CupomEntityEditScreen extends React.Component {
 
     const estabelecimentoComercials = {}
     this.props.estabelecimentoComercials.forEach(estabelecimentoComercial => {
-     console.log(estabelecimentoComercial)
+
      estabelecimentoComercials[estabelecimentoComercial.id] = estabelecimentoComercial.nome ? estabelecimentoComercial.nome.toString() : estabelecimentoComercial.nome.toString()
     })
 
@@ -271,46 +270,59 @@ class CupomEntityEditScreen extends React.Component {
 
         const user = this.refs.form.getValue()
         let jasper = {...this.state.formValue};
-      let foto = ImgToBase64.getBase64String('file://' + jasper.foto)
-    .then(base64String => {
-      foto = base64String
-      jasper.foto = foto
-      jasper.fotoContentType = "image/png"
-      jasper.usuarioId = this.props.account.id
-      jasper.data = moment.utc(moment(jasper.data, "DD/MM/YYYY")).format("YYYY-MM-DDTHH:mm:ss.SSS").concat("Z")
-      jasper.valor = jasper.valor.replace("R$", "").replace(/\./g, '').replace(",",".");
 
-      this.setState({
-        success: false,
-        requesting: true,
-        jasper
-      })
-      console.log("logando state depois", this.state)
-      console.log("logando cupom",jasper)
-      if (jasper) { // if validation fails, value will be null
 
-        console.log("caiu if", jasper)
-        this.props.updateCupom(jasper)
-      }else
-      {
-        console.log("caiu else", jasper)
-      }
-      Alert.alert('Success', 'Cupom enviado com sucesso.', alertOptions)
+        ImageResizer.createResizedImage('file://' + jasper.foto, 600, 800, "JPEG", 40, 0, null).then((response) => {
+          // response.uri is the URI of the new image that can now be displayed, uploaded...
+          // response.path is the path of the new image
+          // response.name is the name of the new image with the extension
+          // response.size is the size of the new image
+          let foto = ImgToBase64.getBase64String(response.uri)
+          .then(base64String => {
+            foto = base64String
+            jasper.foto = foto
+            jasper.fotoContentType = "image/png"
+            jasper.usuarioId = this.props.account.id
+            jasper.data = moment.utc(moment(jasper.data, "DD/MM/YYYY")).format("YYYY-MM-DDTHH:mm:ss.SSS").concat("Z")
+            jasper.valor = jasper.valor.replace("R$", "").replace(/\./g, '').replace(",",".");
 
-      if(this.state.error)
-      {
-        this.setState({
-          updating: false
-        })
-        console.log(this.state,'logando state')
-        Alert.alert('Error', 'Somethinddddddg went wrong updating the entity', [{text: 'Erro'}])
+            this.setState({
+              success: false,
+              requesting: true,
+              jasper
+            })
 
-      }
+            if (jasper) { // if validation fails, value will be null
 
-      Navigation.pop(this.props.componentId)
 
-    })
-    .catch(err => console.log(err));
+              this.props.updateCupom(jasper)
+            }
+
+            Alert.alert('Success', 'Cupom enviado com sucesso.', alertOptions)
+
+            if(this.state.error)
+            {
+              this.setState({
+                updating: false
+              })
+
+              Alert.alert('Error', 'Somethinddddddg went wrong updating the entity', [{text: 'Erro'}])
+
+            }
+
+            Navigation.pop(this.props.componentId)
+
+          })
+          .catch(err => console.log(err));
+
+        }).catch((err) => {
+
+          console.log(err);
+          // Oops, something went wrong. Check that the filename is correct and
+          // inspect err to get more details.
+        });
+
+
 
      }
 

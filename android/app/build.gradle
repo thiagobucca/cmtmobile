@@ -173,6 +173,7 @@ configurations.all {
       }
   }
 dependencies {
+    compile project(':react-native-image-resizer')
     compile project(':react-native-i18n')
     compile project(':react-native-image-crop-picker')
     compile project(':react-native-image-picker')

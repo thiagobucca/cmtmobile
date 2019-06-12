@@ -3,6 +3,7 @@ package com.cmtmobile;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.imagepicker.ImagePickerPackage;
@@ -47,6 +48,7 @@ public class MainApplication extends NavigationApplication {
   protected List<ReactPackage> getPackages() {
     return Arrays.<ReactPackage>asList(
         new MainReactPackage(),
+            new ImageResizerPackage(),
             new RNI18nPackage(),
             new PickerPackage(),
             new ImagePickerPackage(),
